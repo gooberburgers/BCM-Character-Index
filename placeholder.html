@@ -128,14 +128,16 @@
             left: 0;
             right: 0;
             height: 80px;
-            background: rgba(60, 30, 20, 0.95);
-            border-bottom: 3px solid #ff6b35;
+            background-image: url('assets/BCMWiki_Framing.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
             backdrop-filter: blur(10px);
             z-index: 1000;
             display: flex;
             align-items: center;
             padding: 0 20px;
-            box-shadow: 0 4px 20px rgba(255, 107, 53, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
 
         .cloudflare-icon, .IMEATING-RIGHTNOW-HELLYEAH {
@@ -204,8 +206,12 @@
         .search-box {
             width: 100%;
             padding: 12px 45px 12px 15px;
-            background: rgba(139, 69, 19, 0.3);
-            border: 2px solid #ff6b35;
+            background-image: url('assets/BCMWiki_Framing.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            filter: brightness(0.6) contrast(1.2);
+            border: none;
             border-radius: 25px;
             color: #fff;
             font-size: 16px;
@@ -249,11 +255,14 @@
         .section {
             margin-bottom: 60px;
             position: relative;
-            background: rgba(139, 69, 19, 0.2);
-            border: 3px solid #ff6b35;
+            background-image: url('assets/BCMWiki_Framing.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            border: none;
             border-radius: 15px;
             padding: 30px;
-            box-shadow: 0 8px 32px rgba(255, 107, 53, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
             animation: frameSwing 6s ease-in-out infinite;
         }
 
@@ -316,15 +325,18 @@
         }
 
         .character-card-large {
-            background: linear-gradient(135deg, #3d2418, #2c1810);
-            border: 3px solid #ff6b35;
+            background-image: url('assets/BCMWiki_Framing.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            border: none;
             border-radius: 15px;
             padding: 25px;
             text-align: center;
             position: relative;
             overflow: hidden;
             animation: cardFloat 4s ease-in-out infinite;
-            box-shadow: 0 12px 40px rgba(255, 107, 53, 0.4);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
         }
 
         @keyframes cardFloat {
@@ -404,6 +416,43 @@
             50% { transform: rotate(-1deg); }
         }
 
+        /* Spinning Cogwheels */
+        .cogwheel {
+            position: absolute;
+            background-image: url('https://github.com/gooberburgers/BCM-Character-Index/blob/main/assets/BCMWiki_Cogwheel.png?raw=true');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .cogwheel-large {
+            width: 60px;
+            height: 60px;
+            top: -30px;
+            left: -30px;
+            animation: spinClockwise 8s linear infinite;
+        }
+
+        .cogwheel-small {
+            width: 40px;
+            height: 40px;
+            bottom: -20px;
+            right: -20px;
+            animation: spinCounterClockwise 6s linear infinite;
+        }
+
+        @keyframes spinClockwise {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes spinCounterClockwise {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(-360deg); }
+        }
+
         /* Responsive */
         @media (max-width: 1024px) {
             .main-content {
@@ -469,17 +518,21 @@
         <div class="content-sections">
             <!-- Description Section -->
             <div class="section">
+                <div class="cogwheel cogwheel-large"></div>
+                <div class="cogwheel cogwheel-small"></div>
                 <h2 class="section-title">--DESCRIPTION--</h2>
                 <div class="section-content" id="descriptionContent">
-                    hi my mommy cals me jimmy but i'm gerald
+                    Text here
                 </div>
             </div>
 
             <!-- Credits Section -->
             <div class="section">
+                <div class="cogwheel cogwheel-large"></div>
+                <div class="cogwheel cogwheel-small"></div>
                 <h2 class="section-title">--CREDITS--</h2>
                 <div class="section-content" id="creditsContent">
-                    uhhhh... burger king!
+                    Text here
                 </div>
             </div>
         </div>
@@ -487,7 +540,9 @@
         <!-- Right side character display -->
         <div class="character-display">
             <div class="character-card-large">
-                <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Placeholder" class="character-image-large">
+                <div class="cogwheel cogwheel-large"></div>
+                <div class="cogwheel cogwheel-small"></div>
+                <img src="assets/BCMWiki_GectBCMPageIconThing.png" alt="Placeholder" class="character-image-large">
                 <div class="character-name-large">Placeholder</div>
             </div>
         </div>
