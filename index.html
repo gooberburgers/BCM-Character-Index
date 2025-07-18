@@ -156,6 +156,14 @@
             object-fit: contain;
         }
 
+        .cloudflare-text {
+            color: #ff6b35;
+            font-size: 14px;
+            margin-right: 15px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+            white-space: nowrap;
+        }
+
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
@@ -426,6 +434,9 @@
         <div class="IMEATING-RIGHTNOW-HELLYEAH">
             <img src="assets/BCMWiki_GectBCMPageIconThing.png" alt="hi gect">
         </div>
+        <div class="cloudflare-text">
+            Provided by Cloudflare ™️ hi cloudflare you're awesome
+        </div>
         <div class="search-container">
             <input type="text" class="search-box" placeholder="Search characters..." id="searchInput">
             <svg class="search-icon" viewBox="0 0 24 24" fill="gray">
@@ -535,13 +546,20 @@
             }, 1600);
         }
 
-        // Initialize page with cartoon iris transition
-        document.addEventListener('DOMContentLoaded', function() {
+        // Function to initialize/reset page state
+        function initializePage() {
             const overlay = document.getElementById('irisOverlay');
             const mainContent = document.getElementById('mainContent');
             
+            // Reset all overlay classes
+            overlay.classList.remove('startup', 'startup-reveal', 'exit-start', 'exit-cover');
+            overlay.style.display = 'block';
+            
             // Start with iris closed (small hole)
             overlay.classList.add('startup');
+            
+            // Ensure content is hidden initially
+            mainContent.classList.add('content-hidden');
             
             // Create fizzy particles for startup
             createFizzyParticles();
@@ -557,6 +575,17 @@
             setTimeout(() => {
                 overlay.style.display = 'none';
             }, 1000);
+        }
+
+        // Initialize page on load
+        document.addEventListener('DOMContentLoaded', initializePage);
+        
+        // Fix for browser back button - reinitialize page when returning
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                // Page was loaded from cache (back button)
+                initializePage();
+            }
         });
 
         // Search functionality with real-time filtering and flash effect
