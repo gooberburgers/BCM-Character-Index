@@ -12,10 +12,17 @@
             box-sizing: border-box;
         }
 
+        @font-face {
+            font-family: 'Eater';
+            src: url('https://github.com/gooberburgers/BCM-Character-Index/raw/refs/heads/main/assets/Eater-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         body {
-            background: linear-gradient(to bottom, #2c1810, #1a0f08);
-            font-family: 'Courier New', monospace;
-            color: #fff;
+            background: #000000;
+            font-family: 'Eater', 'Courier New', monospace;
+            color: #ffde9c;
             overflow-x: hidden;
             min-height: 100vh;
         }
@@ -72,33 +79,33 @@
             position: absolute;
             width: 8px;
             height: 8px;
-            background: #ff6b35;
+            background: #ffde9c;
             border-radius: 50%;
-            box-shadow: 0 0 10px rgba(255, 107, 53, 0.8);
+            box-shadow: 0 0 10px rgba(255, 222, 156, 0.8);
             animation: fizzMove 1.2s ease-out forwards;
         }
 
         .fizz-dot:nth-child(2n) {
-            background: #ff8c5a;
+            background: #ffe4b3;
             animation-duration: 1.0s;
         }
 
         .fizz-dot:nth-child(3n) {
-            background: #ffaa80;
+            background: #ffead0;
             animation-duration: 1.4s;
         }
 
         .fizz-dot:nth-child(4n) {
             width: 6px;
             height: 6px;
-            background: #ffd4c0;
+            background: #fff0e6;
             animation-duration: 0.8s;
         }
 
         .fizz-dot:nth-child(5n) {
             width: 10px;
             height: 10px;
-            background: #ff4500;
+            background: #ffd885;
             animation-duration: 1.6s;
         }
 
@@ -159,11 +166,19 @@
         }
 
         .cloudflare-text {
-            color: #ff6b35;
             font-size: 14px;
             margin-right: 15px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
             white-space: nowrap;
+            background: linear-gradient(70deg, #757575, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            -webkit-text-stroke: 6px;
+            -webkit-text-stroke-color: transparent;
+            -webkit-text-stroke-image: linear-gradient(35deg, #414141, #bfbfbf);
+            text-stroke: 6px;
+            text-stroke-color: transparent;
+            text-stroke-image: linear-gradient(35deg, #414141, #bfbfbf);
         }
 
         .play-game-button {
@@ -251,10 +266,18 @@
         .section-title {
             text-align: center;
             font-size: 2.5em;
-            color: #ff6b35;
             margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
             animation: titleFloat 4s ease-in-out infinite;
+            background: linear-gradient(70deg, #757575, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            -webkit-text-stroke: 6px;
+            -webkit-text-stroke-color: transparent;
+            -webkit-text-stroke-image: linear-gradient(35deg, #414141, #bfbfbf);
+            text-stroke: 6px;
+            text-stroke-color: transparent;
+            text-stroke-image: linear-gradient(35deg, #414141, #bfbfbf);
         }
 
         @keyframes titleFloat {
@@ -352,14 +375,22 @@
 
         .character-name {
             font-size: 1.2em;
-            color: #ff6b35;
             font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+            background: linear-gradient(70deg, #757575, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            -webkit-text-stroke: 3px;
+            -webkit-text-stroke-color: transparent;
+            -webkit-text-stroke-image: linear-gradient(35deg, #414141, #bfbfbf);
+            text-stroke: 3px;
+            text-stroke-color: transparent;
+            text-stroke-image: linear-gradient(35deg, #414141, #bfbfbf);
         }
 
         .scroll-container {
             max-height: 600px;
-            overflow-y: auto;
+            overflow: visible;
             position: relative;
         }
 
