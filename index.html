@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Character Index - Disaster Survival</title>
+    <link rel="icon" type="image/png" href="assets/BCMWiki_GectBCMPageIconThing.png">
     <style>
         * {
             margin: 0;
@@ -141,14 +142,17 @@
         .cloudflare-icon {
             width: 40px;
             height: 40px;
-            background: #ff6b35;
-            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-right: 20px;
-            box-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
             animation: pulse 2s infinite;
+        }
+
+        .cloudflare-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         @keyframes pulse {
@@ -419,9 +423,7 @@
     <!-- Topbar -->
     <div class="topbar">
         <div class="cloudflare-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-                <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
-            </svg>
+            <img src="assets/BCMWiki_GectBCMPageIconThing.png" alt="BCM Icon">
         </div>
         <div class="search-container">
             <input type="text" class="search-box" placeholder="Search characters..." id="searchInput">
