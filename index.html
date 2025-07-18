@@ -1,1 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Index - Disaster Survival</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            background: linear-gradient(135deg, #2c1810, #3d2418);
+            font-family: 'Courier New', monospace;
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Cartoon Iris Transition - Black Frame with Expanding Hole */
+        .iris-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+            pointer-events: none;
+            background: #000;
+            clip-path: circle(100% at 50% 50%);
+            transition: clip-path 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .iris-overlay.startup {
+            clip-path: circle(100% at 50% 50%);
+        }
+
+        .iris-overlay.startup-reveal {
+            clip-path: circle(0% at 50% 50%);
+        }
+
+        .iris-overlay.exit-start {
+            clip-path: circle(0% at 50% 50%);
+        }
+
+        .iris-overlay.exit-cover {
+            clip-path: circle(100% at 50% 50%);
+        }
+
+        /* Fizzy Transition Particles */
+        .fizz-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .fizz-container.active {
+            opacity: 1;
+        }
+
+        .fizz-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #ff6b35;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 107, 53, 0.8);
+            animation: fizzMove 1.2s ease-out forwards;
+        }
+
+        .fizz-dot:nth-child(2n) {
+            background: #ff8c5a;
+            animation-duration: 1.0s;
+        }
+
+        .fizz-dot:nth-child(3n) {
+            background: #ffaa80;
+            animation-duration: 1.4s;
+        }
+
+        .fizz-dot:nth-child(4n) {
+            width: 6px;
+            height: 6px;
+            background: #ffd4c0;
+            animation-duration: 0.8s;
+        }
+
+        .fizz-dot:nth-child(5n) {
+            width: 10px;
+            height: 10px;
+            background: #ff4500;
+            animation-duration: 1.6s;
+        }
+
+        @keyframes fizzMove {
+            0% {
+                opacity: 1;
+                transform: scale(0) rotate(0deg);
+            }
+            20% {
+                opacity: 1;
+                transform: scale(1.2) rotate(180deg);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.3) rotate(720deg);
+            }
+        }
+
+        /* Hide content during startup */
+        .content-hidden {
+            opacity: 0;
+        }
+
+        /* Topbar */
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: rgba(60, 30, 20, 0.95);
+            border-bottom: 3px solid #ff6b35;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            box-shadow: 0 4px 20px rgba(255, 107, 53, 0.3);
+        }
+
+        .cloudflare-icon {
+            width: 40px;
+            height: 40px;
+            background: #ff6b35;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .search-container {
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+            margin-left: 20px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 12px 45px 12px 15px;
+            background: rgba(139, 69, 19, 0.3);
+            border: 2px solid #ff6b35;
+            border-radius: 25px;
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+            transform: scale(1.02);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            opacity: 0.7;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 100px;
+            padding: 20px;
+            transition: opacity 0.3s ease;
+        }
+
+        .rope {
+            position: absolute;
+            width: 4px;
+            background: linear-gradient(to bottom, #8b4513, #654321);
+            top: -20px;
+            animation: sway 3s ease-in-out infinite;
+        }
+
+        @keyframes sway {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(2deg); }
+        }
+
+        .section {
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5em;
+            color: #ff6b35;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: titleFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes titleFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .character-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            padding: 20px;
+            background: rgba(139, 69, 19, 0.2);
+            border: 3px solid #ff6b35;
+            border-radius: 15px;
+            position: relative;
+            margin: 0 auto;
+            max-width: 1200px;
+            box-shadow: 0 8px 32px rgba(255, 107, 53, 0.3);
+            animation: frameSwing 6s ease-in-out infinite;
+        }
+
+        @keyframes frameSwing {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(0.5deg); }
+            75% { transform: rotate(-0.5deg); }
+        }
+
+        .character-card {
+            background: linear-gradient(135deg, #3d2418, #2c1810);
+            border: 2px solid #ff6b35;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: cardFloat 4s ease-in-out infinite;
+        }
+
+        .character-card:nth-child(odd) {
+            animation-delay: -2s;
+        }
+
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(0.5deg); }
+        }
+
+        .character-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
+            border-color: #ff8c5a;
+        }
+
+        .character-card.flash {
+            animation: flashHighlight 0.6s ease-in-out;
+        }
+
+        @keyframes flashHighlight {
+            0%, 100% { 
+                background: linear-gradient(135deg, #3d2418, #2c1810);
+                border-color: #ff6b35;
+            }
+            50% { 
+                background: linear-gradient(135deg, #ff6b35, #ff8c5a);
+                border-color: #ffaa80;
+                box-shadow: 0 0 30px rgba(255, 107, 53, 0.8);
+            }
+        }
+
+        .character-card.hidden {
+            display: none;
+        }
+
+        .character-image {
+            width: 100%;
+            height: auto;
+            min-height: 150px;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 10px rgba(255, 107, 53, 0.3));
+            background: rgba(139, 69, 19, 0.1);
+        }
+
+        .character-name {
+            font-size: 1.2em;
+            color: #ff6b35;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+        }
+
+        .scroll-container {
+            max-height: 600px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .scroll-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .scroll-container::-webkit-scrollbar-track {
+            background: rgba(139, 69, 19, 0.3);
+            border-radius: 4px;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: #ff6b35;
+            border-radius: 4px;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb:hover {
+            background: #ff8c5a;
+        }
+
+        /* Rope attachments for main frames */
+        .character-grid::before,
+        .character-grid::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 50px;
+            background: linear-gradient(to bottom, #8b4513, #654321);
+            top: -50px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+        }
+
+        .character-grid::before {
+            left: 10%;
+            animation: ropeSwayLeft 4s ease-in-out infinite;
+        }
+
+        .character-grid::after {
+            right: 10%;
+            animation: ropeSwayRight 4s ease-in-out infinite;
+        }
+
+        @keyframes ropeSwayLeft {
+            0%, 100% { transform: rotate(-1deg); }
+            50% { transform: rotate(1deg); }
+        }
+
+        @keyframes ropeSwayRight {
+            0%, 100% { transform: rotate(1deg); }
+            50% { transform: rotate(-1deg); }
+        }
+
+        /* Fizz effect */
+        .fizz-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ff6b35;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: fizz 3s ease-out infinite;
+        }
+
+        @keyframes fizz {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) scale(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .character-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 20px;
+                padding: 15px;
+            }
+            
+            .section-title {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cartoon Iris Transition Overlay -->
+    <div class="iris-overlay" id="irisOverlay"></div>
+    
+    <!-- Fizzy Transition Particles -->
+    <div class="fizz-container" id="fizzContainer"></div>
+
+    <!-- Topbar -->
+    <div class="topbar">
+        <div class="cloudflare-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
+            </svg>
+        </div>
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="Search characters..." id="searchInput">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="gray">
+                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content content-hidden" id="mainContent">
+        <!-- Encounters Section -->
+        <div class="section">
+            <h2 class="section-title">--ENCOUNTERS--</h2>
+            <div class="character-grid" id="encountersGrid">
+                <div class="character-card" data-name="Placeholder 1" data-url="https://google.com">
+                    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Placeholder 1" class="character-image">
+                    <div class="character-name">Placeholder 1</div>
+                </div>
+                <div class="character-card" data-name="Placeholder 2" data-url="https://google.com">
+                    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Placeholder 2" class="character-image">
+                    <div class="character-name">Placeholder 2</div>
+                </div>
+                <div class="character-card" data-name="Placeholder 3" data-url="https://google.com">
+                    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Placeholder 3" class="character-image">
+                    <div class="character-name">Placeholder 3</div>
+                </div>
+                <div class="character-card" data-name="Placeholder 4" data-url="https://google.com">
+                    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Placeholder 4" class="character-image">
+                    <div class="character-name">Placeholder 4</div>
+                </div>
+                <div class="character-card" data-name="Placeholder 5" data-url="https://google.com">
+                    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Placeholder 5" class="character-image">
+                    <div class="character-name">Placeholder 5</div>
+                </div>
+                <div class="character-card" data-name="Placeholder 6" data-url="https://google.com">
+                    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Placeholder 6" class="character-image">
+                    <div class="character-name">Placeholder 6</div>
+                </div>
+                <div class="character-card" data-name="Placeholder 7" data-url="https://google.com">
+                    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Placeholder 7" class="character-image">
+                    <div class="character-name">Placeholder 7</div>
+                </div>
+                <div class="character-card" data-name="Placeholder 8" data-url="https://google.com">
+                    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Placeholder 8" class="character-image">
+                    <div class="character-name">Placeholder 8</div>
+                </div>
+                <div class="character-card" data-name="Placeholder 9" data-url="https://google.com">
+                    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Placeholder 9" class="character-image">
+                    <div class="character-name">Placeholder 9</div>
+                </div>
+                <div class="character-card" data-name="Placeholder 10" data-url="https://google.com">
+                    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Placeholder 10" class="character-image">
+                    <div class="character-name">Placeholder 10</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Special Section -->
+        <div class="section">
+            <h2 class="section-title">--SPECIAL--</h2>
+            <div class="scroll-container">
+                <div class="character-grid" id="specialGrid">
+                    <div class="character-card" data-name="Gect" data-url="https://google.com">
+                        <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Gect" class="character-image">
+                        <div class="character-name">Gect</div>
+                    </div>
+                    <div class="character-card" data-name="Mossbones" data-url="https://google.com">
+                        <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Mossbones" class="character-image">
+                        <div class="character-name">Mossbones</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create fizzy particles during transitions
+        function createFizzyParticles() {
+            const container = document.getElementById('fizzContainer');
+            container.innerHTML = ''; // Clear existing particles
+            container.classList.add('active');
+            
+            const particleCount = 50;
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'fizz-dot';
+                
+                // Random position around the center
+                const angle = (Math.PI * 2 * i) / particleCount + Math.random() * 0.5;
+                const distance = Math.random() * 200 + 50;
+                const x = centerX + Math.cos(angle) * distance;
+                const y = centerY + Math.sin(angle) * distance;
+                
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.animationDelay = Math.random() * 0.3 + 's';
+                
+                container.appendChild(particle);
+            }
+            
+            // Hide particles after animation
+            setTimeout(() => {
+                container.classList.remove('active');
+            }, 1600);
+        }
+
+        // Initialize page with cartoon iris transition
+        document.addEventListener('DOMContentLoaded', function() {
+            const overlay = document.getElementById('irisOverlay');
+            const mainContent = document.getElementById('mainContent');
+            
+            // Start with iris closed (small hole)
+            overlay.classList.add('startup');
+            
+            // Create fizzy particles for startup
+            createFizzyParticles();
+            
+            // After a brief moment, open the iris to reveal content
+            setTimeout(() => {
+                overlay.classList.remove('startup');
+                overlay.classList.add('startup-reveal');
+                mainContent.classList.remove('content-hidden');
+            }, 200);
+            
+            // Hide overlay after iris fully opens
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 1000);
+        });
+
+        // Search functionality with real-time filtering and flash effect
+        const searchInput = document.getElementById('searchInput');
+        const allCards = document.querySelectorAll('.character-card');
+        
+        let searchTimeout;
+        
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            
+            const searchTerm = this.value.toLowerCase().trim();
+            
+            // If search is empty, show all cards
+            if (searchTerm === '') {
+                allCards.forEach(card => {
+                    card.classList.remove('hidden');
+                    card.classList.remove('flash');
+                });
+                return;
+            }
+            
+            let hasMatch = false;
+            let firstMatch = null;
+            
+            allCards.forEach(card => {
+                const cardName = card.getAttribute('data-name').toLowerCase();
+                
+                if (cardName.includes(searchTerm)) {
+                    card.classList.remove('hidden');
+                    
+                    // Flash effect for matching cards
+                    card.classList.remove('flash');
+                    void card.offsetWidth; // Force reflow
+                    card.classList.add('flash');
+                    
+                    // Store first match for scrolling
+                    if (!firstMatch) {
+                        firstMatch = card;
+                    }
+                    
+                    hasMatch = true;
+                } else {
+                    card.classList.add('hidden');
+                    card.classList.remove('flash');
+                }
+            });
+            
+            // Auto-scroll to first match with delay to allow flash animation
+            if (firstMatch) {
+                searchTimeout = setTimeout(() => {
+                    firstMatch.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }, 100);
+            }
+        });
+        
+        // Card click functionality with cartoon iris transition
+        allCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const url = this.getAttribute('data-url');
+                if (url) {
+                    navigateToUrl(url);
+                }
+            });
+            
+            // Add fizz particles on hover
+            card.addEventListener('mouseenter', function() {
+                createFizzParticles(this);
+            });
+        });
+        
+        function navigateToUrl(url) {
+            const overlay = document.getElementById('irisOverlay');
+            
+            // Show overlay and start with iris open
+            overlay.style.display = 'block';
+            overlay.classList.remove('startup', 'startup-reveal', 'exit-cover');
+            overlay.classList.add('exit-start');
+            
+            // Create fizzy particles for exit transition
+            createFizzyParticles();
+            
+            // Force reflow to ensure initial state
+            void overlay.offsetWidth;
+            
+            // Start closing the iris
+            setTimeout(() => {
+                overlay.classList.remove('exit-start');
+                overlay.classList.add('exit-cover');
+            }, 50);
+            
+            // Navigate after iris fully closes
+            setTimeout(() => {
+                window.location.href = url;
+            }, 850);
+        }
+        
+        function createFizzParticles(element) {
+            const rect = element.getBoundingClientRect();
+            const particleCount = 5;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'fizz-particle';
+                particle.style.left = Math.random() * rect.width + 'px';
+                particle.style.top = rect.height + 'px';
+                particle.style.animationDelay = Math.random() * 0.5 + 's';
+                
+                element.appendChild(particle);
+                
+                // Remove particle after animation
+                setTimeout(() => {
+                    if (particle.parentNode) {
+                        particle.parentNode.removeChild(particle);
+                    }
+                }, 3000);
+            }
+        }
+        
+        // Smooth scrolling for better UX
+        document.documentElement.style.scrollBehavior = 'smooth';
+        
+        // Clear flash effect after animation completes
+        allCards.forEach(card => {
+            card.addEventListener('animationend', function(e) {
+                if (e.animationName === 'flashHighlight') {
+                    this.classList.remove('flash');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
