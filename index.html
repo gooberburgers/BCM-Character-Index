@@ -130,7 +130,7 @@
             right: 0;
             height: 80px;
             background-image: url('assets/BCMWiki_Framing.png');
-            background-size: cover;
+            background-size: 100% 100%;
             background-repeat: no-repeat;
             background-position: center;
             backdrop-filter: blur(10px);
@@ -280,7 +280,7 @@
             gap: 30px;
             padding: 20px;
             background-image: url('assets/BCMWiki_Framing.png');
-            background-size: cover;
+            background-size: 100% 100%;
             background-repeat: no-repeat;
             background-position: center;
             border: none;
@@ -300,7 +300,7 @@
 
         .character-card {
             background-image: url('assets/BCMWiki_Framing.png');
-            background-size: cover;
+            background-size: 100% 100%;
             background-repeat: no-repeat;
             background-position: center;
             filter: brightness(0.8);
@@ -311,7 +311,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
-            overflow: hidden;
+            overflow: visible;
             animation: cardFloat 4s ease-in-out infinite;
         }
 
@@ -474,6 +474,23 @@
             animation: spinCounterClockwise 6s linear infinite;
         }
 
+        /* Smaller cogwheels for character cards */
+        .cogwheel-card-large {
+            width: 30px;
+            height: 30px;
+            top: -15px;
+            left: -15px;
+            animation: spinClockwise 10s linear infinite;
+        }
+
+        .cogwheel-card-small {
+            width: 20px;
+            height: 20px;
+            bottom: -10px;
+            right: -10px;
+            animation: spinCounterClockwise 7s linear infinite;
+        }
+
         @keyframes spinClockwise {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
@@ -547,42 +564,62 @@
                 <div class="cogwheel cogwheel-large"></div>
                 <div class="cogwheel cogwheel-small"></div>
                 <div class="character-card" data-name="Rabbits" data-url="placeholder.html">
+                    <div class="cogwheel cogwheel-card-large"></div>
+                    <div class="cogwheel cogwheel-card-small"></div>
                     <img src="assets/BCMWiki_Rabbits.png" alt="Rabbits" class="character-image">
                     <div class="character-name">Rabbits</div>
                 </div>
                 <div class="character-card" data-name="JOB APPLICATION" data-url="placeholder.html">
+                    <div class="cogwheel cogwheel-card-large"></div>
+                    <div class="cogwheel cogwheel-card-small"></div>
                     <img src="assets/BCMWiki_JobApplication.png" alt="JOB APPLICATION" class="character-image">
                     <div class="character-name">JOB APPLICATION</div>
                 </div>
                 <div class="character-card" data-name="MOAI" data-url="placeholder.html">
+                    <div class="cogwheel cogwheel-card-large"></div>
+                    <div class="cogwheel cogwheel-card-small"></div>
                     <img src="assets/BCMWiki_Moai.png" alt="MOAI" class="character-image">
                     <div class="character-name">MOAI</div>
                 </div>
                 <div class="character-card" data-name="Drakobloxxers" data-url="placeholder.html">
+                    <div class="cogwheel cogwheel-card-large"></div>
+                    <div class="cogwheel cogwheel-card-small"></div>
                     <img src="assets/BCMWiki_Drakobloxxers.png" alt="Drakobloxxers" class="character-image">
                     <div class="character-name">Drakobloxxers</div>
                 </div>
                 <div class="character-card" data-name="RED-44" data-url="placeholder.html">
+                    <div class="cogwheel cogwheel-card-large"></div>
+                    <div class="cogwheel cogwheel-card-small"></div>
                     <img src="assets/BCMWiki_RED44.png" alt="RED-44" class="character-image">
                     <div class="character-name">RED-44</div>
                 </div>
                 <div class="character-card" data-name="SCP-096" data-url="placeholder.html">
+                    <div class="cogwheel cogwheel-card-large"></div>
+                    <div class="cogwheel cogwheel-card-small"></div>
                     <img src="assets/BCMWiki_SCP096.png" alt="SCP-096" class="character-image">
                     <div class="character-name">SCP-096</div>
                 </div>
                 <div class="character-card" data-name="Specimen 5" data-url="placeholder.html">
+                    <div class="cogwheel cogwheel-card-large"></div>
+                    <div class="cogwheel cogwheel-card-small"></div>
                     <img src="assets/BCMWiki_Specimen5.png" alt="Specimen 5" class="character-image">
                     <div class="character-name">Specimen 5</div>
                 </div>
                 <div class="character-card" data-name="Specimen 6" data-url="placeholder.html">
+                    <div class="cogwheel cogwheel-card-large"></div>
+                    <div class="cogwheel cogwheel-card-small"></div>
                     <img src="assets/BCMWiki_Specimen6.png" alt="Specimen 6" class="character-image">
                     <div class="character-name">Specimen 6</div>
                 </div>
                 <div class="character-card" data-name="THE HOG" data-url="placeholder.html">
+                    <div class="cogwheel cogwheel-card-large"></div>
+                    <div class="cogwheel cogwheel-card-small"></div>
                     <img src="assets/BCMWiki_TheHog.png" alt="THE HOG" class="character-image">
                     <div class="character-name">THE HOG</div>
                 </div>
                 <div class="character-card" data-name="Zombies" data-url="placeholder.html">
+                    <div class="cogwheel cogwheel-card-large"></div>
+                    <div class="cogwheel cogwheel-card-small"></div>
                     <img src="assets/BCMWiki_Zombies.png" alt="Zombies" class="character-image">
                     <div class="character-name">Zombies</div>
                 </div>
@@ -597,14 +634,20 @@
                     <div class="cogwheel cogwheel-large"></div>
                     <div class="cogwheel cogwheel-small"></div>
                     <div class="character-card" data-name="Gect" data-url="placeholder.html">
+                        <div class="cogwheel cogwheel-card-large"></div>
+                        <div class="cogwheel cogwheel-card-small"></div>
                         <img src="assets/BCMWiki_GectRender.png" alt="Gect" class="character-image">
                         <div class="character-name">Gect</div>
                     </div>
                     <div class="character-card" data-name="Mossbones" data-url="placeholder.html">
+                        <div class="cogwheel cogwheel-card-large"></div>
+                        <div class="cogwheel cogwheel-card-small"></div>
                         <img src="assets/BCMWiki_Mossbones.png" alt="Mossbones" class="character-image">
                         <div class="character-name">Mossbones</div>
                     </div>
                     <div class="character-card" data-name="Walkie Yappie" data-url="placeholder.html">
+                        <div class="cogwheel cogwheel-card-large"></div>
+                        <div class="cogwheel cogwheel-card-small"></div>
                         <img src="assets/BCMWiki_WalkieYappie.png" alt="Walkie Yappie" class="character-image">
                         <div class="character-name">Walkie Yappie</div>
                     </div>
