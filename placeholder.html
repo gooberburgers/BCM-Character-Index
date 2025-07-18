@@ -13,7 +13,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #2c1810, #3d2418);
+            background: linear-gradient(to bottom, #2c1810, #1a0f08);
             font-family: 'Courier New', monospace;
             color: #fff;
             overflow-x: hidden;
@@ -363,59 +363,7 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
         }
 
-        /* Rope attachments for frames */
-        .section::before,
-        .section::after {
-            content: '';
-            position: absolute;
-            width: 6px;
-            height: 50px;
-            background: linear-gradient(to bottom, #8b4513, #654321);
-            top: -50px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.3);
-        }
-
-        .section::before {
-            left: 15%;
-            animation: ropeSwayLeft 4s ease-in-out infinite;
-        }
-
-        .section::after {
-            right: 15%;
-            animation: ropeSwayRight 4s ease-in-out infinite;
-        }
-
-        .character-card-large::before,
-        .character-card-large::after {
-            content: '';
-            position: absolute;
-            width: 6px;
-            height: 50px;
-            background: linear-gradient(to bottom, #8b4513, #654321);
-            top: -50px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.3);
-        }
-
-        .character-card-large::before {
-            left: 20%;
-            animation: ropeSwayLeft 4s ease-in-out infinite;
-        }
-
-        .character-card-large::after {
-            right: 20%;
-            animation: ropeSwayRight 4s ease-in-out infinite;
-        }
-
-        @keyframes ropeSwayLeft {
-            0%, 100% { transform: rotate(-1deg); }
-            50% { transform: rotate(1deg); }
-        }
-
-        @keyframes ropeSwayRight {
-            0%, 100% { transform: rotate(1deg); }
-            50% { transform: rotate(-1deg); }
-        }
-
+        
         /* Spinning Cogwheels */
         .cogwheel {
             position: absolute;
@@ -424,7 +372,7 @@
             background-repeat: no-repeat;
             background-position: center;
             pointer-events: none;
-            z-index: 10;
+            z-index: 99999;
         }
 
         .cogwheel-large {
