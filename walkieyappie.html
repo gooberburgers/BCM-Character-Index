@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- got lazy and just yoinked stuff -->
+     <meta property="og:title" content="BONE CALCIUM MANIA - Walkie Yappie">
+    <meta property="og:description" content="Info about this encounter on the page.">
+    <meta property="og:image" content="assets/BCMWiki_GectBCMPageIconThing.png">
+    <meta property="og:url" content="https://bcm-main-page.pages.dev/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BONE CALCIUM MANIA Wiki">
+    
+    <!-- Optional: Twitter Card support -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="BONE CALCIUM MANIA - Walkie Yappie">
+    <meta name="twitter:description" content="Info about this encounter on the page.">
+    <meta name="twitter:image" content="assets/BCMWiki_GectBCMPageIconThing.png">
+    
+    <!-- Discord embed color -->
+    <meta name="theme-color" content="#ffde9c">
+    
+    <title>Walkie Yappie - BCM Wiki</title>
+    <link rel="icon" type="image/png" href="assets/BCMWiki_GectBCMPageIconThing.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @font-face {
+            font-family: 'Eater';
+            src: url('assets/Eater-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            background: #000000;
+            font-family: 'Eater', 'Courier New', monospace;
+            color: #ffde9c;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Cartoon Iris Transition - Black Frame with Expanding Hole */
+        .iris-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+            pointer-events: none;
+            background: #000;
+            clip-path: circle(100% at 50% 50%);
+            transition: clip-path 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .iris-overlay.startup {
+            clip-path: circle(100% at 50% 50%);
+        }
+
+        .iris-overlay.startup-reveal {
+            clip-path: circle(0% at 50% 50%);
+        }
+
+        .iris-overlay.exit-start {
+            clip-path: circle(0% at 50% 50%);
+        }
+
+        .iris-overlay.exit-cover {
+            clip-path: circle(100% at 50% 50%);
+        }
+
+        /* Fizzy Transition Particles */
+        .fizz-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .fizz-container.active {
+            opacity: 1;
+        }
+
+        .fizz-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #ffde9c;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 222, 156, 0.8);
+            animation: fizzMove 1.2s ease-out forwards;
+        }
+
+        .fizz-dot:nth-child(2n) {
+            background: #ffe4b3;
+            animation-duration: 1.0s;
+        }
+
+        .fizz-dot:nth-child(3n) {
+            background: #ffead0;
+            animation-duration: 1.4s;
+        }
+
+        .fizz-dot:nth-child(4n) {
+            width: 6px;
+            height: 6px;
+            background: #fff0e6;
+            animation-duration: 0.8s;
+        }
+
+        .fizz-dot:nth-child(5n) {
+            width: 10px;
+            height: 10px;
+            background: #ffd885;
+            animation-duration: 1.6s;
+        }
+
+        @keyframes fizzMove {
+            0% {
+                opacity: 1;
+                transform: scale(0) rotate(0deg);
+            }
+            20% {
+                opacity: 1;
+                transform: scale(1.2) rotate(180deg);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.3) rotate(720deg);
+            }
+        }
+
+        /* Hide content during startup */
+        .content-hidden {
+            opacity: 0;
+        }
+
+        /* Topbar */
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background-image: url('assets/BCMWiki_Framing.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .cloudflare-icon, .IMEATING-RIGHTNOW-HELLYEAH {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            animation: pulse 2s infinite;
+            overflow: hidden;
+        }
+
+        .cloudflare-icon img, .IMEATING-RIGHTNOW-HELLYEAH img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .cloudflare-text {
+            font-size: 14px;
+            margin-right: 15px;
+            white-space: nowrap;
+            background: linear-gradient(70deg, #757575, #ffde9c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 8px rgba(139, 69, 19, 0.8)) drop-shadow(0 0 4px rgba(0, 0, 0, 0.9));
+        }
+
+        .play-game-button {
+            margin-right: 15px;
+        }
+
+        .play-game-button a {
+            color: #4a90e2;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            padding: 8px 12px;
+            border-radius: 6px;
+            background: rgba(74, 144, 226, 0.1);
+            border: 1px solid rgba(74, 144, 226, 0.3);
+        }
+
+        .play-game-button a:hover {
+            color: #6bb6ff;
+            background: rgba(74, 144, 226, 0.2);
+            border-color: rgba(74, 144, 226, 0.5);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(74, 144, 226, 0.4);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .search-container {
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+            margin-left: 20px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 12px 45px 12px 15px;
+            background-image: url('assets/BCMWiki_Framing.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            filter: brightness(0.6) contrast(1.2);
+            border: none;
+            border-radius: 25px;
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+            transform: scale(1.02);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            opacity: 0.7;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 100px;
+            padding: 20px;
+            transition: opacity 0.3s ease;
+            display: flex;
+            gap: 40px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Left side content */
+        .content-sections {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .section {
+            margin-bottom: 60px;
+            position: relative;
+            background-image: url('assets/BCMWiki_Framing.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            border: none;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            animation: frameSwing 6s ease-in-out infinite;
+        }
+
+        .section:nth-child(odd) {
+            animation-delay: -3s;
+        }
+
+        @keyframes frameSwing {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(0.3deg); }
+            75% { transform: rotate(-0.3deg); }
+        }
+
+        .section-title {
+            font-size: 2em;
+            margin-bottom: 20px;
+            animation: titleFloat 4s ease-in-out infinite;
+            text-align: center;
+            background: linear-gradient(70deg, #757575, #ffde9c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 10px rgba(139, 69, 19, 0.9)) drop-shadow(0 0 5px rgba(0, 0, 0, 0.8));
+        }
+
+        @keyframes titleFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-3px); }
+        }
+
+        .section-content {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #ffde9c;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #ff6b35, #ff8c5a);
+            color: #fff;
+            padding: 2px 4px;
+            border-radius: 3px;
+            animation: flashHighlight 0.6s ease-in-out;
+        }
+
+        @keyframes flashHighlight {
+            0%, 100% { 
+                background: linear-gradient(135deg, #ff6b35, #ff8c5a);
+                box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+            }
+            50% { 
+                background: linear-gradient(135deg, #ffaa80, #ffd4c0);
+                box-shadow: 0 0 20px rgba(255, 107, 53, 0.8);
+            }
+        }
+
+        /* Right side character card */
+        .character-display {
+            flex: 0 0 350px;
+            position: sticky;
+            top: 120px;
+            height: fit-content;
+        }
+
+        .character-card-large {
+            background-image: url('assets/BCMWiki_Framing.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            border: none;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            overflow: visible;
+            animation: cardFloat 4s ease-in-out infinite;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(0.3deg); }
+        }
+
+        .character-image-large {
+            width: 100%;
+            height: auto;
+            min-height: 250px;
+            max-height: 400px;
+            object-fit: contain;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 15px rgba(255, 107, 53, 0.4));
+            background: rgba(139, 69, 19, 0.1);
+        }
+
+        .character-name-large {
+            font-size: 1.8em;
+            font-weight: bold;
+            background: linear-gradient(70deg, #757575, #ffde9c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 8px rgba(139, 69, 19, 0.9)) drop-shadow(0 0 4px rgba(0, 0, 0, 0.8));
+        }
+
+        
+        /* Spinning Cogwheels */
+        .cogwheel {
+            position: absolute;
+            background-image: url('https://github.com/gooberburgers/BCM-Character-Index/blob/main/assets/BCMWiki_Cogwheel.png?raw=true');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            pointer-events: none;
+            z-index: 99999;
+        }
+
+        .cogwheel-large {
+            width: 60px;
+            height: 60px;
+            top: -30px;
+            left: -30px;
+            animation: spinClockwise 8s linear infinite;
+        }
+
+        .cogwheel-small {
+            width: 40px;
+            height: 40px;
+            bottom: -20px;
+            right: -20px;
+            animation: spinCounterClockwise 6s linear infinite;
+        }
+
+        @keyframes spinClockwise {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes spinCounterClockwise {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(-360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-content {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .character-display {
+                flex: none;
+                position: static;
+            }
+            
+            .character-card-large {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 15px;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .section-title {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cartoon Iris Transition Overlay -->
+    <div class="iris-overlay" id="irisOverlay"></div>
+    
+    <!-- Fizzy Transition Particles -->
+    <div class="fizz-container" id="fizzContainer"></div>
+
+    <!-- Topbar -->
+    <div class="topbar">
+        <div class="IMEATING-RIGHTNOW-HELLYEAH">
+            <img src="assets/BCMWiki_GectBCMPageIconThing.png" alt="hi gect">
+        </div>
+        <div class="cloudflare-text">
+            Provided by Cloudflare ™️ hi cloudflare you're awesome
+        </div>
+        <div class="play-game-button">
+            <a href="https://www.roblox.com/games/125432105048317" target="_blank">PLAY GAME</a>
+        </div>
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="Search for..." id="searchInput">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="gray">
+                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content content-hidden" id="mainContent">
+        <!-- Left side content sections -->
+        <div class="content-sections">
+            <!-- Description Section -->
+            <div class="section">
+                <div class="cogwheel cogwheel-large"></div>
+                <div class="cogwheel cogwheel-small"></div>
+                <h2 class="section-title">--DESCRIPTION--</h2>
+                <div class="section-content" id="descriptionContent">
+                    A walkie talkie gaven sentience but might just be a little dumb in the head. :^> (Mossbones's Assistant.)
+                </div>
+            </div>
+
+            <!-- Credits Section -->
+            <div class="section">
+                <div class="cogwheel cogwheel-large"></div>
+                <div class="cogwheel cogwheel-small"></div>
+                <h2 class="section-title">--CREDITS--</h2>
+                <div class="section-content" id="creditsContent">
+                    @omegadogey (OC, Concept, Model, Animation, Sound Design, Scripting)
+                </div>
+            </div>
+        </div>
+
+        <!-- Right side character display -->
+        <div class="character-display">
+            <div class="character-card-large">
+                <div class="cogwheel cogwheel-large"></div>
+                <div class="cogwheel cogwheel-small"></div>
+                <img src="assets/BCMWiki_WalkieYappie.png" alt="Walkie Yappie" class="character-image-large">
+                <div class="character-name-large">Walkie Yappie</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create fizzy particles during transitions
+        function createFizzyParticles() {
+            const container = document.getElementById('fizzContainer');
+            container.innerHTML = ''; // Clear existing particles
+            container.classList.add('active');
+            
+            const particleCount = 50;
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'fizz-dot';
+                
+                // Random position around the center
+                const angle = (Math.PI * 2 * i) / particleCount + Math.random() * 0.5;
+                const distance = Math.random() * 200 + 50;
+                const x = centerX + Math.cos(angle) * distance;
+                const y = centerY + Math.sin(angle) * distance;
+                
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.animationDelay = Math.random() * 0.3 + 's';
+                
+                container.appendChild(particle);
+            }
+            
+            // Hide particles after animation
+            setTimeout(() => {
+                container.classList.remove('active');
+            }, 1600);
+        }
+
+        // Function to initialize/reset page state
+        function initializePage() {
+            const overlay = document.getElementById('irisOverlay');
+            const mainContent = document.getElementById('mainContent');
+            
+            // Reset all overlay classes
+            overlay.classList.remove('startup', 'startup-reveal', 'exit-start', 'exit-cover');
+            overlay.style.display = 'block';
+            
+            // Start with iris closed (small hole)
+            overlay.classList.add('startup');
+            
+            // Ensure content is hidden initially
+            mainContent.classList.add('content-hidden');
+            
+            // Create fizzy particles for startup
+            createFizzyParticles();
+            
+            // After a brief moment, open the iris to reveal content
+            setTimeout(() => {
+                overlay.classList.remove('startup');
+                overlay.classList.add('startup-reveal');
+                mainContent.classList.remove('content-hidden');
+            }, 200);
+            
+            // Hide overlay after iris fully opens
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 1000);
+        }
+
+        // Initialize page on load
+        document.addEventListener('DOMContentLoaded', initializePage);
+        
+        // Fix for browser back button - reinitialize page when returning
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                // Page was loaded from cache (back button)
+                initializePage();
+            }
+        });
+
+        // Text search functionality with highlighting
+        const searchInput = document.getElementById('searchInput');
+        const descriptionContent = document.getElementById('descriptionContent');
+        const creditsContent = document.getElementById('creditsContent');
+        
+        // Store original content
+        const originalDescription = descriptionContent.innerHTML;
+        const originalCredits = creditsContent.innerHTML;
+        
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase().trim();
+            
+            // Reset to original content
+            descriptionContent.innerHTML = originalDescription;
+            creditsContent.innerHTML = originalCredits;
+            
+            if (searchTerm === '') {
+                return;
+            }
+            
+            // Function to highlight text in an element
+            function highlightText(element, term) {
+                const text = element.textContent;
+                const regex = new RegExp(`(${term})`, 'gi');
+                const highlightedText = text.replace(regex, '<span class="highlight">$1</span>');
+                element.innerHTML = highlightedText;
+            }
+            
+            // Highlight in both sections
+            if (descriptionContent.textContent.toLowerCase().includes(searchTerm)) {
+                highlightText(descriptionContent, searchTerm);
+            }
+            
+            if (creditsContent.textContent.toLowerCase().includes(searchTerm)) {
+                highlightText(creditsContent, searchTerm);
+            }
+        });
+        
+        // Smooth scrolling for better UX
+        document.documentElement.style.scrollBehavior = 'smooth';
+    </script>
+</body>
+</html>
