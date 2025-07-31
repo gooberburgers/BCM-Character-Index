@@ -490,6 +490,118 @@
             to { transform: rotate(-360deg); }
         }
 
+        /* Copyright Warning Popup */
+        .copyright-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .copyright-popup {
+            background-image: url('assets/BCMWiki_Framing.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            max-width: 600px;
+            width: 90%;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+            animation: popupAppear 0.5s ease-out;
+        }
+
+        @keyframes popupAppear {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .copyright-title {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #ffde9c;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            background: linear-gradient(70deg, #757575, #ffde9c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 8px rgba(139, 69, 19, 0.8));
+        }
+
+        .copyright-text {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #ffde9c;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        .copyright-link {
+            color: #4a90e2;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        .copyright-link:hover {
+            color: #6bb6ff;
+            text-shadow: 0 0 10px rgba(74, 144, 226, 0.6);
+        }
+
+        .copyright-warning {
+            font-size: 1em;
+            margin-top: 20px;
+            color: #ff8c5a;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        .dismiss-button {
+            margin-top: 30px;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #ff6b35, #ff8c5a);
+            border: none;
+            border-radius: 25px;
+            color: #fff;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+        }
+
+        .dismiss-button:hover {
+            background: linear-gradient(135deg, #ff8c5a, #ffaa80);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.6);
+        }
+
+        .dismiss-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(255, 107, 53, 0.4);
+        }
+
+        .copyright-overlay.hidden {
+            display: none;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .character-grid {
@@ -515,6 +627,19 @@
                 bottom: -17px;
                 right: -17px;
             }
+
+            .copyright-popup {
+                padding: 30px 20px;
+                width: 95%;
+            }
+
+            .copyright-title {
+                font-size: 1.6em;
+            }
+
+            .copyright-text {
+                font-size: 1em;
+            }
         }
     </style>
 </head>
@@ -524,6 +649,20 @@
     
     <!-- Fizzy Transition Particles -->
     <div class="fizz-container" id="fizzContainer"></div>
+
+    <!-- Copyright Warning Popup -->
+    <div class="copyright-overlay" id="copyrightOverlay">
+        <div class="copyright-popup">
+            <h2 class="copyright-title">Copyright Holder!</h2>
+            <div class="copyright-text">
+                BONE CALCIUM MANIA © 2025 by omegadogey is licensed under CC BY-NC 4.0. To view a copy of this license, visit <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" class="copyright-link">https://creativecommons.org/licenses/by-nc/4.0/</a>
+            </div>
+            <div class="copyright-warning">
+                This means you can NOT steal from the game whatsoever, If you record the game or something that's alright, Violating this will lead to you most likely facing legal troubles.
+            </div>
+            <button class="dismiss-button" onclick="dismissCopyrightWarning()">Dismiss</button>
+        </div>
+    </div>
 
     <!-- Topbar -->
     <div class="topbar">
@@ -728,13 +867,39 @@
             }, 1000);
         }
 
+        // Copyright warning functionality
+        function dismissCopyrightWarning() {
+            const copyrightOverlay = document.getElementById('copyrightOverlay');
+            copyrightOverlay.classList.add('hidden');
+            
+            // Store in localStorage so it doesn't show again during this session
+            localStorage.setItem('copyrightWarningDismissed', 'true');
+        }
+
+        // Check if copyright warning should be shown
+        function checkCopyrightWarning() {
+            const dismissed = localStorage.getItem('copyrightWarningDismissed');
+            const copyrightOverlay = document.getElementById('copyrightOverlay');
+            
+            if (dismissed === 'true') {
+                copyrightOverlay.classList.add('hidden');
+            } else {
+                // Show the warning popup
+                copyrightOverlay.classList.remove('hidden');
+            }
+        }
+
         // Initialize page on load
-        document.addEventListener('DOMContentLoaded', initializePage);
+        document.addEventListener('DOMContentLoaded', function() {
+            checkCopyrightWarning();
+            initializePage();
+        });
         
         // Fix for browser back button - reinitialize page when returning
         window.addEventListener('pageshow', function(event) {
             if (event.persisted) {
                 // Page was loaded from cache (back button)
+                checkCopyrightWarning();
                 initializePage();
             }
         });
