@@ -233,11 +233,11 @@
             font-size: 14px;
             margin-right: 15px;
             white-space: nowrap;
-            background: linear-gradient(70deg, #757575, #ffde9c);
+            background: linear-gradient(70deg, #ffde9c, #ff8c5a);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            filter: drop-shadow(0 0 8px rgba(139, 69, 19, 0.8)) drop-shadow(0 0 4px rgba(0, 0, 0, 0.9));
+            filter: drop-shadow(0 0 8px rgba(255, 107, 53, 0.4));
         }
 
         .play-game-button {
@@ -343,18 +343,18 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            filter: drop-shadow(0 0 20px rgba(255, 107, 53, 0.6)) drop-shadow(0 0 10px rgba(255, 222, 156, 0.4));
+            filter: drop-shadow(0 0 15px rgba(255, 107, 53, 0.5));
             letter-spacing: 2px;
         }
 
         @keyframes titlePulse {
             0%, 100% { 
                 transform: translateY(0px) scale(1);
-                filter: drop-shadow(0 0 20px rgba(255, 107, 53, 0.6)) drop-shadow(0 0 10px rgba(255, 222, 156, 0.4));
+                filter: drop-shadow(0 0 15px rgba(255, 107, 53, 0.5));
             }
             50% { 
                 transform: translateY(-8px) scale(1.02);
-                filter: drop-shadow(0 0 30px rgba(255, 107, 53, 0.8)) drop-shadow(0 0 15px rgba(255, 222, 156, 0.6));
+                filter: drop-shadow(0 0 25px rgba(255, 107, 53, 0.7));
             }
         }
 
@@ -635,11 +635,16 @@
         .character-card:hover {
             animation: none !important;
             transform: perspective(1000px) translateY(-15px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1.1) !important;
-            filter: brightness(1.15) drop-shadow(0 0 35px rgba(255, 107, 53, 0.8)) drop-shadow(0 0 20px rgba(255, 222, 156, 0.5)) !important;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+            filter: brightness(1.15) !important;
             box-shadow: 0 25px 60px rgba(255, 107, 53, 0.6), 
                         0 0 40px rgba(255, 107, 53, 0.5),
                         inset 0 0 40px rgba(255, 222, 156, 0.3) !important;
             border-color: rgba(255, 107, 53, 0.8);
+        }
+
+        .character-card:not(:hover) {
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .character-card.flash {
@@ -1243,43 +1248,46 @@
             }
 
             if (doorAction === 'close') {
-                // Move particles toward doors, squash/collide, then spread out and fade
+                // Move particles toward center and compress
                 setTimeout(() => {
                     particles.forEach((particle, i) => {
-                        // Move to left or right door edge
-                        const door = i % 2 === 0 ? 'left' : 'right';
-                        const edgeX = door === 'left' ? window.innerWidth * 0.25 : window.innerWidth * 0.75;
-                        const edgeY = centerY + (Math.random() - 0.5) * 200;
-                        particle.style.transition = 'left 0.4s cubic-bezier(0.7,0.2,0.3,1.2), top 0.4s cubic-bezier(0.7,0.2,0.3,1.2)';
-                        particle.style.left = edgeX + 'px';
-                        particle.style.top = edgeY + 'px';
+                        // Particles move inward toward center to get crushed
+                        const angle = (Math.PI * 2 * i) / particleCount;
+                        const distance = Math.random() * 100 + 50;
+                        const targetX = centerX + Math.cos(angle) * distance;
+                        const targetY = centerY + Math.sin(angle) * distance;
+                        particle.style.transition = 'left 0.3s cubic-bezier(0.6,0.1,0.4,0.9), top 0.3s cubic-bezier(0.6,0.1,0.4,0.9)';
+                        particle.style.left = targetX + 'px';
+                        particle.style.top = targetY + 'px';
                     });
                 }, 50);
-                // Squash/collide
+                // Crush/squash particles
                 setTimeout(() => {
                     particles.forEach((particle, i) => {
-                        particle.style.transition += ', transform 0.3s';
-                        particle.style.transform = 'scaleX(2) scaleY(0.3)';
+                        particle.style.transition = 'transform 0.25s cubic-bezier(0.8,0,0.2,1), left 0.25s cubic-bezier(0.8,0,0.2,1), top 0.25s cubic-bezier(0.8,0,0.2,1)';
+                        particle.style.transform = 'scaleX(0.3) scaleY(0.2) rotate(45deg)';
+                        particle.style.left = centerX + 'px';
+                        particle.style.top = centerY + 'px';
                     });
-                }, 500);
-                // Spread out and fade
+                }, 400);
+                // Explosive spread and fade
                 setTimeout(() => {
                     particles.forEach((particle, i) => {
-                        const angle = (Math.PI * 2 * i) / particleCount + (Math.random() - 0.5) * 0.3;
-                        const distance = Math.random() * 300 + 30;
+                        const angle = (Math.PI * 2 * i) / particleCount + (Math.random() - 0.5) * 0.6;
+                        const distance = Math.random() * 400 + 150;
                         const x = centerX + Math.cos(angle) * distance;
                         const y = centerY + Math.sin(angle) * distance;
-                        particle.style.transition += ', left 0.5s, top 0.5s, opacity 0.5s';
+                        particle.style.transition = 'left 0.45s cubic-bezier(0.2,0.8,0.2,1), top 0.45s cubic-bezier(0.2,0.8,0.2,1), opacity 0.45s ease-out, transform 0.45s cubic-bezier(0.2,0.8,0.2,1)';
                         particle.style.left = x + 'px';
                         particle.style.top = y + 'px';
                         particle.style.opacity = '0';
-                        particle.style.transform = 'scale(1)';
+                        particle.style.transform = 'scale(0.5) rotate(180deg)';
                     });
                     setTimeout(() => {
                         container.classList.remove('active');
                         if (onComplete) onComplete();
-                    }, 500);
-                }, 900);
+                    }, 450);
+                }, 650);
                 return;
             }
 
