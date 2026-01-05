@@ -1232,36 +1232,33 @@
             const panelRight = document.getElementById('transitionPanelRight');
             const mainContent = document.getElementById('mainContent');
             
-            // Reset all classes
-            panelLeft.classList.remove('startup-reveal', 'exit-cover');
-            panelRight.classList.remove('startup-reveal', 'exit-cover');
+            // Always reset panels to visible and covering state
             panelLeft.style.display = 'block';
             panelRight.style.display = 'block';
-            
-            // Clear inline transforms to let CSS classes control the animation
+            panelLeft.classList.remove('startup-reveal', 'exit-cover');
+            panelRight.classList.remove('startup-reveal', 'exit-cover');
             panelLeft.style.transform = '';
             panelRight.style.transform = '';
-            
-            // Ensure content is hidden while doors are covering
+
+            // Hide content while doors are covering
             mainContent.classList.add('content-hidden');
-            
+
             // Create fizzy particles for startup
             createFizzyParticles();
-            
             // Force reflow to ensure initial state
             void panelLeft.offsetWidth;
-            
+
             // Slide doors out to reveal content
             setTimeout(() => {
                 panelLeft.classList.add('startup-reveal');
                 panelRight.classList.add('startup-reveal');
                 mainContent.classList.remove('content-hidden');
             }, 50);
-            
-            // Hide panels after they slide out
+
+            // Always keep panels visible for exit transition
             setTimeout(() => {
-                panelLeft.style.display = 'none';
-                panelRight.style.display = 'none';
+                panelLeft.style.display = 'block';
+                panelRight.style.display = 'block';
             }, 950);
         }
 
@@ -1378,30 +1375,29 @@
             const panelLeft = document.getElementById('transitionPanelLeft');
             const panelRight = document.getElementById('transitionPanelRight');
             
-            // Show panels and remove animation classes to reset to covering state
+            // Always show panels and reset to covering state
             panelLeft.style.display = 'block';
             panelRight.style.display = 'block';
             panelLeft.classList.remove('startup-reveal', 'exit-cover');
             panelRight.classList.remove('startup-reveal', 'exit-cover');
-            
-            // Clear inline styles to let default CSS control positioning
             panelLeft.style.transform = '';
             panelRight.style.transform = '';
-            
+
             // Create fizzy particles for exit transition
             createFizzyParticles();
-            
             // Force reflow to ensure initial state
             void panelLeft.offsetWidth;
-            
+
             // Slide doors in to cover the screen
             setTimeout(() => {
                 panelLeft.classList.add('exit-cover');
                 panelRight.classList.add('exit-cover');
             }, 50);
-            
-            // Navigate after doors close
+
+            // Ensure doors are visible for exit transition
             setTimeout(() => {
+                panelLeft.style.display = 'block';
+                panelRight.style.display = 'block';
                 window.location.href = url;
             }, 950);
         }
