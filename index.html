@@ -1229,10 +1229,50 @@
                 particles.push(particle);
             }
 
-            // Animate particles
+            if (doorAction === 'close') {
+                // Move particles toward doors, squash/collide, then spread out and fade
+                setTimeout(() => {
+                    particles.forEach((particle, i) => {
+                        // Move to left or right door edge
+                        const door = i % 2 === 0 ? 'left' : 'right';
+                        const edgeX = door === 'left' ? window.innerWidth * 0.25 : window.innerWidth * 0.75;
+                        const edgeY = centerY + (Math.random() - 0.5) * 200;
+                        particle.style.transition = 'left 0.4s cubic-bezier(0.7,0.2,0.3,1.2), top 0.4s cubic-bezier(0.7,0.2,0.3,1.2)';
+                        particle.style.left = edgeX + 'px';
+                        particle.style.top = edgeY + 'px';
+                    });
+                }, 50);
+                // Squash/collide
+                setTimeout(() => {
+                    particles.forEach((particle, i) => {
+                        particle.style.transition += ', transform 0.3s';
+                        particle.style.transform = 'scaleX(2) scaleY(0.3)';
+                    });
+                }, 500);
+                // Spread out and fade
+                setTimeout(() => {
+                    particles.forEach((particle, i) => {
+                        const angle = (Math.PI * 2 * i) / particleCount + (Math.random() - 0.5) * 0.3;
+                        const distance = Math.random() * 300 + 30;
+                        const x = centerX + Math.cos(angle) * distance;
+                        const y = centerY + Math.sin(angle) * distance;
+                        particle.style.transition += ', left 0.5s, top 0.5s, opacity 0.5s';
+                        particle.style.left = x + 'px';
+                        particle.style.top = y + 'px';
+                        particle.style.opacity = '0';
+                        particle.style.transform = 'scale(1)';
+                    });
+                    setTimeout(() => {
+                        container.classList.remove('active');
+                        if (onComplete) onComplete();
+                    }, 500);
+                }, 900);
+                return;
+            }
+
+            // Default: startup squish/spread/fade
             setTimeout(() => {
                 particles.forEach((particle, i) => {
-                    // Spread out to random positions
                     const angle = (Math.PI * 2 * i) / particleCount + (Math.random() - 0.5) * 0.3;
                     const distance = Math.random() * 300 + 30;
                     const x = centerX + Math.cos(angle) * distance;
@@ -1242,8 +1282,6 @@
                     particle.style.top = y + 'px';
                 });
             }, 50);
-
-            // Fade out after spreading
             setTimeout(() => {
                 particles.forEach(particle => {
                     particle.style.transition += ', opacity 0.5s';
