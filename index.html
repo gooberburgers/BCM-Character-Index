@@ -76,19 +76,19 @@
         }
 
         .mask-circle.startup {
-            transform: translate(-50%, -50%) scale(0.005);
+            transform: translate(-50%, -50%) scale(8);
         }
 
         .mask-circle.startup-reveal {
-            transform: translate(-50%, -50%) scale(8);
+            transform: translate(-50%, -50%) scale(0.005);
         }
 
         .mask-circle.exit-start {
-            transform: translate(-50%, -50%) scale(8);
+            transform: translate(-50%, -50%) scale(0.005);
         }
 
         .mask-circle.exit-cover {
-            transform: translate(-50%, -50%) scale(0.005);
+            transform: translate(-50%, -50%) scale(8);
         }
 
         /* Border elements to fill exposed edges */
@@ -101,33 +101,29 @@
 
         .mask-border-top {
             top: 0;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 0;
             width: 100vw;
-            height: calc(50vh - 50vw);
+            height: calc(50vh - 50vmin);
         }
 
         .mask-border-bottom {
             bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 0;
             width: 100vw;
-            height: calc(50vh - 50vw);
+            height: calc(50vh - 50vmin);
         }
 
         .mask-border-left {
-            top: 50%;
+            top: 0;
             left: 0;
-            transform: translateY(-50%);
-            width: calc(50vw - 50vw);
+            width: calc(50vw - 50vmin);
             height: 100vh;
         }
 
         .mask-border-right {
-            top: 50%;
+            top: 0;
             right: 0;
-            transform: translateY(-50%);
-            width: calc(50vw - 50vw);
+            width: calc(50vw - 50vmin);
             height: 100vh;
         }
 
@@ -1274,17 +1270,17 @@
             maskCircle.style.display = 'block';
             borders.forEach(border => border.style.display = 'block');
             
-            // Start with mask closed (scale 0.01)
+            // Start with mask covering (scale 8)
             maskCircle.classList.add('startup');
             borders.forEach(border => border.classList.add('startup'));
             
-            // Ensure content is hidden initially
-            mainContent.classList.add('content-hidden');
+            // Ensure content is visible but masked
+            mainContent.classList.remove('content-hidden');
             
             // Create fizzy particles for startup
             createFizzyParticles();
             
-            // After brief moment to show closed mask, open it to reveal content
+            // After brief moment, shrink mask to reveal content through the circle
             setTimeout(() => {
                 maskCircle.classList.remove('startup');
                 maskCircle.classList.add('startup-reveal');
@@ -1292,14 +1288,13 @@
                     border.classList.remove('startup');
                     border.classList.add('startup-reveal');
                 });
-                mainContent.classList.remove('content-hidden');
             }, 150);
             
-            // Hide overlay after mask fully opens
+            // Hide overlay after mask fully shrinks
             setTimeout(() => {
                 maskCircle.style.display = 'none';
                 borders.forEach(border => border.style.display = 'none');
-            }, 1050);
+            }, 1100);
         }
 
         // Copyright warning functionality
@@ -1415,7 +1410,7 @@
             const maskCircle = document.getElementById('maskCircle');
             const borders = document.querySelectorAll('.mask-border');
             
-            // Show overlay and start with mask open
+            // Show overlay and start with mask small (content visible)
             maskCircle.style.display = 'block';
             borders.forEach(border => border.style.display = 'block');
             maskCircle.classList.remove('startup', 'startup-reveal', 'exit-cover');
@@ -1429,7 +1424,7 @@
             // Force reflow to ensure initial state
             void maskCircle.offsetWidth;
             
-            // Start closing the mask
+            // Grow the mask to cover everything
             setTimeout(() => {
                 maskCircle.classList.remove('exit-start');
                 maskCircle.classList.add('exit-cover');
@@ -1439,10 +1434,10 @@
                 });
             }, 50);
             
-            // Navigate after mask fully closes
+            // Navigate after mask fully covers
             setTimeout(() => {
                 window.location.href = url;
-            }, 950);
+            }, 1000);
         }
         
         function createFizzParticles(element) {
