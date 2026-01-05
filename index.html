@@ -233,11 +233,8 @@
             font-size: 14px;
             margin-right: 15px;
             white-space: nowrap;
-            background: linear-gradient(70deg, #ffde9c, #ff8c5a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: drop-shadow(0 0 8px rgba(255, 107, 53, 0.4));
+            color: #ffde9c;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6), 0 0 12px rgba(255, 107, 53, 0.4);
         }
 
         .play-game-button {
@@ -338,23 +335,19 @@
             font-size: 2.5em;
             margin-bottom: 30px;
             animation: titlePulse 5s ease-in-out infinite;
-            background: linear-gradient(90deg, #ff6b35, #ffde9c, #ff6b35);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: drop-shadow(0 0 15px rgba(255, 107, 53, 0.5));
+            color: #ffde9c;
+            text-shadow: 0 3px 12px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 107, 53, 0.5);
             letter-spacing: 2px;
         }
 
         @keyframes titlePulse {
             0%, 100% { 
                 transform: translateY(0px) scale(1);
-                filter: drop-shadow(0 0 15px rgba(255, 107, 53, 0.5));
+                text-shadow: 0 3px 12px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 107, 53, 0.5);
             }
             50% { 
                 transform: translateY(-8px) scale(1.02);
-                filter: drop-shadow(0 0 25px rgba(255, 107, 53, 0.7));
+                text-shadow: 0 3px 12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 107, 53, 0.7);
             }
         }
 
@@ -709,22 +702,18 @@
         .character-name {
             font-size: 1.2em;
             font-weight: bold;
-            background: linear-gradient(90deg, #ffde9c, #ff8c5a, #ffde9c);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: drop-shadow(0 0 10px rgba(255, 107, 53, 0.6)) drop-shadow(0 0 5px rgba(255, 222, 156, 0.3));
+            color: #ffde9c;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7), 0 0 12px rgba(255, 107, 53, 0.5);
             animation: nameGlow 3s ease-in-out infinite;
             letter-spacing: 1px;
         }
 
         @keyframes nameGlow {
             0%, 100% { 
-                filter: drop-shadow(0 0 10px rgba(255, 107, 53, 0.6)) drop-shadow(0 0 5px rgba(255, 222, 156, 0.3));
+                text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7), 0 0 12px rgba(255, 107, 53, 0.5);
             }
             50% { 
-                filter: drop-shadow(0 0 20px rgba(255, 107, 53, 0.8)) drop-shadow(0 0 10px rgba(255, 222, 156, 0.5));
+                text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 107, 53, 0.7);
             }
         }
 
