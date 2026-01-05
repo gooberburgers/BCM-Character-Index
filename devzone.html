@@ -3,29 +3,143 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>renovating for the boneburger update</title>
+	<title>v.1</title>
 	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
 		body {
+			width: 100vw;
+			height: 100vh;
+			background: #000;
 			display: flex;
-			flex-direction: column;
 			align-items: center;
 			justify-content: center;
-			height: 100vh;
-			margin: 0;
 			font-family: Arial, sans-serif;
-			background: #fafafa;
+			position: relative;
 		}
-		h1 {
-			font-size: 2rem;
-			margin-bottom: 1rem;
+		.frame-container {
+			position: relative;
+			width: 600px;
+			height: 400px;
 		}
-		.big-smile {
-			font-size: 5rem;
-			line-height: 1;
+		.frame-wholefill {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-image: url('assets/site-plate/plate-wholefill.png');
+			background-repeat: repeat;
+			background-size: auto;
+		}
+		.frame-borders {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+		}
+		.border-top {
+			position: absolute;
+			top: 0;
+			left: 32px;
+			right: 32px;
+			height: 32px;
+			background-image: url('assets/site-plate/plate-border-top.png');
+			background-repeat: repeat-x;
+			background-size: auto 32px;
+		}
+		.border-bottom {
+			position: absolute;
+			bottom: 0;
+			left: 32px;
+			right: 32px;
+			height: 32px;
+			background-image: url('assets/site-plate/plate-border-bottom.png');
+			background-repeat: repeat-x;
+			background-size: auto 32px;
+		}
+		.border-left {
+			position: absolute;
+			top: 32px;
+			left: 0;
+			bottom: 32px;
+			width: 32px;
+			background-image: url('assets/site-plate/plate-border-left.png');
+			background-repeat: repeat-y;
+			background-size: 32px auto;
+		}
+		.border-right {
+			position: absolute;
+			top: 32px;
+			right: 0;
+			bottom: 32px;
+			width: 32px;
+			background-image: url('assets/site-plate/plate-border-right.png');
+			background-repeat: repeat-y;
+			background-size: 32px auto;
+		}
+		.corner {
+			position: absolute;
+			width: 32px;
+			height: 32px;
+		}
+		.corner-top-left {
+			top: 0;
+			left: 0;
+			background-image: url('assets/site-plate/plate-corner-top-left.png');
+		}
+		.corner-top-right {
+			top: 0;
+			right: 0;
+			background-image: url('assets/site-plate/plate-corner-top-right.png');
+		}
+		.corner-bottom-left {
+			bottom: 0;
+			left: 0;
+			background-image: url('assets/site-plate/plate-corner-bottom-left.png');
+		}
+		.corner-bottom-right {
+			bottom: 0;
+			right: 0;
+			background-image: url('assets/site-plate/plate-corner-bottom-right.png');
+		}
+		.bottom-right-text {
+			position: absolute;
+			bottom: 20px;
+			right: 20px;
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			font-size: 18px;
+			color: #fff;
+		}
+		.bottom-right-text img {
+			height: 32px;
+			width: auto;
 		}
 	</style>
 </head>
 <body>
-	<h1>you are in the dev zone spotlight, you'll see live reconstruction <span class="big-smile">:)</span></h1>
+	<div class="frame-container">
+		<div class="frame-wholefill"></div>
+		<div class="frame-borders">
+			<div class="border-top"></div>
+			<div class="border-bottom"></div>
+			<div class="border-left"></div>
+			<div class="border-right"></div>
+			<div class="corner corner-top-left"></div>
+			<div class="corner corner-top-right"></div>
+			<div class="corner corner-bottom-left"></div>
+			<div class="corner corner-bottom-right"></div>
+		</div>
+	</div>
+	<div class="bottom-right-text">
+		<span>hi guys look at this rabbit ></span>
+		<img src="assets/dwarfhotot.png" alt="rabbit">
+	</div>
 </body>
 </html>
