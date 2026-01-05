@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>v.1</title>
+	<title>v.2</title>
 	<style>
 		* {
 			margin: 0;
@@ -33,7 +33,7 @@
 			bottom: 0;
 			background-image: url('assets/site-plate/plate-wholefill.png');
 			background-repeat: repeat;
-			background-size: auto;
+			background-size: 32px 32px;
 		}
 		.frame-borders {
 			position: absolute;
@@ -49,8 +49,8 @@
 			right: 32px;
 			height: 32px;
 			background-image: url('assets/site-plate/plate-border-top.png');
-			background-repeat: repeat-x;
-			background-size: auto 32px;
+			background-repeat: no-repeat;
+			background-size: 100% 100%;
 		}
 		.border-bottom {
 			position: absolute;
@@ -59,8 +59,8 @@
 			right: 32px;
 			height: 32px;
 			background-image: url('assets/site-plate/plate-border-bottom.png');
-			background-repeat: repeat-x;
-			background-size: auto 32px;
+			background-repeat: no-repeat;
+			background-size: 100% 100%;
 		}
 		.border-left {
 			position: absolute;
@@ -69,8 +69,8 @@
 			bottom: 32px;
 			width: 32px;
 			background-image: url('assets/site-plate/plate-border-left.png');
-			background-repeat: repeat-y;
-			background-size: 32px auto;
+			background-repeat: no-repeat;
+			background-size: 100% 100%;
 		}
 		.border-right {
 			position: absolute;
@@ -79,13 +79,15 @@
 			bottom: 32px;
 			width: 32px;
 			background-image: url('assets/site-plate/plate-border-right.png');
-			background-repeat: repeat-y;
-			background-size: 32px auto;
+			background-repeat: no-repeat;
+			background-size: 100% 100%;
 		}
 		.corner {
 			position: absolute;
 			width: 32px;
 			height: 32px;
+			background-repeat: no-repeat;
+			background-size: contain;
 		}
 		.corner-top-left {
 			top: 0;
