@@ -73,30 +73,36 @@
             transform: translate(-50%, -50%) scale(0.005);
             transform-origin: center center;
             transition: transform 0.9s cubic-bezier(0.36, 0, 0.66, 1);
+            filter: drop-shadow(0 0 0 150vmin rgba(0, 0, 0, 1));
         }
 
         .mask-circle.startup {
             transform: translate(-50%, -50%) scale(8);
+            filter: drop-shadow(0 0 0 150vmin rgba(0, 0, 0, 1));
         }
 
         .mask-circle.startup-reveal {
             transform: translate(-50%, -50%) scale(0.005);
+            filter: drop-shadow(0 0 0 150vmin rgba(0, 0, 0, 1));
         }
 
         .mask-circle.exit-start {
             transform: translate(-50%, -50%) scale(0.005);
+            filter: drop-shadow(0 0 0 150vmin rgba(0, 0, 0, 1));
         }
 
         .mask-circle.exit-cover {
-            transform: translate(-50%, -50%) scale(8);
+            transform: translate(-50%, -50%) scale(0.005);
+            filter: drop-shadow(0 0 0 150vmin rgba(0, 0, 0, 1));
         }
 
-        /* Border elements to fill exposed edges */
+        /* Border elements - now using filter-based approach on mask-circle */
         .mask-border {
             position: fixed;
-            background: #000;
+            background: transparent;
             z-index: 9998;
             pointer-events: none;
+            display: none;
         }
 
         .mask-border-top {
@@ -215,7 +221,6 @@
                 opacity: 0;
                 transform: scale(0) rotate(450deg) translateZ(0);
             }
-        }
             100% {
                 opacity: 0;
                 transform: scale(0.3) rotate(720deg);
@@ -639,8 +644,7 @@
                 transform: perspective(1200px) translateY(-6px) rotateX(-1.3deg) rotateZ(1.1deg) rotateY(-1.0deg);
                 filter: brightness(0.82);
             }
-        }
-            }
+
             79% { 
                 transform: perspective(1000px) translateY(-15px) rotateX(-2.1deg) rotateZ(1.6deg) rotateY(-1.3deg);
                 filter: brightness(0.87);
@@ -1261,18 +1265,14 @@
         // Function to initialize/reset page state
         function initializePage() {
             const maskCircle = document.getElementById('maskCircle');
-            const borders = document.querySelectorAll('.mask-border');
             const mainContent = document.getElementById('mainContent');
             
             // Reset all classes
             maskCircle.classList.remove('startup', 'startup-reveal', 'exit-start', 'exit-cover');
-            borders.forEach(border => border.classList.remove('startup', 'startup-reveal', 'exit-start', 'exit-cover'));
             maskCircle.style.display = 'block';
-            borders.forEach(border => border.style.display = 'block');
             
             // Start with mask covering (scale 8)
             maskCircle.classList.add('startup');
-            borders.forEach(border => border.classList.add('startup'));
             
             // Ensure content is visible but masked
             mainContent.classList.remove('content-hidden');
@@ -1284,16 +1284,11 @@
             setTimeout(() => {
                 maskCircle.classList.remove('startup');
                 maskCircle.classList.add('startup-reveal');
-                borders.forEach(border => {
-                    border.classList.remove('startup');
-                    border.classList.add('startup-reveal');
-                });
             }, 150);
             
             // Hide overlay after mask fully shrinks
             setTimeout(() => {
                 maskCircle.style.display = 'none';
-                borders.forEach(border => border.style.display = 'none');
             }, 1100);
         }
 
@@ -1408,15 +1403,11 @@
         
         function navigateToUrl(url) {
             const maskCircle = document.getElementById('maskCircle');
-            const borders = document.querySelectorAll('.mask-border');
             
             // Show overlay and start with mask small (content visible)
             maskCircle.style.display = 'block';
-            borders.forEach(border => border.style.display = 'block');
             maskCircle.classList.remove('startup', 'startup-reveal', 'exit-cover');
-            borders.forEach(border => border.classList.remove('startup', 'startup-reveal', 'exit-cover'));
             maskCircle.classList.add('exit-start');
-            borders.forEach(border => border.classList.add('exit-start'));
             
             // Create fizzy particles for exit transition
             createFizzyParticles();
@@ -1428,10 +1419,6 @@
             setTimeout(() => {
                 maskCircle.classList.remove('exit-start');
                 maskCircle.classList.add('exit-cover');
-                borders.forEach(border => {
-                    border.classList.remove('exit-start');
-                    border.classList.add('exit-cover');
-                });
             }, 50);
             
             // Navigate after mask fully covers
