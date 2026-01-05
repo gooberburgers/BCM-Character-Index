@@ -234,7 +234,11 @@
             margin-right: 15px;
             white-space: nowrap;
             color: #ffde9c;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6), 0 0 12px rgba(255, 107, 53, 0.4);
+            text-shadow: 
+                0 2px 8px rgba(0, 0, 0, 0.7),
+                0 0 12px rgba(255, 107, 53, 0.5),
+                inset -2px -2px 6px rgba(255, 255, 255, 0.15),
+                inset 2px 2px 6px rgba(255, 107, 53, 0.2);
         }
 
         .play-game-button {
@@ -336,18 +340,44 @@
             margin-bottom: 30px;
             animation: titlePulse 5s ease-in-out infinite;
             color: #ffde9c;
-            text-shadow: 0 3px 12px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 107, 53, 0.5);
+            text-shadow: 
+                0 3px 12px rgba(0, 0, 0, 0.7),
+                0 0 20px rgba(255, 107, 53, 0.5),
+                inset -2px -2px 8px rgba(255, 255, 255, 0.2),
+                inset 2px 2px 8px rgba(255, 107, 53, 0.3);
             letter-spacing: 2px;
+            position: relative;
+        }
+
+        .section-title::before {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, transparent 60%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            pointer-events: none;
         }
 
         @keyframes titlePulse {
             0%, 100% { 
                 transform: translateY(0px) scale(1);
-                text-shadow: 0 3px 12px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 107, 53, 0.5);
+                text-shadow: 
+                    0 3px 12px rgba(0, 0, 0, 0.7),
+                    0 0 20px rgba(255, 107, 53, 0.5),
+                    inset -2px -2px 8px rgba(255, 255, 255, 0.2),
+                    inset 2px 2px 8px rgba(255, 107, 53, 0.3);
             }
             50% { 
                 transform: translateY(-8px) scale(1.02);
-                text-shadow: 0 3px 12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 107, 53, 0.7);
+                text-shadow: 
+                    0 3px 12px rgba(0, 0, 0, 0.7),
+                    0 0 30px rgba(255, 107, 53, 0.7),
+                    inset -2px -2px 8px rgba(255, 255, 255, 0.25),
+                    inset 2px 2px 8px rgba(255, 107, 53, 0.4);
             }
         }
 
@@ -444,15 +474,15 @@
             opacity: 1;
         }
 
-        .character-card:nth-child(3) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0s backwards, wobble1 3.2s cubic-bezier(0.4, 0.0, 0.6, 1.0) 1.2s infinite; }
-        .character-card:nth-child(4) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.05s backwards, wobble2 3.8s cubic-bezier(0.34, 0.1, 0.68, 0.9) 1.2s infinite; }
-        .character-card:nth-child(5) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s backwards, wobble3 4.5s cubic-bezier(0.42, 0.0, 0.58, 1.0) 1.2s infinite; }
-        .character-card:nth-child(6) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s backwards, wobble4 3.5s cubic-bezier(0.37, 0.05, 0.63, 0.95) 1.2s infinite; }
-        .character-card:nth-child(7) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s backwards, wobble5 4.2s cubic-bezier(0.39, 0.08, 0.64, 0.92) 1.2s infinite; }
-        .character-card:nth-child(8) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.25s backwards, wobble6 3.9s cubic-bezier(0.43, 0.02, 0.57, 0.98) 1.2s infinite; }
-        .character-card:nth-child(9) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s backwards, wobble1 4.1s cubic-bezier(0.35, 0.12, 0.65, 0.88) 1.2s infinite; }
-        .character-card:nth-child(10) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s backwards, wobble2 3.6s cubic-bezier(0.41, 0.06, 0.59, 0.94) 1.2s infinite; }
-        .character-card:nth-child(n+11) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s backwards, wobble3 3.7s cubic-bezier(0.38, 0.09, 0.62, 0.91) 1.2s infinite; }
+        .character-card:nth-child(3) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0s backwards, unifiedWobble 4.8s cubic-bezier(0.4, 0.0, 0.6, 1.0) 1.2s infinite; }
+        .character-card:nth-child(4) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.05s backwards, unifiedWobble 4.8s cubic-bezier(0.4, 0.0, 0.6, 1.0) 1.2s infinite; }
+        .character-card:nth-child(5) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s backwards, unifiedWobble 4.8s cubic-bezier(0.4, 0.0, 0.6, 1.0) 1.2s infinite; }
+        .character-card:nth-child(6) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s backwards, unifiedWobble 4.8s cubic-bezier(0.4, 0.0, 0.6, 1.0) 1.2s infinite; }
+        .character-card:nth-child(7) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s backwards, unifiedWobble 4.8s cubic-bezier(0.4, 0.0, 0.6, 1.0) 1.2s infinite; }
+        .character-card:nth-child(8) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.25s backwards, unifiedWobble 4.8s cubic-bezier(0.4, 0.0, 0.6, 1.0) 1.2s infinite; }
+        .character-card:nth-child(9) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s backwards, unifiedWobble 4.8s cubic-bezier(0.4, 0.0, 0.6, 1.0) 1.2s infinite; }
+        .character-card:nth-child(10) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s backwards, unifiedWobble 4.8s cubic-bezier(0.4, 0.0, 0.6, 1.0) 1.2s infinite; }
+        .character-card:nth-child(n+11) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s backwards, unifiedWobble 4.8s cubic-bezier(0.4, 0.0, 0.6, 1.0) 1.2s infinite; }
 
         /* Drop bounce entrance animation - Pulley/rope physics */
         @keyframes dropBounce {
@@ -464,7 +494,60 @@
             100% { transform: translateY(0px) scaleY(1) rotateZ(0deg); }
         }
 
-        /* Snap-back animation for released cards */
+        /* Unified pendulum wobble animation */
+        @keyframes unifiedWobble {
+            0% { 
+                transform: perspective(1200px) translateY(0px) rotateX(0deg) rotateZ(0deg) rotateY(0deg);
+            }
+            12% { 
+                transform: perspective(1200px) translateY(-8px) rotateX(1deg) rotateZ(1deg) rotateY(1deg);
+            }
+            25% { 
+                transform: perspective(1200px) translateY(-14px) rotateX(-1.5deg) rotateZ(-1.2deg) rotateY(-1.2deg);
+            }
+            37% { 
+                transform: perspective(1200px) translateY(-10px) rotateX(1.2deg) rotateZ(0.8deg) rotateY(1.1deg);
+            }
+            50% { 
+                transform: perspective(1200px) translateY(-16px) rotateX(-1.8deg) rotateZ(-1.1deg) rotateY(-1.3deg);
+            }
+            62% { 
+                transform: perspective(1200px) translateY(-9px) rotateX(1.1deg) rotateZ(1.2deg) rotateY(0.9deg);
+            }
+            75% { 
+                transform: perspective(1200px) translateY(-15px) rotateX(-1.6deg) rotateZ(-0.7deg) rotateY(-1.4deg);
+            }
+            87% { 
+                transform: perspective(1200px) translateY(-11px) rotateX(1.4deg) rotateZ(0.7deg) rotateY(1.3deg);
+            }
+            100% { 
+                transform: perspective(1200px) translateY(0px) rotateX(0deg) rotateZ(0deg) rotateY(0deg);
+            }
+        }
+
+        /* Typing animation for search characters */
+        @keyframes typeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px);
+                clip-path: inset(0 100% 0 0);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-15px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+                clip-path: inset(0 0 0 0);
+            }
+        }
+
+        /* Typing character span */
+        .search-box::selection {
+            background: rgba(255, 107, 53, 0.3);
+            color: #ffde9c;
+        }
         @keyframes snapBack {
             0% {
                 opacity: 1;
@@ -495,6 +578,55 @@
                 opacity: 1;
                 transform: perspective(1200px) translateX(0px) translateY(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1);
                 filter: brightness(0.75);
+            }
+        }
+
+        /* Unified pendulum wobble animation */
+        @keyframes unifiedWobble {
+            0% { 
+                transform: perspective(1200px) translateY(0px) rotateX(0deg) rotateZ(0deg) rotateY(0deg);
+            }
+            12% { 
+                transform: perspective(1200px) translateY(-8px) rotateX(1deg) rotateZ(1deg) rotateY(1deg);
+            }
+            25% { 
+                transform: perspective(1200px) translateY(-14px) rotateX(-1.5deg) rotateZ(-1.2deg) rotateY(-1.2deg);
+            }
+            37% { 
+                transform: perspective(1200px) translateY(-10px) rotateX(1.2deg) rotateZ(0.8deg) rotateY(1.1deg);
+            }
+            50% { 
+                transform: perspective(1200px) translateY(-16px) rotateX(-1.8deg) rotateZ(-1.1deg) rotateY(-1.3deg);
+            }
+            62% { 
+                transform: perspective(1200px) translateY(-9px) rotateX(1.1deg) rotateZ(1.2deg) rotateY(0.9deg);
+            }
+            75% { 
+                transform: perspective(1200px) translateY(-15px) rotateX(-1.6deg) rotateZ(-0.7deg) rotateY(-1.4deg);
+            }
+            87% { 
+                transform: perspective(1200px) translateY(-11px) rotateX(1.4deg) rotateZ(0.7deg) rotateY(1.3deg);
+            }
+            100% { 
+                transform: perspective(1200px) translateY(0px) rotateX(0deg) rotateZ(0deg) rotateY(0deg);
+            }
+        }
+
+        /* Typing animation for search characters */
+        @keyframes typeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px);
+                clip-path: inset(0 100% 0 0);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-15px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+                clip-path: inset(0 0 0 0);
             }
         }
 
@@ -626,7 +758,7 @@
         }
 
         .character-card:hover {
-            animation: none !important;
+            animation-play-state: paused !important;
             transform: perspective(1000px) translateY(-15px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1.1) !important;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
             filter: brightness(1.15) !important;
@@ -637,7 +769,10 @@
         }
 
         .character-card:not(:hover) {
-            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation-play-state: running !important;
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform: perspective(1200px) translateY(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1);
+            filter: brightness(0.8);
         }
 
         .character-card.flash {
@@ -703,17 +838,42 @@
             font-size: 1.2em;
             font-weight: bold;
             color: #ffde9c;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7), 0 0 12px rgba(255, 107, 53, 0.5);
+            text-shadow: 
+                0 2px 8px rgba(0, 0, 0, 0.7),
+                0 0 12px rgba(255, 107, 53, 0.5),
+                inset -1px -1px 5px rgba(255, 255, 255, 0.15),
+                inset 1px 1px 5px rgba(255, 107, 53, 0.2);
             animation: nameGlow 3s ease-in-out infinite;
             letter-spacing: 1px;
+            position: relative;
+        }
+
+        .character-name::before {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, transparent 50%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            pointer-events: none;
         }
 
         @keyframes nameGlow {
             0%, 100% { 
-                text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7), 0 0 12px rgba(255, 107, 53, 0.5);
+                text-shadow: 
+                    0 2px 8px rgba(0, 0, 0, 0.7),
+                    0 0 12px rgba(255, 107, 53, 0.5),
+                    inset -1px -1px 5px rgba(255, 255, 255, 0.15),
+                    inset 1px 1px 5px rgba(255, 107, 53, 0.2);
             }
             50% { 
-                text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 107, 53, 0.7);
+                text-shadow: 
+                    0 2px 8px rgba(0, 0, 0, 0.7),
+                    0 0 20px rgba(255, 107, 53, 0.7),
+                    inset -1px -1px 5px rgba(255, 255, 255, 0.2),
+                    inset 1px 1px 5px rgba(255, 107, 53, 0.3);
             }
         }
 
@@ -1382,6 +1542,13 @@
             clearTimeout(searchTimeout);
             
             const searchTerm = this.value.toLowerCase().trim();
+            
+            // Animate typed characters falling in
+            const lastChar = this.value[this.value.length - 1];
+            if (lastChar) {
+                const event = new CustomEvent('charactertyped', { detail: { char: lastChar } });
+                this.dispatchEvent(event);
+            }
             
             // If search is empty, show all cards
             if (searchTerm === '') {
