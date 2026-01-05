@@ -61,31 +61,32 @@
         /* Kill people */
         .iris-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
+            top: 50%;
+            left: 50%;
             width: 100vw;
             height: 100vh;
             z-index: 9999;
             pointer-events: none;
             background: #000;
-            clip-path: circle(100% at 50% 50%);
-            transition: clip-path 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: translate(-50%, -50%);
+            clip-path: circle(0% at 50% 50%);
+            transition: clip-path 0.9s cubic-bezier(0.36, 0, 0.66, 1);
         }
 
         .iris-overlay.startup {
-            clip-path: circle(100% at 50% 50%);
+            clip-path: circle(0% at 50% 50%);
         }
 
         .iris-overlay.startup-reveal {
-            clip-path: circle(0% at 50% 50%);
+            clip-path: circle(100% at 50% 50%);
         }
 
         .iris-overlay.exit-start {
-            clip-path: circle(0% at 50% 50%);
+            clip-path: circle(100% at 50% 50%);
         }
 
         .iris-overlay.exit-cover {
-            clip-path: circle(100% at 50% 50%);
+            clip-path: circle(0% at 50% 50%);
         }
 
         /* Fizzy Transition Particles */
@@ -111,43 +112,72 @@
             height: 8px;
             background: #ffde9c;
             border-radius: 50%;
-            box-shadow: 0 0 10px rgba(255, 222, 156, 0.8);
-            animation: fizzMove 1.2s ease-out forwards;
+            box-shadow: 0 0 15px rgba(255, 222, 156, 0.9), 0 0 30px rgba(255, 107, 53, 0.4);
+            animation: fizzMove 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         }
 
         .fizz-dot:nth-child(2n) {
-            background: #ffe4b3;
-            animation-duration: 1.0s;
+            background: #ff8c5a;
+            box-shadow: 0 0 12px rgba(255, 140, 90, 0.95), 0 0 25px rgba(255, 107, 53, 0.5);
+            animation-duration: 1.3s;
         }
 
         .fizz-dot:nth-child(3n) {
             background: #ffead0;
-            animation-duration: 1.4s;
+            box-shadow: 0 0 18px rgba(255, 234, 208, 0.85), 0 0 35px rgba(102, 51, 153, 0.3);
+            animation-duration: 1.7s;
         }
 
         .fizz-dot:nth-child(4n) {
             width: 6px;
             height: 6px;
             background: #fff0e6;
-            animation-duration: 0.8s;
+            box-shadow: 0 0 10px rgba(255, 240, 230, 0.8), 0 0 20px rgba(255, 107, 53, 0.3);
+            animation-duration: 1.1s;
         }
 
         .fizz-dot:nth-child(5n) {
             width: 10px;
             height: 10px;
+            background: #ff6b35;
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.9), 0 0 40px rgba(255, 107, 53, 0.5);
+            animation-duration: 1.8s;
+        }
+
+        .fizz-dot:nth-child(6n) {
+            width: 5px;
+            height: 5px;
             background: #ffd885;
-            animation-duration: 1.6s;
+            box-shadow: 0 0 8px rgba(255, 216, 133, 0.8), 0 0 16px rgba(102, 51, 153, 0.4);
+            animation-duration: 0.9s;
         }
 
         @keyframes fizzMove {
             0% {
                 opacity: 1;
-                transform: scale(0) rotate(0deg);
+                transform: scale(0.5) rotate(0deg) translateZ(0);
             }
-            20% {
+            10% {
                 opacity: 1;
-                transform: scale(1.2) rotate(180deg);
+                transform: scale(1.1) rotate(90deg) translateZ(0);
             }
+            25% {
+                opacity: 1;
+                transform: scale(1.3) rotate(180deg) translateZ(0);
+            }
+            50% {
+                opacity: 0.9;
+                transform: scale(1.0) rotate(270deg) translateZ(0);
+            }
+            75% {
+                opacity: 0.5;
+                transform: scale(0.7) rotate(360deg) translateZ(0);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0) rotate(450deg) translateZ(0);
+            }
+        }
             100% {
                 opacity: 0;
                 transform: scale(0.3) rotate(720deg);
@@ -455,17 +485,25 @@
                 transform: perspective(1200px) translateX(var(--snap-x, 0px)) translateY(var(--snap-y, 0px)) rotateX(var(--snap-rx, 0deg)) rotateY(var(--snap-ry, 0deg)) rotateZ(var(--snap-rz, 0deg)) scale(1.05);
                 filter: brightness(1.1);
             }
-            20% {
-                transform: perspective(1200px) translateX(calc(var(--snap-x, 0px) * 0.7)) translateY(calc(var(--snap-y, 0px) * 0.7)) rotateX(calc(var(--snap-rx, 0deg) * 0.7)) rotateY(calc(var(--snap-ry, 0deg) * 0.7)) rotateZ(calc(var(--snap-rz, 0deg) * 0.7)) scale(1.02);
+            10% {
+                transform: perspective(1200px) translateX(calc(var(--snap-x, 0px) * 0.95)) translateY(calc(var(--snap-y, 0px) * 0.95)) rotateX(calc(var(--snap-rx, 0deg) * 0.95)) rotateY(calc(var(--snap-ry, 0deg) * 0.95)) rotateZ(calc(var(--snap-rz, 0deg) * 0.95)) scale(1.04);
+                filter: brightness(1.05);
+            }
+            25% {
+                transform: perspective(1200px) translateX(calc(var(--snap-x, 0px) * 0.75)) translateY(calc(var(--snap-y, 0px) * 0.75)) rotateX(calc(var(--snap-rx, 0deg) * 0.75)) rotateY(calc(var(--snap-ry, 0deg) * 0.75)) rotateZ(calc(var(--snap-rz, 0deg) * 0.75)) scale(1.02);
                 filter: brightness(0.95);
             }
-            40% {
-                transform: perspective(1200px) translateX(calc(var(--snap-x, 0px) * 0.3)) translateY(calc(var(--snap-y, 0px) * 0.3)) rotateX(calc(var(--snap-rx, 0deg) * 0.3)) rotateY(calc(var(--snap-ry, 0deg) * 0.3)) rotateZ(calc(var(--snap-rz, 0deg) * 0.3)) scale(0.98);
+            45% {
+                transform: perspective(1200px) translateX(calc(var(--snap-x, 0px) * 0.35)) translateY(calc(var(--snap-y, 0px) * 0.35)) rotateX(calc(var(--snap-rx, 0deg) * 0.35)) rotateY(calc(var(--snap-ry, 0deg) * 0.35)) rotateZ(calc(var(--snap-rz, 0deg) * 0.35)) scale(0.98);
                 filter: brightness(0.80);
             }
-            70% {
-                transform: perspective(1200px) translateX(calc(var(--snap-x, 0px) * -0.1)) translateY(calc(var(--snap-y, 0px) * -0.1)) rotateX(calc(var(--snap-rx, 0deg) * -0.1)) rotateY(calc(var(--snap-ry, 0deg) * -0.1)) rotateZ(calc(var(--snap-rz, 0deg) * -0.1)) scale(1.01);
-                filter: brightness(0.78);
+            60% {
+                transform: perspective(1200px) translateX(calc(var(--snap-x, 0px) * 0.1)) translateY(calc(var(--snap-y, 0px) * 0.1)) rotateX(calc(var(--snap-rx, 0deg) * 0.1)) rotateY(calc(var(--snap-ry, 0deg) * 0.1)) rotateZ(calc(var(--snap-rz, 0deg) * 0.1)) scale(1.01);
+                filter: brightness(0.76);
+            }
+            80% {
+                transform: perspective(1200px) translateX(calc(var(--snap-x, 0px) * -0.05)) translateY(calc(var(--snap-y, 0px) * -0.05)) rotateX(calc(var(--snap-rx, 0deg) * -0.05)) rotateY(calc(var(--snap-ry, 0deg) * -0.05)) rotateZ(calc(var(--snap-rz, 0deg) * -0.05)) scale(0.99);
+                filter: brightness(0.74);
             }
             100% {
                 opacity: 1;
@@ -1143,13 +1181,13 @@
     </div>
 
     <script>
-        // Create fizzy particles during transitions
+        // Create fizzy particles during transitions - improved particle effects
         function createFizzyParticles() {
             const container = document.getElementById('fizzContainer');
             container.innerHTML = ''; // Clear existing particles
             container.classList.add('active');
             
-            const particleCount = 50;
+            const particleCount = 80;
             const centerX = window.innerWidth / 2;
             const centerY = window.innerHeight / 2;
             
@@ -1157,15 +1195,15 @@
                 const particle = document.createElement('div');
                 particle.className = 'fizz-dot';
                 
-                // Random position around the center
-                const angle = (Math.PI * 2 * i) / particleCount + Math.random() * 0.5;
-                const distance = Math.random() * 200 + 50;
+                // Radial burst pattern with variation
+                const angle = (Math.PI * 2 * i) / particleCount + (Math.random() - 0.5) * 0.3;
+                const distance = Math.random() * 300 + 30;
                 const x = centerX + Math.cos(angle) * distance;
                 const y = centerY + Math.sin(angle) * distance;
                 
                 particle.style.left = x + 'px';
                 particle.style.top = y + 'px';
-                particle.style.animationDelay = Math.random() * 0.3 + 's';
+                particle.style.animationDelay = Math.random() * 0.4 + 's';
                 
                 container.appendChild(particle);
             }
@@ -1173,7 +1211,7 @@
             // Hide particles after animation
             setTimeout(() => {
                 container.classList.remove('active');
-            }, 1600);
+            }, 1900);
         }
 
         // Function to initialize/reset page state
@@ -1185,7 +1223,7 @@
             overlay.classList.remove('startup', 'startup-reveal', 'exit-start', 'exit-cover');
             overlay.style.display = 'block';
             
-            // Start with iris closed (small hole)
+            // Start with iris closed (circle 0%)
             overlay.classList.add('startup');
             
             // Ensure content is hidden initially
@@ -1194,17 +1232,17 @@
             // Create fizzy particles for startup
             createFizzyParticles();
             
-            // After a brief moment, open the iris to reveal content
+            // After brief moment to show closed iris, open it to reveal content
             setTimeout(() => {
                 overlay.classList.remove('startup');
                 overlay.classList.add('startup-reveal');
                 mainContent.classList.remove('content-hidden');
-            }, 200);
+            }, 150);
             
             // Hide overlay after iris fully opens
             setTimeout(() => {
                 overlay.style.display = 'none';
-            }, 1000);
+            }, 1050);
         }
 
         // Copyright warning functionality
@@ -1339,7 +1377,7 @@
             // Navigate after iris fully closes
             setTimeout(() => {
                 window.location.href = url;
-            }, 850);
+            }, 950);
         }
         
         function createFizzParticles(element) {
