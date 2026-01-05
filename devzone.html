@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>v.2</title>
+	<title>v.3</title>
 	<style>
 		* {
 			margin: 0;
@@ -27,13 +27,15 @@
 		}
 		.frame-wholefill {
 			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
+			top: 32px;
+			left: 32px;
+			right: 32px;
+			bottom: 32px;
 			background-image: url('assets/site-plate/plate-wholefill.png');
 			background-repeat: repeat;
 			background-size: 32px 32px;
+			image-rendering: pixelated;
+			image-rendering: crisp-edges;
 		}
 		.frame-borders {
 			position: absolute;
@@ -51,6 +53,8 @@
 			background-image: url('assets/site-plate/plate-border-top.png');
 			background-repeat: no-repeat;
 			background-size: 100% 100%;
+			image-rendering: pixelated;
+			image-rendering: crisp-edges;
 		}
 		.border-bottom {
 			position: absolute;
@@ -61,6 +65,8 @@
 			background-image: url('assets/site-plate/plate-border-bottom.png');
 			background-repeat: no-repeat;
 			background-size: 100% 100%;
+			image-rendering: pixelated;
+			image-rendering: crisp-edges;
 		}
 		.border-left {
 			position: absolute;
@@ -71,6 +77,8 @@
 			background-image: url('assets/site-plate/plate-border-left.png');
 			background-repeat: no-repeat;
 			background-size: 100% 100%;
+			image-rendering: pixelated;
+			image-rendering: crisp-edges;
 		}
 		.border-right {
 			position: absolute;
@@ -81,6 +89,8 @@
 			background-image: url('assets/site-plate/plate-border-right.png');
 			background-repeat: no-repeat;
 			background-size: 100% 100%;
+			image-rendering: pixelated;
+			image-rendering: crisp-edges;
 		}
 		.corner {
 			position: absolute;
@@ -88,6 +98,8 @@
 			height: 32px;
 			background-repeat: no-repeat;
 			background-size: contain;
+			image-rendering: pixelated;
+			image-rendering: crisp-edges;
 		}
 		.corner-top-left {
 			top: 0;
