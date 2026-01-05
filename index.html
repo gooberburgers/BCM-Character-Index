@@ -57,80 +57,49 @@
             z-index: 1;
         }
 
-        /* Mask Circle Transition - Expanding/Contracting Circle Reveal */
-        .mask-circle {
+        /* Elevator Door Transition - Left and Right Sliding Panels */
+        .transition-panel {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            width: 100vw;
+            top: 0;
+            width: 50vw;
             height: 100vh;
+            background: #000;
             z-index: 9999;
             pointer-events: none;
-            background-image: url('assets/maskcircle.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            transform: translate(-50%, -50%) scale(0.005);
-            transform-origin: center center;
-            transition: transform 0.9s cubic-bezier(0.36, 0, 0.66, 1);
-            filter: drop-shadow(0 0 0 150vmin rgba(0, 0, 0, 1));
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8), 0 0 60px rgba(0, 0, 0, 0.9);
+            transition: transform 0.85s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        .mask-circle.startup {
-            transform: translate(-50%, -50%) scale(8);
-            filter: drop-shadow(0 0 0 150vmin rgba(0, 0, 0, 1));
-        }
-
-        .mask-circle.startup-reveal {
-            transform: translate(-50%, -50%) scale(0.005);
-            filter: drop-shadow(0 0 0 150vmin rgba(0, 0, 0, 1));
-        }
-
-        .mask-circle.exit-start {
-            transform: translate(-50%, -50%) scale(0.005);
-            filter: drop-shadow(0 0 0 150vmin rgba(0, 0, 0, 1));
-        }
-
-        .mask-circle.exit-cover {
-            transform: translate(-50%, -50%) scale(0.005);
-            filter: drop-shadow(0 0 0 150vmin rgba(0, 0, 0, 1));
-        }
-
-        /* Border elements - now using filter-based approach on mask-circle */
-        .mask-border {
-            position: fixed;
-            background: transparent;
-            z-index: 9998;
-            pointer-events: none;
-            display: none;
-        }
-
-        .mask-border-top {
-            top: 0;
+        .transition-panel-left {
             left: 0;
-            width: 100vw;
-            height: calc(50vh - 50vmin);
+            transform: translateX(0);
         }
 
-        .mask-border-bottom {
-            bottom: 0;
-            left: 0;
-            width: 100vw;
-            height: calc(50vh - 50vmin);
-        }
-
-        .mask-border-left {
-            top: 0;
-            left: 0;
-            width: calc(50vw - 50vmin);
-            height: 100vh;
-        }
-
-        .mask-border-right {
-            top: 0;
+        .transition-panel-right {
             right: 0;
-            width: calc(50vw - 50vmin);
-            height: 100vh;
+            transform: translateX(0);
+        }
+
+        /* Startup - doors are covering, then slide out */
+        .transition-panel.startup-reveal {
+            pointer-events: none;
+        }
+
+        .transition-panel-left.startup-reveal {
+            transform: translateX(-100%);
+        }
+
+        .transition-panel-right.startup-reveal {
+            transform: translateX(100%);
+        }
+
+        /* Exit - doors slide back in to cover */
+        .transition-panel-left.exit-cover {
+            transform: translateX(0);
+        }
+
+        .transition-panel-right.exit-cover {
+            transform: translateX(0);
         }
 
         /* Fizzy Transition Particles */
@@ -1028,14 +997,9 @@
     </style>
 </head>
 <body>
-    <!-- Mask Circle Transition Overlay -->
-    <div class="mask-circle" id="maskCircle"></div>
-    
-    <!-- Mask Circle Border Elements -->
-    <div class="mask-border mask-border-top" id="maskBorderTop"></div>
-    <div class="mask-border mask-border-bottom" id="maskBorderBottom"></div>
-    <div class="mask-border mask-border-left" id="maskBorderLeft"></div>
-    <div class="mask-border mask-border-right" id="maskBorderRight"></div>
+    <!-- Elevator Door Transition Panels -->
+    <div class="transition-panel transition-panel-left" id="transitionPanelLeft"></div>
+    <div class="transition-panel transition-panel-right" id="transitionPanelRight"></div>
     
     <!-- Fizzy Transition Particles -->
     <div class="fizz-container" id="fizzContainer"></div>
@@ -1264,32 +1228,38 @@
 
         // Function to initialize/reset page state
         function initializePage() {
-            const maskCircle = document.getElementById('maskCircle');
+            const panelLeft = document.getElementById('transitionPanelLeft');
+            const panelRight = document.getElementById('transitionPanelRight');
             const mainContent = document.getElementById('mainContent');
             
             // Reset all classes
-            maskCircle.classList.remove('startup', 'startup-reveal', 'exit-start', 'exit-cover');
-            maskCircle.style.display = 'block';
+            panelLeft.classList.remove('startup-reveal', 'exit-cover');
+            panelRight.classList.remove('startup-reveal', 'exit-cover');
+            panelLeft.style.display = 'block';
+            panelRight.style.display = 'block';
             
-            // Start with mask covering (scale 8)
-            maskCircle.classList.add('startup');
+            // Doors start covering the screen (already at translateX(0))
+            panelLeft.style.transform = 'translateX(0)';
+            panelRight.style.transform = 'translateX(0)';
             
-            // Ensure content is visible but masked
-            mainContent.classList.remove('content-hidden');
+            // Ensure content is hidden while doors are covering
+            mainContent.classList.add('content-hidden');
             
             // Create fizzy particles for startup
             createFizzyParticles();
             
-            // After brief moment, shrink mask to reveal content through the circle
+            // Slide doors out to reveal content
             setTimeout(() => {
-                maskCircle.classList.remove('startup');
-                maskCircle.classList.add('startup-reveal');
-            }, 150);
+                panelLeft.classList.add('startup-reveal');
+                panelRight.classList.add('startup-reveal');
+                mainContent.classList.remove('content-hidden');
+            }, 50);
             
-            // Hide overlay after mask fully shrinks
+            // Hide panels after they slide out
             setTimeout(() => {
-                maskCircle.style.display = 'none';
-            }, 1100);
+                panelLeft.style.display = 'none';
+                panelRight.style.display = 'none';
+            }, 950);
         }
 
         // Copyright warning functionality
@@ -1402,29 +1372,33 @@
         });
         
         function navigateToUrl(url) {
-            const maskCircle = document.getElementById('maskCircle');
+            const panelLeft = document.getElementById('transitionPanelLeft');
+            const panelRight = document.getElementById('transitionPanelRight');
             
-            // Show overlay and start with mask small (content visible)
-            maskCircle.style.display = 'block';
-            maskCircle.classList.remove('startup', 'startup-reveal', 'exit-cover');
-            maskCircle.classList.add('exit-start');
+            // Show panels and reset to center (covering)
+            panelLeft.style.display = 'block';
+            panelRight.style.display = 'block';
+            panelLeft.classList.remove('startup-reveal', 'exit-cover');
+            panelRight.classList.remove('startup-reveal', 'exit-cover');
+            panelLeft.style.transform = 'translateX(0)';
+            panelRight.style.transform = 'translateX(0)';
             
             // Create fizzy particles for exit transition
             createFizzyParticles();
             
-            // Force reflow to ensure initial state
-            void maskCircle.offsetWidth;
+            // Force reflow to ensure initial state is set
+            void panelLeft.offsetWidth;
             
-            // Grow the mask to cover everything
+            // Slide doors in to cover the screen
             setTimeout(() => {
-                maskCircle.classList.remove('exit-start');
-                maskCircle.classList.add('exit-cover');
+                panelLeft.classList.add('exit-cover');
+                panelRight.classList.add('exit-cover');
             }, 50);
             
-            // Navigate after mask fully covers
+            // Navigate after doors close
             setTimeout(() => {
                 window.location.href = url;
-            }, 1000);
+            }, 950);
         }
         
         function createFizzParticles(element) {
