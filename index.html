@@ -401,6 +401,24 @@
                         inset 0 1px 0 rgba(255, 255, 255, 0.1);
             user-select: none;
             touch-action: none;
+            animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0s backwards, ropeIdle 3.2s cubic-bezier(0.4, 0.0, 0.6, 1.0) 1.2s infinite;
+        }
+
+        @keyframes dropBounce {
+            0% { transform: translateY(-120px) scaleY(0.7) rotateZ(-8deg); opacity: 0; }
+            20% { transform: translateY(0px) scaleY(1.1) rotateZ(4deg); opacity: 1; }
+            40% { transform: translateY(10px) scaleY(0.95) rotateZ(-2deg); }
+            60% { transform: translateY(-6px) scaleY(1.05) rotateZ(2deg); }
+            80% { transform: translateY(0px) scaleY(1) rotateZ(0deg); }
+            100% { transform: translateY(0px) scaleY(1) rotateZ(0deg); }
+        }
+
+        @keyframes ropeIdle {
+            0% { transform: rotateZ(-2deg) translateY(0px); }
+            25% { transform: rotateZ(3deg) translateY(6px); }
+            50% { transform: rotateZ(-3deg) translateY(-6px); }
+            75% { transform: rotateZ(2deg) translateY(4px); }
+            100% { transform: rotateZ(-2deg) translateY(0px); }
         }
 
         .character-card.dragging {
@@ -411,7 +429,8 @@
         }
 
         .character-card.snapping-back {
-            animation: snapBack 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards !important;
+            animation: ropeIdle 3.2s cubic-bezier(0.4, 0.0, 0.6, 1.0) 0s infinite;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .character-card::before {
@@ -444,42 +463,12 @@
 
         /* Drop bounce entrance animation - Pulley/rope physics */
         @keyframes dropBounce {
-            0% {
-                opacity: 0;
-                transform: perspective(1200px) translateY(-600px) rotateX(75deg) rotateY(0deg) rotateZ(5deg);
-                filter: brightness(0.3);
-            }
-            10% {
-                opacity: 1;
-                transform: perspective(1200px) translateY(-500px) rotateX(60deg) rotateY(0deg) rotateZ(4deg);
-                filter: brightness(0.45);
-            }
-            35% {
-                opacity: 1;
-                transform: perspective(1200px) translateY(30px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
-                filter: brightness(1.0);
-            }
-            45% {
-                transform: perspective(1200px) translateY(-25px) rotateX(-5deg) rotateY(0deg) rotateZ(0deg);
-                filter: brightness(0.85);
-            }
-            55% {
-                transform: perspective(1200px) translateY(12px) rotateX(2deg) rotateY(0deg) rotateZ(0deg);
-                filter: brightness(0.90);
-            }
-            65% {
-                transform: perspective(1200px) translateY(-8px) rotateX(-1deg) rotateY(0deg) rotateZ(0deg);
-                filter: brightness(0.88);
-            }
-            75% {
-                transform: perspective(1200px) translateY(4px) rotateX(0.5deg) rotateY(0deg) rotateZ(0deg);
-                filter: brightness(0.87);
-            }
-            100% {
-                opacity: 1;
-                transform: perspective(1200px) translateY(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
-                filter: brightness(0.75);
-            }
+            0% { transform: translateY(-120px) scaleY(0.7) rotateZ(-8deg); opacity: 0; }
+            20% { transform: translateY(0px) scaleY(1.1) rotateZ(4deg); opacity: 1; }
+            40% { transform: translateY(10px) scaleY(0.95) rotateZ(-2deg); }
+            60% { transform: translateY(-6px) scaleY(1.05) rotateZ(2deg); }
+            80% { transform: translateY(0px) scaleY(1) rotateZ(0deg); }
+            100% { transform: translateY(0px) scaleY(1) rotateZ(0deg); }
         }
 
         /* Snap-back animation for released cards */
@@ -986,6 +975,30 @@
                 font-size: 1em;
             }
         }
+
+        .section-title, .copyright-title, .character-name, .play-game-button a, .cloudflare-text {
+    background: linear-gradient(180deg, #ffe9a3 0%, #ffe066 40%, #c9a14a 70%, #3a2f28 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    text-shadow:
+        0 2px 8px #3a2f28,
+        0 0 2px #c9a14a,
+        0 1px 0px #ffe066;
+}
+.section-title::after, .copyright-title::after, .character-name::after, .play-game-button a::after, .cloudflare-text::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; top: 0; bottom: 0;
+    z-index: -1;
+    background: linear-gradient(0deg, #3a2f28 0%, #c9a14a 60%, #ffe066 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0.5;
+    pointer-events: none;
+}
     </style>
 </head>
 <body>
@@ -1455,7 +1468,7 @@
             });
             // Force reflow to ensure initial state
             void panelLeft.offsetWidth;
-        }
+               }
         
         function createFizzParticles(element) {
             const rect = element.getBoundingClientRect();
@@ -1473,6 +1486,7 @@
                 // Remove particle after animation
                 setTimeout(() => {
                     if (particle.parentNode) {
+                       
                         particle.parentNode.removeChild(particle);
                     }
                 }, 3000);
