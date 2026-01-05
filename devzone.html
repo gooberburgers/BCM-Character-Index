@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>v.6</title>
+	<title>v.7</title>
 	<style>
 		* {
 			margin: 0;
@@ -144,6 +144,28 @@
 			left: 0;
 			right: 0;
 		}
+		/* Topbar Logo */
+		.topbar-logo {
+			position: absolute;
+			left: 20px;
+			top: 50%;
+			transform: translateY(-50%);
+			z-index: 15;
+		}
+		.topbar-logo img {
+			height: 80px;
+			width: auto;
+			cursor: pointer;
+			transition: opacity 0.2s;
+		}
+		.topbar-logo img:hover {
+			opacity: 0.8;
+		}
+		.topbar-logo a {
+			display: flex;
+			align-items: center;
+			text-decoration: none;
+		}
 		/* BCM Box Container */
 		.bcmbox {
 			position: relative;
@@ -183,6 +205,11 @@
 <body>
 	<!-- Topbar Frame -->
 	<div class="topbar">
+		<div class="topbar-logo">
+			<a href="index.html">
+				<img src="assets/snowglobe.png" alt="Home">
+			</a>
+		</div>
 		<div class="frame-wholefill"></div>
 		<div class="frame-borders">
 			<div class="border-top"></div>
