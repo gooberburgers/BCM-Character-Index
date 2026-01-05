@@ -358,14 +358,27 @@
             border-radius: 12px;
             padding: 15px;
             text-align: center;
-            cursor: pointer;
+            cursor: grab;
             transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
             position: relative;
             overflow: visible;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 
                         0 0 20px rgba(255, 107, 53, 0.15),
                         inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            animation: dropBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+            animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+            user-select: none;
+            touch-action: none;
+        }
+
+        .character-card.dragging {
+            cursor: grabbing;
+            z-index: 1000;
+            filter: brightness(1.15) drop-shadow(0 0 20px rgba(255, 107, 53, 0.6));
+            animation: none !important;
+        }
+
+        .character-card.snapping-back {
+            animation: snapBack 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards !important;
         }
 
         .character-card::before {
@@ -386,39 +399,78 @@
             opacity: 1;
         }
 
-        .character-card:nth-child(3) { animation: dropBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0s backwards, wobble1 3.2s cubic-bezier(0.4, 0.0, 0.6, 1.0) 0.8s infinite; }
-        .character-card:nth-child(4) { animation: dropBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.05s backwards, wobble2 3.8s cubic-bezier(0.34, 0.1, 0.68, 0.9) 0.8s infinite; }
-        .character-card:nth-child(5) { animation: dropBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s backwards, wobble3 4.5s cubic-bezier(0.42, 0.0, 0.58, 1.0) 0.8s infinite; }
-        .character-card:nth-child(6) { animation: dropBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s backwards, wobble4 3.5s cubic-bezier(0.37, 0.05, 0.63, 0.95) 0.8s infinite; }
-        .character-card:nth-child(7) { animation: dropBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s backwards, wobble5 4.2s cubic-bezier(0.39, 0.08, 0.64, 0.92) 0.8s infinite; }
-        .character-card:nth-child(8) { animation: dropBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.25s backwards, wobble6 3.9s cubic-bezier(0.43, 0.02, 0.57, 0.98) 0.8s infinite; }
-        .character-card:nth-child(9) { animation: dropBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s backwards, wobble1 4.1s cubic-bezier(0.35, 0.12, 0.65, 0.88) 0.8s infinite; }
-        .character-card:nth-child(10) { animation: dropBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s backwards, wobble2 3.6s cubic-bezier(0.41, 0.06, 0.59, 0.94) 0.8s infinite; }
-        .character-card:nth-child(n+11) { animation: dropBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s backwards, wobble3 3.7s cubic-bezier(0.38, 0.09, 0.62, 0.91) 0.8s infinite; }
+        .character-card:nth-child(3) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0s backwards, wobble1 3.2s cubic-bezier(0.4, 0.0, 0.6, 1.0) 1.2s infinite; }
+        .character-card:nth-child(4) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.05s backwards, wobble2 3.8s cubic-bezier(0.34, 0.1, 0.68, 0.9) 1.2s infinite; }
+        .character-card:nth-child(5) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s backwards, wobble3 4.5s cubic-bezier(0.42, 0.0, 0.58, 1.0) 1.2s infinite; }
+        .character-card:nth-child(6) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s backwards, wobble4 3.5s cubic-bezier(0.37, 0.05, 0.63, 0.95) 1.2s infinite; }
+        .character-card:nth-child(7) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s backwards, wobble5 4.2s cubic-bezier(0.39, 0.08, 0.64, 0.92) 1.2s infinite; }
+        .character-card:nth-child(8) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.25s backwards, wobble6 3.9s cubic-bezier(0.43, 0.02, 0.57, 0.98) 1.2s infinite; }
+        .character-card:nth-child(9) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s backwards, wobble1 4.1s cubic-bezier(0.35, 0.12, 0.65, 0.88) 1.2s infinite; }
+        .character-card:nth-child(10) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s backwards, wobble2 3.6s cubic-bezier(0.41, 0.06, 0.59, 0.94) 1.2s infinite; }
+        .character-card:nth-child(n+11) { animation: dropBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s backwards, wobble3 3.7s cubic-bezier(0.38, 0.09, 0.62, 0.91) 1.2s infinite; }
 
-        /* Drop bounce entrance animation */
+        /* Drop bounce entrance animation - Pulley/rope physics */
         @keyframes dropBounce {
             0% {
                 opacity: 0;
-                transform: perspective(1200px) translateY(-200px) rotateX(45deg) rotateY(0deg) rotateZ(0deg);
-                filter: brightness(0.5);
+                transform: perspective(1200px) translateY(-600px) rotateX(75deg) rotateY(0deg) rotateZ(5deg);
+                filter: brightness(0.3);
             }
-            50% {
+            10% {
                 opacity: 1;
-                transform: perspective(1200px) translateY(10px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+                transform: perspective(1200px) translateY(-500px) rotateX(60deg) rotateY(0deg) rotateZ(4deg);
+                filter: brightness(0.45);
+            }
+            35% {
+                opacity: 1;
+                transform: perspective(1200px) translateY(30px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+                filter: brightness(1.0);
+            }
+            45% {
+                transform: perspective(1200px) translateY(-25px) rotateX(-5deg) rotateY(0deg) rotateZ(0deg);
                 filter: brightness(0.85);
             }
-            75% {
-                transform: perspective(1200px) translateY(-4px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
-                filter: brightness(0.80);
+            55% {
+                transform: perspective(1200px) translateY(12px) rotateX(2deg) rotateY(0deg) rotateZ(0deg);
+                filter: brightness(0.90);
             }
-            85% {
-                transform: perspective(1200px) translateY(2px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
-                filter: brightness(0.82);
+            65% {
+                transform: perspective(1200px) translateY(-8px) rotateX(-1deg) rotateY(0deg) rotateZ(0deg);
+                filter: brightness(0.88);
+            }
+            75% {
+                transform: perspective(1200px) translateY(4px) rotateX(0.5deg) rotateY(0deg) rotateZ(0deg);
+                filter: brightness(0.87);
             }
             100% {
                 opacity: 1;
                 transform: perspective(1200px) translateY(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+                filter: brightness(0.75);
+            }
+        }
+
+        /* Snap-back animation for released cards */
+        @keyframes snapBack {
+            0% {
+                opacity: 1;
+                transform: perspective(1200px) translateX(var(--snap-x, 0px)) translateY(var(--snap-y, 0px)) rotateX(var(--snap-rx, 0deg)) rotateY(var(--snap-ry, 0deg)) rotateZ(var(--snap-rz, 0deg)) scale(1.05);
+                filter: brightness(1.1);
+            }
+            20% {
+                transform: perspective(1200px) translateX(calc(var(--snap-x, 0px) * 0.7)) translateY(calc(var(--snap-y, 0px) * 0.7)) rotateX(calc(var(--snap-rx, 0deg) * 0.7)) rotateY(calc(var(--snap-ry, 0deg) * 0.7)) rotateZ(calc(var(--snap-rz, 0deg) * 0.7)) scale(1.02);
+                filter: brightness(0.95);
+            }
+            40% {
+                transform: perspective(1200px) translateX(calc(var(--snap-x, 0px) * 0.3)) translateY(calc(var(--snap-y, 0px) * 0.3)) rotateX(calc(var(--snap-rx, 0deg) * 0.3)) rotateY(calc(var(--snap-ry, 0deg) * 0.3)) rotateZ(calc(var(--snap-rz, 0deg) * 0.3)) scale(0.98);
+                filter: brightness(0.80);
+            }
+            70% {
+                transform: perspective(1200px) translateX(calc(var(--snap-x, 0px) * -0.1)) translateY(calc(var(--snap-y, 0px) * -0.1)) rotateX(calc(var(--snap-rx, 0deg) * -0.1)) rotateY(calc(var(--snap-ry, 0deg) * -0.1)) rotateZ(calc(var(--snap-rz, 0deg) * -0.1)) scale(1.01);
+                filter: brightness(0.78);
+            }
+            100% {
+                opacity: 1;
+                transform: perspective(1200px) translateX(0px) translateY(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1);
                 filter: brightness(0.75);
             }
         }
@@ -1324,6 +1376,135 @@
                 }
             });
         });
+
+        // ===== CARD DRAG AND DROP WITH SNAP-BACK FUNCTIONALITY =====
+        let draggedCard = null;
+        let offsetX = 0;
+        let offsetY = 0;
+        let initialX = 0;
+        let initialY = 0;
+        const dragThreshold = 5;
+        let hasMoved = false;
+
+        allCards.forEach(card => {
+            card.addEventListener('mousedown', onCardMouseDown);
+            card.addEventListener('touchstart', onCardTouchStart);
+        });
+
+        function onCardMouseDown(e) {
+            if (e.button !== 0) return; // Only left click
+            startDrag(e, e.clientX, e.clientY);
+        }
+
+        function onCardTouchStart(e) {
+            const touch = e.touches[0];
+            startDrag(e, touch.clientX, touch.clientY);
+        }
+
+        function startDrag(e, clientX, clientY) {
+            draggedCard = this;
+            
+            // Store initial position
+            const rect = draggedCard.getBoundingClientRect();
+            initialX = clientX;
+            initialY = clientY;
+            offsetX = clientX - rect.left;
+            offsetY = clientY - rect.top;
+            hasMoved = false;
+
+            // Add dragging class
+            draggedCard.classList.add('dragging');
+            draggedCard.style.position = 'fixed';
+            draggedCard.style.zIndex = '1000';
+
+            // Add event listeners
+            document.addEventListener('mousemove', onCardMouseMove);
+            document.addEventListener('touchmove', onCardTouchMove);
+            document.addEventListener('mouseup', onCardMouseUp);
+            document.addEventListener('touchend', onCardTouchEnd);
+        }
+
+        function onCardMouseMove(e) {
+            if (!draggedCard) return;
+            moveDraggedCard(e.clientX, e.clientY);
+        }
+
+        function onCardTouchMove(e) {
+            if (!draggedCard) return;
+            const touch = e.touches[0];
+            moveDraggedCard(touch.clientX, touch.clientY);
+        }
+
+        function moveDraggedCard(clientX, clientY) {
+            // Check if moved beyond threshold
+            const distX = Math.abs(clientX - initialX);
+            const distY = Math.abs(clientY - initialY);
+            if (distX > dragThreshold || distY > dragThreshold) {
+                hasMoved = true;
+            }
+
+            draggedCard.style.left = (clientX - offsetX) + 'px';
+            draggedCard.style.top = (clientY - offsetY) + 'px';
+        }
+
+        function onCardMouseUp(e) {
+            if (!draggedCard) return;
+            endDrag();
+        }
+
+        function onCardTouchEnd(e) {
+            if (!draggedCard) return;
+            endDrag();
+        }
+
+        function endDrag() {
+            if (!draggedCard) return;
+
+            // Remove event listeners
+            document.removeEventListener('mousemove', onCardMouseMove);
+            document.removeEventListener('touchmove', onCardTouchMove);
+            document.removeEventListener('mouseup', onCardMouseUp);
+            document.removeEventListener('touchend', onCardTouchEnd);
+
+            // If card wasn't moved significantly, treat as click
+            if (!hasMoved) {
+                const url = draggedCard.getAttribute('data-url');
+                if (url) {
+                    navigateToUrl(url);
+                }
+                draggedCard.classList.remove('dragging');
+                draggedCard = null;
+                return;
+            }
+
+            // Calculate snap-back values
+            const currentRect = draggedCard.getBoundingClientRect();
+            const snapX = -(currentRect.left);
+            const snapY = -(currentRect.top);
+
+            // Set CSS variables for snap-back animation
+            draggedCard.style.setProperty('--snap-x', snapX + 'px');
+            draggedCard.style.setProperty('--snap-y', snapY + 'px');
+            draggedCard.style.setProperty('--snap-rx', '0deg');
+            draggedCard.style.setProperty('--snap-ry', '0deg');
+            draggedCard.style.setProperty('--snap-rz', '0deg');
+
+            // Add snapping back class
+            draggedCard.classList.add('snapping-back');
+            draggedCard.classList.remove('dragging');
+
+            // Reset position
+            draggedCard.style.position = 'relative';
+            draggedCard.style.left = '0';
+            draggedCard.style.top = '0';
+            draggedCard.style.zIndex = 'auto';
+
+            // Remove snapping class after animation completes
+            setTimeout(() => {
+                draggedCard.classList.remove('snapping-back');
+                draggedCard = null;
+            }, 700);
+        }
     </script>
 </body>
 </html>
