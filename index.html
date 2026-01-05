@@ -234,7 +234,7 @@
             width: 100%;
             padding: 12px 45px 12px 15px;
             background-image: url('assets/V4R_BackgroundPlate.png');
-            background-size: cover;
+            background-size: 100% 100%;
             background-repeat: no-repeat;
             background-position: center;
             filter: brightness(0.6) contrast(1.2);
@@ -243,6 +243,7 @@
             font-size: 16px;
             outline: none;
             transition: all 0.3s ease;
+            height: 40px;
         }
 
         .search-box:focus {
@@ -265,6 +266,10 @@
             margin-top: 100px;
             padding: 20px;
             transition: opacity 0.3s ease;
+            background-image: url('assets/V4R_BackgroundPlate.png');
+            background-size: cover;
+            background-repeat: repeat;
+            background-attachment: fixed;
         }
 
         
@@ -309,9 +314,9 @@
         }
 
         @keyframes frameSwing {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(0.5deg); }
-            75% { transform: rotate(-0.5deg); }
+            0%, 100% { transform: perspective(1200px) rotateY(0deg) rotateX(0deg); }
+            25% { transform: perspective(1200px) rotateY(2deg) rotateX(0.5deg); }
+            75% { transform: perspective(1200px) rotateY(-2deg) rotateX(-0.5deg); }
         }
 
         .character-card {
@@ -336,8 +341,8 @@
         }
 
         @keyframes cardFloat {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-8px) rotate(0.5deg); }
+            0%, 100% { transform: perspective(1000px) translateY(0px) rotateX(0deg) rotateZ(0deg); }
+            50% { transform: perspective(1000px) translateY(-12px) rotateX(2deg) rotateZ(0.5deg); }
         }
 
         .character-card:hover {
