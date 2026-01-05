@@ -1238,15 +1238,18 @@
             panelLeft.style.display = 'block';
             panelRight.style.display = 'block';
             
-            // Doors start covering the screen (already at translateX(0))
-            panelLeft.style.transform = 'translateX(0)';
-            panelRight.style.transform = 'translateX(0)';
+            // Clear inline transforms to let CSS classes control the animation
+            panelLeft.style.transform = '';
+            panelRight.style.transform = '';
             
             // Ensure content is hidden while doors are covering
             mainContent.classList.add('content-hidden');
             
             // Create fizzy particles for startup
             createFizzyParticles();
+            
+            // Force reflow to ensure initial state
+            void panelLeft.offsetWidth;
             
             // Slide doors out to reveal content
             setTimeout(() => {
@@ -1375,18 +1378,20 @@
             const panelLeft = document.getElementById('transitionPanelLeft');
             const panelRight = document.getElementById('transitionPanelRight');
             
-            // Show panels and reset to center (covering)
+            // Show panels and remove animation classes to reset to covering state
             panelLeft.style.display = 'block';
             panelRight.style.display = 'block';
             panelLeft.classList.remove('startup-reveal', 'exit-cover');
             panelRight.classList.remove('startup-reveal', 'exit-cover');
-            panelLeft.style.transform = 'translateX(0)';
-            panelRight.style.transform = 'translateX(0)';
+            
+            // Clear inline styles to let default CSS control positioning
+            panelLeft.style.transform = '';
+            panelRight.style.transform = '';
             
             // Create fizzy particles for exit transition
             createFizzyParticles();
             
-            // Force reflow to ensure initial state is set
+            // Force reflow to ensure initial state
             void panelLeft.offsetWidth;
             
             // Slide doors in to cover the screen
