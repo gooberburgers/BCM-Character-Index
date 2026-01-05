@@ -129,40 +129,32 @@
             animation: fizzMove 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         }
 
-        .fizz-dot:nth-child(2n) {
-            background: #ff8c5a;
-            box-shadow: 0 0 12px rgba(255, 140, 90, 0.95), 0 0 25px rgba(255, 107, 53, 0.5);
-            animation-duration: 1.3s;
-        }
-
-        .fizz-dot:nth-child(3n) {
-            background: #ffead0;
-            box-shadow: 0 0 18px rgba(255, 234, 208, 0.85), 0 0 35px rgba(102, 51, 153, 0.3);
-            animation-duration: 1.7s;
-        }
-
-        .fizz-dot:nth-child(4n) {
-            width: 6px;
-            height: 6px;
+        .fizz-star {
+            width: 12px;
+            height: 12px;
             background: #fff0e6;
-            box-shadow: 0 0 10px rgba(255, 240, 230, 0.8), 0 0 20px rgba(255, 107, 53, 0.3);
-            animation-duration: 1.1s;
+            position: absolute;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            box-shadow: 0 0 18px #ffead0, 0 0 30px #ff8c5a;
+            animation: fizzMove 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         }
 
-        .fizz-dot:nth-child(5n) {
+        .fizz-sparkle {
             width: 10px;
             height: 10px;
-            background: #ff6b35;
-            box-shadow: 0 0 20px rgba(255, 107, 53, 0.9), 0 0 40px rgba(255, 107, 53, 0.5);
-            animation-duration: 1.8s;
+            background: none;
+            position: absolute;
+            border-radius: 50%;
+            box-shadow: 0 0 20px #ffd885, 0 0 40px #ff6b35;
+            border: 2px solid #ffead0;
+            animation: fizzMove 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         }
 
-        .fizz-dot:nth-child(6n) {
-            width: 5px;
-            height: 5px;
-            background: #ffd885;
-            box-shadow: 0 0 8px rgba(255, 216, 133, 0.8), 0 0 16px rgba(102, 51, 153, 0.4);
-            animation-duration: 0.9s;
+        .fizz-scribble {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            animation: fizzMove 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         }
 
         @keyframes fizzMove {
@@ -1194,32 +1186,94 @@
 
     <script>
         // Create fizzy particles during transitions - improved particle effects
-        function createFizzyParticles() {
+        function createFizzyParticles(doorAction = null) {
             const container = document.getElementById('fizzContainer');
-            container.innerHTML = ''; // Clear existing particles
+            container.innerHTML = '';
             container.classList.add('active');
-            
+
             const particleCount = 80;
             const centerX = window.innerWidth / 2;
             const centerY = window.innerHeight / 2;
-            
+            const panelLeftEdge = window.innerWidth * 0.5 * 0.05;
+            const panelRightEdge = window.innerWidth * 0.95;
+
+            const shapes = ['fizz-dot', 'fizz-star', 'fizz-sparkle', 'fizz-scribble'];
+
             for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'fizz-dot';
-                
+                const shape = shapes[Math.floor(Math.random() * shapes.length)];
+                let particle;
+                if (shape === 'fizz-scribble') {
+                    particle = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                    particle.setAttribute('width', '16');
+                    particle.setAttribute('height', '16');
+                    particle.classList.add('fizz-scribble');
+                    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    path.setAttribute('d', 'M2,8 Q8,2 14,8 Q8,14 2,8');
+                    path.setAttribute('stroke', '#ff8c5a');
+                    path.setAttribute('stroke-width', '2');
+                    path.setAttribute('fill', 'none');
+                    particle.appendChild(path);
+                } else if (shape === 'fizz-star') {
+                    particle = document.createElement('div');
+                    particle.className = 'fizz-star';
+                } else if (shape === 'fizz-sparkle') {
+                    particle = document.createElement('div');
+                    particle.className = 'fizz-sparkle';
+                } else {
+                    particle = document.createElement('div');
+                    particle.className = 'fizz-dot';
+                }
+
                 // Radial burst pattern with variation
                 const angle = (Math.PI * 2 * i) / particleCount + (Math.random() - 0.5) * 0.3;
                 const distance = Math.random() * 300 + 30;
                 const x = centerX + Math.cos(angle) * distance;
                 const y = centerY + Math.sin(angle) * distance;
-                
+
+                particle.style.position = 'absolute';
                 particle.style.left = x + 'px';
                 particle.style.top = y + 'px';
                 particle.style.animationDelay = Math.random() * 0.4 + 's';
-                
+
+                // Tag for door physics
+                particle.dataset.x = x;
+                particle.dataset.y = y;
+                // Determine which door is closer
+                particle.dataset.door = (x < window.innerWidth / 2) ? 'left' : 'right';
+
                 container.appendChild(particle);
             }
-            
+
+            // Animate particles with doors
+            if (doorAction === 'close') {
+                // Squash/fade particles near doors
+                setTimeout(() => {
+                    Array.from(container.children).forEach(particle => {
+                        const x = parseFloat(particle.dataset.x);
+                        if ((particle.dataset.door === 'left' && x < window.innerWidth * 0.25) ||
+                            (particle.dataset.door === 'right' && x > window.innerWidth * 0.75)) {
+                            particle.style.transition = 'transform 0.7s, opacity 0.7s';
+                            particle.style.transform = 'scaleX(2) scaleY(0.3)';
+                            particle.style.opacity = '0.2';
+                        }
+                    });
+                }, 200);
+            } else if (doorAction === 'open') {
+                // Drag/fly particles with doors
+                setTimeout(() => {
+                    Array.from(container.children).forEach(particle => {
+                        const x = parseFloat(particle.dataset.x);
+                        if (particle.dataset.door === 'left') {
+                            particle.style.transition = 'transform 1.1s cubic-bezier(0.25,0.46,0.45,0.94)';
+                            particle.style.transform = 'translateX(-300px) rotate(-60deg) scale(0.7)';
+                        } else {
+                            particle.style.transition = 'transform 1.1s cubic-bezier(0.25,0.46,0.45,0.94)';
+                            particle.style.transform = 'translateX(300px) rotate(60deg) scale(0.7)';
+                        }
+                    });
+                }, 200);
+            }
+
             // Hide particles after animation
             setTimeout(() => {
                 container.classList.remove('active');
@@ -1244,7 +1298,7 @@
             mainContent.classList.add('content-hidden');
 
             // Create fizzy particles for startup
-            createFizzyParticles();
+            createFizzyParticles('open');
             // Force reflow to ensure initial state
             void panelLeft.offsetWidth;
 
@@ -1384,7 +1438,7 @@
             panelRight.style.transform = '';
 
             // Create fizzy particles for exit transition
-            createFizzyParticles();
+            createFizzyParticles('close');
             // Force reflow to ensure initial state
             void panelLeft.offsetWidth;
 
@@ -1530,7 +1584,7 @@
                 const url = draggedCard.getAttribute('data-url');
                 if (url) {
                     navigateToUrl(url);
-                }
+                               }
                 draggedCard.classList.remove('dragging');
                 draggedCard = null;
                 return;
@@ -1543,7 +1597,7 @@
 
             // Set CSS variables for snap-back animation
             draggedCard.style.setProperty('--snap-x', snapX + 'px');
-            draggedCard.style.setProperty('--snap-y', snapY + 'px');
+            draggedCard.style.setProperty('--snap-y', snapY' + 'px');
             draggedCard.style.setProperty('--snap-rx', '0deg');
             draggedCard.style.setProperty('--snap-ry', '0deg');
             draggedCard.style.setProperty('--snap-rz', '0deg');
