@@ -57,9 +57,8 @@
             z-index: 1;
         }
 
-        /* Cartoon Iris Transition - Black Frame with Expanding Hole Uhh Hi burger. */
-        /* Kill people */
-        .iris-overlay {
+        /* Mask Circle Transition - Expanding/Contracting Circle Reveal */
+        .mask-circle {
             position: fixed;
             top: 50%;
             left: 50%;
@@ -67,26 +66,82 @@
             height: 100vh;
             z-index: 9999;
             pointer-events: none;
+            background-image: url('assets/maskcircle.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            transform: translate(-50%, -50%) scale(0.01);
+            transform-origin: center center;
+            transition: transform 0.9s cubic-bezier(0.36, 0, 0.66, 1);
+        }
+
+        .mask-circle.startup {
+            transform: translate(-50%, -50%) scale(0.01);
+        }
+
+        .mask-circle.startup-reveal {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .mask-circle.exit-start {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .mask-circle.exit-cover {
+            transform: translate(-50%, -50%) scale(0.01);
+        }
+
+        /* Border elements to fill exposed edges */
+        .mask-border {
+            position: fixed;
             background: #000;
-            transform: translate(-50%, -50%);
-            clip-path: circle(0% at 50% 50%);
-            transition: clip-path 0.9s cubic-bezier(0.36, 0, 0.66, 1);
+            z-index: 9998;
+            pointer-events: none;
+            transition: opacity 0.9s cubic-bezier(0.36, 0, 0.66, 1);
         }
 
-        .iris-overlay.startup {
-            clip-path: circle(0% at 50% 50%);
+        .mask-border.startup {
+            opacity: 1;
         }
 
-        .iris-overlay.startup-reveal {
-            clip-path: circle(100% at 50% 50%);
+        .mask-border.startup-reveal {
+            opacity: 0;
         }
 
-        .iris-overlay.exit-start {
-            clip-path: circle(100% at 50% 50%);
+        .mask-border.exit-start {
+            opacity: 0;
         }
 
-        .iris-overlay.exit-cover {
-            clip-path: circle(0% at 50% 50%);
+        .mask-border.exit-cover {
+            opacity: 1;
+        }
+
+        .mask-border-top {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50vh;
+        }
+
+        .mask-border-bottom {
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50vh;
+        }
+
+        .mask-border-left {
+            top: 0;
+            left: 0;
+            width: 50vw;
+            height: 100%;
+        }
+
+        .mask-border-right {
+            top: 0;
+            right: 0;
+            width: 50vw;
+            height: 100%;
         }
 
         /* Fizzy Transition Particles */
@@ -986,8 +1041,14 @@
     </style>
 </head>
 <body>
-    <!-- Cartoon Iris Transition Overlay -->
-    <div class="iris-overlay" id="irisOverlay"></div>
+    <!-- Mask Circle Transition Overlay -->
+    <div class="mask-circle" id="maskCircle"></div>
+    
+    <!-- Mask Circle Border Elements -->
+    <div class="mask-border mask-border-top" id="maskBorderTop"></div>
+    <div class="mask-border mask-border-bottom" id="maskBorderBottom"></div>
+    <div class="mask-border mask-border-left" id="maskBorderLeft"></div>
+    <div class="mask-border mask-border-right" id="maskBorderRight"></div>
     
     <!-- Fizzy Transition Particles -->
     <div class="fizz-container" id="fizzContainer"></div>
@@ -1216,15 +1277,19 @@
 
         // Function to initialize/reset page state
         function initializePage() {
-            const overlay = document.getElementById('irisOverlay');
+            const maskCircle = document.getElementById('maskCircle');
+            const borders = document.querySelectorAll('.mask-border');
             const mainContent = document.getElementById('mainContent');
             
-            // Reset all overlay classes
-            overlay.classList.remove('startup', 'startup-reveal', 'exit-start', 'exit-cover');
-            overlay.style.display = 'block';
+            // Reset all classes
+            maskCircle.classList.remove('startup', 'startup-reveal', 'exit-start', 'exit-cover');
+            borders.forEach(border => border.classList.remove('startup', 'startup-reveal', 'exit-start', 'exit-cover'));
+            maskCircle.style.display = 'block';
+            borders.forEach(border => border.style.display = 'block');
             
-            // Start with iris closed (circle 0%)
-            overlay.classList.add('startup');
+            // Start with mask closed (scale 0.01)
+            maskCircle.classList.add('startup');
+            borders.forEach(border => border.classList.add('startup'));
             
             // Ensure content is hidden initially
             mainContent.classList.add('content-hidden');
@@ -1232,16 +1297,21 @@
             // Create fizzy particles for startup
             createFizzyParticles();
             
-            // After brief moment to show closed iris, open it to reveal content
+            // After brief moment to show closed mask, open it to reveal content
             setTimeout(() => {
-                overlay.classList.remove('startup');
-                overlay.classList.add('startup-reveal');
+                maskCircle.classList.remove('startup');
+                maskCircle.classList.add('startup-reveal');
+                borders.forEach(border => {
+                    border.classList.remove('startup');
+                    border.classList.add('startup-reveal');
+                });
                 mainContent.classList.remove('content-hidden');
             }, 150);
             
-            // Hide overlay after iris fully opens
+            // Hide overlay after mask fully opens
             setTimeout(() => {
-                overlay.style.display = 'none';
+                maskCircle.style.display = 'none';
+                borders.forEach(border => border.style.display = 'none');
             }, 1050);
         }
 
@@ -1355,26 +1425,34 @@
         });
         
         function navigateToUrl(url) {
-            const overlay = document.getElementById('irisOverlay');
+            const maskCircle = document.getElementById('maskCircle');
+            const borders = document.querySelectorAll('.mask-border');
             
-            // Show overlay and start with iris open
-            overlay.style.display = 'block';
-            overlay.classList.remove('startup', 'startup-reveal', 'exit-cover');
-            overlay.classList.add('exit-start');
+            // Show overlay and start with mask open
+            maskCircle.style.display = 'block';
+            borders.forEach(border => border.style.display = 'block');
+            maskCircle.classList.remove('startup', 'startup-reveal', 'exit-cover');
+            borders.forEach(border => border.classList.remove('startup', 'startup-reveal', 'exit-cover'));
+            maskCircle.classList.add('exit-start');
+            borders.forEach(border => border.classList.add('exit-start'));
             
             // Create fizzy particles for exit transition
             createFizzyParticles();
             
             // Force reflow to ensure initial state
-            void overlay.offsetWidth;
+            void maskCircle.offsetWidth;
             
-            // Start closing the iris
+            // Start closing the mask
             setTimeout(() => {
-                overlay.classList.remove('exit-start');
-                overlay.classList.add('exit-cover');
+                maskCircle.classList.remove('exit-start');
+                maskCircle.classList.add('exit-cover');
+                borders.forEach(border => {
+                    border.classList.remove('exit-start');
+                    border.classList.add('exit-cover');
+                });
             }, 50);
             
-            // Navigate after iris fully closes
+            // Navigate after mask fully closes
             setTimeout(() => {
                 window.location.href = url;
             }, 950);
