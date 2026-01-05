@@ -337,66 +337,66 @@
 
         /* Dynamic wobble animations for each card */
         .character-card:nth-child(3) {
-            animation: wobble1 3.2s ease-in-out infinite;
+            animation: wobble1 3.2s cubic-bezier(0.4, 0.0, 0.6, 1.0) infinite;
         }
 
         .character-card:nth-child(4) {
-            animation: wobble2 3.8s ease-in-out infinite;
+            animation: wobble2 3.8s cubic-bezier(0.34, 0.1, 0.68, 0.9) infinite;
         }
 
         .character-card:nth-child(5) {
-            animation: wobble3 4.5s ease-in-out infinite;
+            animation: wobble3 4.5s cubic-bezier(0.42, 0.0, 0.58, 1.0) infinite;
         }
 
         .character-card:nth-child(6) {
-            animation: wobble4 3.5s ease-in-out infinite;
+            animation: wobble4 3.5s cubic-bezier(0.37, 0.05, 0.63, 0.95) infinite;
         }
 
         .character-card:nth-child(7) {
-            animation: wobble5 4.2s ease-in-out infinite;
+            animation: wobble5 4.2s cubic-bezier(0.39, 0.08, 0.64, 0.92) infinite;
         }
 
         .character-card:nth-child(8) {
-            animation: wobble6 3.9s ease-in-out infinite;
+            animation: wobble6 3.9s cubic-bezier(0.43, 0.02, 0.57, 0.98) infinite;
         }
 
         .character-card:nth-child(9) {
-            animation: wobble1 4.1s ease-in-out infinite;
+            animation: wobble1 4.1s cubic-bezier(0.35, 0.12, 0.65, 0.88) infinite;
         }
 
         .character-card:nth-child(10) {
-            animation: wobble2 3.6s ease-in-out infinite;
+            animation: wobble2 3.6s cubic-bezier(0.41, 0.06, 0.59, 0.94) infinite;
         }
 
         .character-card:nth-child(n+11) {
-            animation: wobble3 3.7s ease-in-out infinite;
+            animation: wobble3 3.7s cubic-bezier(0.38, 0.09, 0.62, 0.91) infinite;
         }
 
-        /* Wobble animations with realistic unstable movement and lighting changes */
+        /* Wobble animations with smooth blending and randomized intervals */
         @keyframes wobble1 {
             0% { 
                 transform: perspective(1000px) translateY(0px) rotateX(0deg) rotateZ(0deg) rotateY(0deg);
                 filter: brightness(0.75);
             }
-            15% { 
-                transform: perspective(1000px) translateY(-8px) rotateX(1.5deg) rotateZ(1.2deg) rotateY(1.5deg);
-                filter: brightness(0.85);
+            12% { 
+                transform: perspective(1000px) translateY(-9px) rotateX(1.2deg) rotateZ(0.9deg) rotateY(1.1deg);
+                filter: brightness(0.81);
             }
-            30% { 
-                transform: perspective(1000px) translateY(-14px) rotateX(2.5deg) rotateZ(-0.8deg) rotateY(-1.8deg);
-                filter: brightness(0.78);
-            }
-            50% { 
-                transform: perspective(1000px) translateY(-10px) rotateX(1.8deg) rotateZ(0.5deg) rotateY(0.8deg);
-                filter: brightness(0.82);
-            }
-            70% { 
-                transform: perspective(1000px) translateY(-6px) rotateX(-1.2deg) rotateZ(-1.5deg) rotateY(-1.2deg);
-                filter: brightness(0.88);
-            }
-            85% { 
-                transform: perspective(1000px) translateY(-11px) rotateX(-2deg) rotateZ(0.9deg) rotateY(1.1deg);
+            28% { 
+                transform: perspective(1000px) translateY(-14px) rotateX(2.4deg) rotateZ(-1.1deg) rotateY(-1.6deg);
                 filter: brightness(0.79);
+            }
+            45% { 
+                transform: perspective(1000px) translateY(-11px) rotateX(1.5deg) rotateZ(0.7deg) rotateY(0.9deg);
+                filter: brightness(0.83);
+            }
+            68% { 
+                transform: perspective(1000px) translateY(-7px) rotateX(-1.3deg) rotateZ(-1.4deg) rotateY(-1.3deg);
+                filter: brightness(0.87);
+            }
+            89% { 
+                transform: perspective(1000px) translateY(-12px) rotateX(-1.9deg) rotateZ(0.8deg) rotateY(1.0deg);
+                filter: brightness(0.78);
             }
             100% { 
                 transform: perspective(1000px) translateY(0px) rotateX(0deg) rotateZ(0deg) rotateY(0deg);
@@ -406,131 +406,139 @@
 
         @keyframes wobble2 {
             0% { 
-                transform: perspective(1000px) translateY(-2px) rotateX(0.5deg) rotateZ(-0.8deg) rotateY(-0.5deg);
-                filter: brightness(0.8);
+                transform: perspective(1000px) translateY(-2px) rotateX(0.6deg) rotateZ(-0.9deg) rotateY(-0.6deg);
+                filter: brightness(0.80);
             }
-            20% { 
-                transform: perspective(1000px) translateY(-12px) rotateX(2deg) rotateZ(1.5deg) rotateY(1.2deg);
-                filter: brightness(0.76);
+            18% { 
+                transform: perspective(1000px) translateY(-11px) rotateX(1.9deg) rotateZ(1.4deg) rotateY(1.1deg);
+                filter: brightness(0.77);
             }
-            40% { 
-                transform: perspective(1000px) translateY(-7px) rotateX(-1.5deg) rotateZ(-1.2deg) rotateY(-1.8deg);
-                filter: brightness(0.84);
+            35% { 
+                transform: perspective(1000px) translateY(-8px) rotateX(-1.4deg) rotateZ(-1.3deg) rotateY(-1.7deg);
+                filter: brightness(0.85);
             }
-            60% { 
-                transform: perspective(1000px) translateY(-13px) rotateX(1.8deg) rotateZ(0.9deg) rotateY(1.5deg);
+            52% { 
+                transform: perspective(1000px) translateY(-14px) rotateX(1.7deg) rotateZ(0.8deg) rotateY(1.4deg);
                 filter: brightness(0.79);
             }
-            80% { 
-                transform: perspective(1000px) translateY(-5px) rotateX(-1deg) rotateZ(-1.8deg) rotateY(-1.2deg);
+            71% { 
+                transform: perspective(1000px) translateY(-6px) rotateX(-0.9deg) rotateZ(-1.7deg) rotateY(-1.1deg);
                 filter: brightness(0.86);
             }
+            87% { 
+                transform: perspective(1000px) translateY(-13px) rotateX(2.1deg) rotateZ(0.6deg) rotateY(0.7deg);
+                filter: brightness(0.82);
+            }
             100% { 
-                transform: perspective(1000px) translateY(-2px) rotateX(0.5deg) rotateZ(-0.8deg) rotateY(-0.5deg);
-                filter: brightness(0.8);
+                transform: perspective(1000px) translateY(-2px) rotateX(0.6deg) rotateZ(-0.9deg) rotateY(-0.6deg);
+                filter: brightness(0.80);
             }
         }
 
         @keyframes wobble3 {
             0% { 
-                transform: perspective(1000px) translateY(-1px) rotateX(-0.8deg) rotateZ(0.5deg) rotateY(0.8deg);
+                transform: perspective(1000px) translateY(-1px) rotateX(-0.7deg) rotateZ(0.6deg) rotateY(0.9deg);
                 filter: brightness(0.82);
             }
-            25% { 
-                transform: perspective(1000px) translateY(-9px) rotateX(1.2deg) rotateZ(-1.8deg) rotateY(-1.5deg);
-                filter: brightness(0.77);
+            14% { 
+                transform: perspective(1000px) translateY(-10px) rotateX(1.3deg) rotateZ(-1.7deg) rotateY(-1.4deg);
+                filter: brightness(0.76);
             }
-            50% { 
-                transform: perspective(1000px) translateY(-15px) rotateX(2.2deg) rotateZ(1.1deg) rotateY(1.8deg);
-                filter: brightness(0.87);
+            32% { 
+                transform: perspective(1000px) translateY(-15px) rotateX(2.3deg) rotateZ(1.2deg) rotateY(1.9deg);
+                filter: brightness(0.88);
             }
-            75% { 
-                transform: perspective(1000px) translateY(-8px) rotateX(-1.5deg) rotateZ(-0.9deg) rotateY(-1.2deg);
+            57% { 
+                transform: perspective(1000px) translateY(-9px) rotateX(-1.6deg) rotateZ(-0.8deg) rotateY(-1.1deg);
                 filter: brightness(0.80);
             }
+            76% { 
+                transform: perspective(1000px) translateY(-12px) rotateX(0.8deg) rotateZ(1.5deg) rotateY(1.2deg);
+                filter: brightness(0.84);
+            }
             100% { 
-                transform: perspective(1000px) translateY(-1px) rotateX(-0.8deg) rotateZ(0.5deg) rotateY(0.8deg);
+                transform: perspective(1000px) translateY(-1px) rotateX(-0.7deg) rotateZ(0.6deg) rotateY(0.9deg);
                 filter: brightness(0.82);
             }
         }
 
         @keyframes wobble4 {
             0% { 
-                transform: perspective(1000px) translateY(0px) rotateX(1deg) rotateZ(-1.2deg) rotateY(0deg);
+                transform: perspective(1000px) translateY(0px) rotateX(1.1deg) rotateZ(-1.1deg) rotateY(0.1deg);
                 filter: brightness(0.78);
             }
-            18% { 
-                transform: perspective(1000px) translateY(-11px) rotateX(-2deg) rotateZ(0.8deg) rotateY(1.8deg);
-                filter: brightness(0.83);
+            19% { 
+                transform: perspective(1000px) translateY(-12px) rotateX(-1.8deg) rotateZ(0.9deg) rotateY(1.7deg);
+                filter: brightness(0.84);
             }
-            36% { 
-                transform: perspective(1000px) translateY(-6px) rotateX(1.8deg) rotateZ(-1.5deg) rotateY(-1.5deg);
-                filter: brightness(0.81);
+            41% { 
+                transform: perspective(1000px) translateY(-7px) rotateX(1.6deg) rotateZ(-1.6deg) rotateY(-1.4deg);
+                filter: brightness(0.82);
             }
-            54% { 
-                transform: perspective(1000px) translateY(-13px) rotateX(-1.2deg) rotateZ(1.2deg) rotateY(1.2deg);
+            63% { 
+                transform: perspective(1000px) translateY(-14px) rotateX(-1.1deg) rotateZ(1.3deg) rotateY(1.3deg);
                 filter: brightness(0.85);
             }
-            72% { 
-                transform: perspective(1000px) translateY(-7px) rotateX(2deg) rotateZ(-0.8deg) rotateY(-1.8deg);
-                filter: brightness(0.76);
+            82% { 
+                transform: perspective(1000px) translateY(-8px) rotateX(2.1deg) rotateZ(-0.7deg) rotateY(-1.9deg);
+                filter: brightness(0.77);
             }
             100% { 
-                transform: perspective(1000px) translateY(0px) rotateX(1deg) rotateZ(-1.2deg) rotateY(0deg);
+                transform: perspective(1000px) translateY(0px) rotateX(1.1deg) rotateZ(-1.1deg) rotateY(0.1deg);
                 filter: brightness(0.78);
             }
         }
 
         @keyframes wobble5 {
             0% { 
-                transform: perspective(1000px) translateY(-3px) rotateX(-1.2deg) rotateZ(0.9deg) rotateY(-1deg);
+                transform: perspective(1000px) translateY(-3px) rotateX(-1.1deg) rotateZ(1.0deg) rotateY(-1.1deg);
                 filter: brightness(0.81);
             }
-            22% { 
-                transform: perspective(1000px) translateY(-10px) rotateX(2.1deg) rotateZ(-1.6deg) rotateY(1.6deg);
-                filter: brightness(0.77);
+            16% { 
+                transform: perspective(1000px) translateY(-11px) rotateX(2.0deg) rotateZ(-1.7deg) rotateY(1.5deg);
+                filter: brightness(0.78);
             }
-            44% { 
-                transform: perspective(1000px) translateY(-12px) rotateX(-1.8deg) rotateZ(1.1deg) rotateY(-1.8deg);
-                filter: brightness(0.84);
+            38% { 
+                transform: perspective(1000px) translateY(-13px) rotateX(-1.7deg) rotateZ(1.2deg) rotateY(-1.7deg);
+                filter: brightness(0.85);
             }
-            66% { 
-                transform: perspective(1000px) translateY(-6px) rotateX(1.5deg) rotateZ(-0.9deg) rotateY(1.4deg);
-                filter: brightness(0.80);
+            58% { 
+                transform: perspective(1000px) translateY(-7px) rotateX(1.4deg) rotateZ(-1.0deg) rotateY(1.3deg);
+                filter: brightness(0.81);
             }
-            88% { 
-                transform: perspective(1000px) translateY(-14px) rotateX(-2deg) rotateZ(1.5deg) rotateY(-1.2deg);
-                filter: brightness(0.86);
+            79% { 
+                transform: perspective(1000px) translateY(-15px) rotateX(-2.1deg) rotateZ(1.6deg) rotateY(-1.3deg);
+                filter: brightness(0.87);
             }
             100% { 
-                transform: perspective(1000px) translateY(-3px) rotateX(-1.2deg) rotateZ(0.9deg) rotateY(-1deg);
+                transform: perspective(1000px) translateY(-3px) rotateX(-1.1deg) rotateZ(1.0deg) rotateY(-1.1deg);
                 filter: brightness(0.81);
             }
         }
 
         @keyframes wobble6 {
             0% { 
-                transform: perspective(1000px) translateY(-2px) rotateX(0.8deg) rotateZ(-0.6deg) rotateY(1.2deg);
+                transform: perspective(1000px) translateY(-2px) rotateX(0.9deg) rotateZ(-0.5deg) rotateY(1.3deg);
                 filter: brightness(0.79);
             }
-            17% { 
-                transform: perspective(1000px) translateY(-12px) rotateX(-1.9deg) rotateZ(1.4deg) rotateY(-1.5deg);
-                filter: brightness(0.83);
+            21% { 
+                transform: perspective(1000px) translateY(-13px) rotateX(-1.8deg) rotateZ(1.5deg) rotateY(-1.4deg);
+                filter: brightness(0.84);
             }
-            34% { 
-                transform: perspective(1000px) translateY(-8px) rotateX(2deg) rotateZ(-1.1deg) rotateY(1.8deg);
+            47% { 
+                transform: perspective(1000px) translateY(-9px) rotateX(2.2deg) rotateZ(-1.2deg) rotateY(1.9deg);
                 filter: brightness(0.82);
             }
-            51% { 
-                transform: perspective(1000px) translateY(-14px) rotateX(-1.5deg) rotateZ(0.8deg) rotateY(-1.1deg);
-                filter: brightness(0.76);
+            66% { 
+                transform: perspective(1000px) translateY(-15px) rotateX(-1.4deg) rotateZ(0.9deg) rotateY(-1.2deg);
+                filter: brightness(0.75);
             }
-            68% { 
-                transform: perspective(1000px) translateY(-7px) rotateX(1.6deg) rotateZ(-1.7deg) rotateY(1.5deg);
+            84% { 
+                transform: perspective(1000px) translateY(-6px) rotateX(1.7deg) rotateZ(-1.8deg) rotateY(1.6deg);
                 filter: brightness(0.88);
             }
             100% { 
-                transform: perspective(1000px) translateY(-2px) rotateX(0.8deg) rotateZ(-0.6deg) rotateY(1.2deg);
+                transform: perspective(1000px) translateY(-2px) rotateX(0.9deg) rotateZ(-0.5deg) rotateY(1.3deg);
                 filter: brightness(0.79);
             }
         }
