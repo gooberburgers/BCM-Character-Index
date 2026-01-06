@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>v.11</title>
+	<title>v.12</title>
 	<style>
 		* {
 			margin: 0;
@@ -194,7 +194,7 @@
 			z-index: 15;
 			display: flex;
 			align-items: center;
-			gap: 4px;
+			gap: 0px;
 		}
 		.bcmfont {
 			display: inline-block;
@@ -299,6 +299,7 @@
 				const span = document.createElement('span');
 				if (charInfo.space) {
 					span.className = 'bcmfont space';
+					span.style.backgroundImage = 'none';
 				} else {
 					span.className = 'bcmfont';
 					const posX = charInfo.col * 38;
