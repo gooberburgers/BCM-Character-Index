@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>v.8</title>
+	<title>v.9</title>
 	<style>
 		* {
 			margin: 0;
@@ -198,15 +198,15 @@
 		}
 		.bcmfont {
 			display: inline-block;
-			width: 32px;
-			height: 32px;
+			width: 38px;
+			height: 38px;
 			background-image: url('assets/site-font3.png');
 			background-repeat: no-repeat;
 			image-rendering: pixelated;
 			image-rendering: crisp-edges;
 		}
 		.bcmfont.space {
-			width: 16px;
+			width: 19px;
 		}
 		.bottom-right-text {
 			position: absolute;
@@ -267,19 +267,29 @@
 		<img src="assets/dwarfhotot.png" alt="rabbit">
 	</div>
 	<script>
-		// BCM Font character map and positions
+		// BCM Font character map and positions - 38px per character, 4 rows, 26 columns
 		const bcmFontMap = {
+			// Row 0 (top row - uppercase letters)
 			'Q': {row: 0, col: 0}, 'W': {row: 0, col: 1}, 'E': {row: 0, col: 2}, 'R': {row: 0, col: 3}, 'T': {row: 0, col: 4},
 			'Y': {row: 0, col: 5}, 'U': {row: 0, col: 6}, 'I': {row: 0, col: 7}, 'O': {row: 0, col: 8}, 'P': {row: 0, col: 9},
 			'A': {row: 0, col: 10}, 'S': {row: 0, col: 11}, 'D': {row: 0, col: 12}, 'F': {row: 0, col: 13}, 'G': {row: 0, col: 14},
 			'H': {row: 0, col: 15}, 'J': {row: 0, col: 16}, 'K': {row: 0, col: 17}, 'L': {row: 0, col: 18}, 'Z': {row: 0, col: 19},
 			'X': {row: 0, col: 20}, 'C': {row: 0, col: 21}, 'V': {row: 0, col: 22}, 'B': {row: 0, col: 23}, 'N': {row: 0, col: 24},
-			'M': {row: 0, col: 25}, '-': {row: 1, col: 0}, '_': {row: 1, col: 1}, '+': {row: 1, col: 2}, '&': {row: 1, col: 2},
-			'=': {row: 1, col: 3}, '?': {row: 1, col: 4}, '/': {row: 1, col: 5}, '>': {row: 1, col: 6}, '<': {row: 1, col: 7},
-			',': {row: 1, col: 8}, '[': {row: 1, col: 9}, ']': {row: 1, col: 10}, ';': {row: 1, col: 11}, ':': {row: 1, col: 12},
-			"'": {row: 1, col: 13}, '"': {row: 1, col: 14}, '!': {row: 1, col: 15}, '@': {row: 1, col: 16}, '#': {row: 1, col: 17},
-			'$': {row: 1, col: 18}, '%': {row: 1, col: 19}, '^': {row: 1, col: 20}, '*': {row: 1, col: 21}, '(': {row: 1, col: 22},
-			')': {row: 1, col: 23}, '\\': {row: 1, col: 24}, '|': {row: 1, col: 25}, ' ': {space: true}
+			'M': {row: 0, col: 25},
+			// Row 1 (numbers and symbols)
+			'0': {row: 1, col: 0}, '1': {row: 1, col: 1}, '2': {row: 1, col: 2}, '3': {row: 1, col: 3}, '4': {row: 1, col: 4},
+			'5': {row: 1, col: 5}, '6': {row: 1, col: 6}, '7': {row: 1, col: 7}, '8': {row: 1, col: 8}, '9': {row: 1, col: 9},
+			'-': {row: 1, col: 10}, '=': {row: 1, col: 11}, '+': {row: 1, col: 12}, '/': {row: 1, col: 13}, '\\': {row: 1, col: 14},
+			'>': {row: 1, col: 15}, '<': {row: 1, col: 16}, '[': {row: 1, col: 17}, ']': {row: 1, col: 18}, '{': {row: 1, col: 19},
+			'}': {row: 1, col: 20}, '|': {row: 1, col: 21}, ';': {row: 1, col: 22}, ':': {row: 1, col: 23}, '?': {row: 1, col: 24},
+			'!': {row: 1, col: 25},
+			// Row 2 (more symbols)
+			'@': {row: 2, col: 0}, '#': {row: 2, col: 1}, '$': {row: 2, col: 2}, '%': {row: 2, col: 3}, '^': {row: 2, col: 4},
+			'&': {row: 2, col: 5}, '*': {row: 2, col: 6}, '(': {row: 2, col: 7}, ')': {row: 2, col: 8}, '_': {row: 2, col: 9},
+			"'": {row: 2, col: 10}, '"': {row: 2, col: 11}, '`': {row: 2, col: 12}, '~': {row: 2, col: 13}, ',': {row: 2, col: 14},
+			'.': {row: 2, col: 15},
+			// Space character
+			' ': {space: true}
 		};
 
 		function renderBcmFont(text) {
@@ -295,8 +305,8 @@
 					span.className = 'bcmfont space';
 				} else {
 					span.className = 'bcmfont';
-					const posX = charInfo.col * 32;
-					const posY = charInfo.row * 32;
+					const posX = charInfo.col * 38;
+					const posY = charInfo.row * 38;
 					span.style.backgroundPosition = `-${posX}px -${posY}px`;
 				}
 				container.appendChild(span);
@@ -306,3 +316,5 @@
 		// Render test text
 		renderBcmFont('Test text');
 	</script>
+</body>
+</html>
