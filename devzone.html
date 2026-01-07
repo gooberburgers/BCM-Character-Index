@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>v.17</title>
+	<title>v.18</title>
 	<style>
 		* {
 			margin: 0;
@@ -269,30 +269,26 @@
 		<img src="assets/dwarfhotot.png" alt="rabbit">
 	</div>
 	<script>
-	/* ===============================
-	   BCM FONT – EXACT 1-TO-1 ORDER
-	   =============================== */
+	const GLYPH_W = 38;
+	const GLYPH_H = 38;
 
-	const BCM_GLYPH_WIDTH = 38;
-	const BCM_GLYPH_HEIGHT = 38;
-
-	// EXACT order as it appears in the image (left → right)
-	const bcmFontOrder = [
-		'Q','W','E','R','T','Y','U','I','O','P',
-		'A','S','D','F','G','H','J','K','L',
-		'Z','X','C','V','B','N','M',
-		'-','_','+','=','?','/','>','<',',',
-		'[',']',';',';',':',"'",'"',
-		'!','@','#','$','%','^','*','(',')',
-		'\\','|'
+	// EXACT ROW DEFINITIONS (LEFT → RIGHT)
+	const fontRows = [
+		// Row 1
+		['Q','W','E','R','T','Y','U','I','O','P','A','S','D','F','G','H','J','K','L','Z','X','C','V','B','N'],
+		// Row 2
+		['M','`','~','1','2','3','4','5','6','7','8','9','0','-','_','+','=','?','/','>','<','[',']',';'],
+		// Row 3
+		[':',"'",'"','!','@','#','$','%','^','*','(',')','\\','|']
 	];
 
-	// Build lookup table automatically
-	const bcmFontMap = {};
-	bcmFontOrder.forEach((char, index) => {
-		bcmFontMap[char] = index;
+	// Build lookup table
+	const fontMap = {};
+	fontRows.forEach((row, y) => {
+		row.forEach((char, x) => {
+			fontMap[char] = { x, y };
+		});
 	});
-	bcmFontMap[' '] = 'space';
 
 	function renderBcmFont(text) {
 		const container = document.getElementById('topbarTitle');
@@ -300,19 +296,18 @@
 
 		for (const rawChar of text) {
 			const char = rawChar.toUpperCase();
-
 			const span = document.createElement('span');
 			span.className = 'bcmfont';
 
 			if (char === ' ') {
 				span.classList.add('space');
 				span.style.backgroundImage = 'none';
-			} else if (bcmFontMap[char] !== undefined) {
-				const index = bcmFontMap[char];
-				const posX = index * BCM_GLYPH_WIDTH;
-				span.style.backgroundPosition = `-${posX}px 0px`;
+			} else if (fontMap[char]) {
+				const { x, y } = fontMap[char];
+				span.style.backgroundPosition =
+					`-${x * GLYPH_W}px -${y * GLYPH_H}px`;
 			} else {
-				// Unknown character → blank space
+				// unsupported character → blank
 				span.classList.add('space');
 				span.style.backgroundImage = 'none';
 			}
@@ -324,5 +319,6 @@
 	// Test
 	renderBcmFont('BONE CALCIUM MANIA | WIKI!');
 </script>
+
 </body>
 </html>
