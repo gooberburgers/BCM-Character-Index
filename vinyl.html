@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Audio</title>
+
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        overflow: hidden;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    /* Center container */
+    .container {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    audio {
+        width: 320px;
+        max-width: 90%;
+        filter: invert(1) brightness(1.2);
+    }
+
+    /* Noise overlay */
+    .noise {
+        pointer-events: none;
+        position: fixed;
+        inset: 0;
+        z-index: 3;
+        background-image:
+            repeating-radial-gradient(circle at 0 0,
+                rgba(255,0,0,0.03),
+                rgba(0,255,0,0.03),
+                rgba(0,0,255,0.03),
+                rgba(255,255,255,0.03) 1px,
+                transparent 2px);
+        animation: noiseMove 0.15s infinite;
+        mix-blend-mode: overlay;
+    }
+
+    @keyframes noiseMove {
+        0% { transform: translate(0,0); }
+        25% { transform: translate(-1px,1px); }
+        50% { transform: translate(1px,-1px); }
+        75% { transform: translate(-1px,-1px); }
+        100% { transform: translate(0,0); }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <audio controls>
+        <source src="assets/aboard.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+</div>
+
+<div class="noise"></div>
+
+</body>
+</html>
