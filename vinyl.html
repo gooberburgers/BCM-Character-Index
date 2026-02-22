@@ -2,60 +2,81 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Audio</title>
+<title>Vinyl.</title>
 
 <style>
-    html, body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        background: #000;
-        overflow: hidden;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    overflow: hidden;
+    font-family: system-ui, sans-serif;
+}
 
-    /* Center container */
-    .container {
-        position: relative;
-        z-index: 2;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+/* Centered player */
+.container {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-    audio {
-        width: 320px;
-        max-width: 90%;
-        filter: invert(1) brightness(1.2);
-    }
+audio {
+    width: 340px;
+    max-width: 90%;
+    filter: invert(1) contrast(1.2) brightness(1.1);
+}
 
-    /* Noise overlay */
-    .noise {
-        pointer-events: none;
-        position: fixed;
-        inset: 0;
-        z-index: 3;
-        background-image:
-            repeating-radial-gradient(circle at 0 0,
-                rgba(255,0,0,0.03),
-                rgba(0,255,0,0.03),
-                rgba(0,0,255,0.03),
-                rgba(255,255,255,0.03) 1px,
-                transparent 2px);
-        animation: noiseMove 0.15s infinite;
-        mix-blend-mode: overlay;
-    }
+/* Canvas static */
+#noiseCanvas {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+}
 
-    @keyframes noiseMove {
-        0% { transform: translate(0,0); }
-        25% { transform: translate(-1px,1px); }
-        50% { transform: translate(1px,-1px); }
-        75% { transform: translate(-1px,-1px); }
-        100% { transform: translate(0,0); }
-    }
+/* VHS scanlines */
+.scanlines {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.05) 0px,
+        rgba(255,255,255,0.05) 1px,
+        rgba(0,0,0,0) 3px,
+        rgba(0,0,0,0) 4px
+    );
+    animation: scanlineScroll 6s linear infinite;
+}
+
+/* Subtle brightness flicker */
+.vhs-flicker {
+    position: fixed;
+    inset: 0;
+    z-index: 25;
+    pointer-events: none;
+    background: rgba(255,255,255,0.02);
+    animation: flicker 0.12s infinite;
+}
+
+@keyframes scanlineScroll {
+    from { transform: translateY(0); }
+    to   { transform: translateY(4px); }
+}
+
+@keyframes flicker {
+    0%   { opacity: 0.02; }
+    50%  { opacity: 0.06; }
+    100% { opacity: 0.02; }
+}
 </style>
 </head>
 
@@ -64,11 +85,44 @@
 <div class="container">
     <audio controls>
         <source src="assets/aboard.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
     </audio>
 </div>
 
-<div class="noise"></div>
+<canvas id="noiseCanvas"></canvas>
+<div class="vhs-flicker"></div>
+<div class="scanlines"></div>
+
+<script>
+const canvas = document.getElementById("noiseCanvas");
+const ctx = canvas.getContext("2d");
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resize);
+resize();
+
+function drawNoise() {
+    const imageData = ctx.createImageData(canvas.width, canvas.height);
+    const data = imageData.data;
+
+    for (let i = 0; i < data.length; i += 4) {
+        const value = Math.random() * 255;
+
+        // RGB noise (strong)
+        data[i]     = value;
+        data[i + 1] = Math.random() * 255;
+        data[i + 2] = Math.random() * 255;
+        data[i + 3] = 50; // alpha (controls intensity)
+    }
+
+    ctx.putImageData(imageData, 0, 0);
+    requestAnimationFrame(drawNoise);
+}
+
+drawNoise();
+</script>
 
 </body>
 </html>
