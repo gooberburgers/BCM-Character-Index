@@ -15,7 +15,7 @@ html, body {
     font-family: system-ui, sans-serif;
 }
 
-/* Centered player */
+/* i am captain mossbones */
 .container {
     position: relative;
     z-index: 10;
@@ -32,7 +32,6 @@ audio {
     filter: invert(1) contrast(1.2) brightness(1.1);
 }
 
-/* Canvas static */
 #noiseCanvas {
     position: fixed;
     inset: 0;
@@ -41,7 +40,6 @@ audio {
     mix-blend-mode: overlay;
 }
 
-/* VHS scanlines */
 .scanlines {
     position: fixed;
     inset: 0;
@@ -57,7 +55,6 @@ audio {
     animation: scanlineScroll 6s linear infinite;
 }
 
-/* Subtle brightness flicker */
 .vhs-flicker {
     position: fixed;
     inset: 0;
@@ -110,11 +107,10 @@ function drawNoise() {
     for (let i = 0; i < data.length; i += 4) {
         const value = Math.random() * 255;
 
-        // RGB noise (strong)
         data[i]     = value;
         data[i + 1] = Math.random() * 255;
         data[i + 2] = Math.random() * 255;
-        data[i + 3] = 50; // alpha (controls intensity)
+        data[i + 3] = 50; 
     }
 
     ctx.putImageData(imageData, 0, 0);
