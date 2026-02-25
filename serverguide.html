@@ -119,7 +119,6 @@
     display:none;
   }
 
-  /* small screens */
   @media (max-width:600px){
     #subs{font-size:16px; bottom:8%;}
     #start{font-size:18px; padding:12px 18px;}
@@ -128,8 +127,13 @@
 </head>
 <body>
   <div id="wrap">
-    <!-- added playsinline and tabindex so mobile/keyboard users get polite behavior -->
-    <video id="vid" src="assets/prototype.mp4" preload="auto" playsinline tabindex="-1"></video>
+    <video
+      id="vid"
+      src="https://files.catbox.moe/6qvtat.mp4"
+      preload="auto"
+      playsinline
+      tabindex="-1">
+    </video>
 
     <div id="subs" aria-live="polite"></div>
     <div id="download">Download Transcription?</div>
@@ -149,49 +153,41 @@
   let cues = [];
   let unlocked = localStorage.getItem("bunnyzDone") === "1";
 
-  // Show native controls only if previously unlocked
   v.controls = !!unlocked;
 
-  // Helpful debug / user message
   function showMessage(text, timeout = 4500) {
     msg.textContent = text;
     msg.style.display = "block";
-    if (timeout > 0) clearTimeout(msg._t), msg._t = setTimeout(()=> msg.style.display = "none", timeout);
+    if (timeout > 0) {
+      clearTimeout(msg._t);
+      msg._t = setTimeout(() => msg.style.display = "none", timeout);
+    }
   }
 
-  // Center start button is above video and triggers play (user gesture)
   start.addEventListener("click", async () => {
     try {
-      // Attempt to play; this is a user gesture so audio allowed on most browsers
       await v.play();
-      // Hide start button after successful start
       start.style.display = "none";
     } catch (err) {
-      // If play failed (rare), show message and try to provide feedback
       console.error("Play failed:", err);
-      showMessage("Playback blocked — try clicking the video or unmuting in your browser.");
+      showMessage("Playback blocked — click again or check browser settings.");
     }
   });
 
-  // If unlocked previously allow interacting with video (show controls)
   if (!unlocked) {
-    // Prevent large seeks — only if _lastTime is defined
     v.addEventListener("seeking", () => {
       const last = typeof v._lastTime === "number" ? v._lastTime : 0;
-      // If the user jumps forward bigger than 0.25s, revert them
       if (v.currentTime > last + 0.25) {
         v.currentTime = last || 0;
       }
     });
   }
 
-  // update subtitle on timeupdate
   v.addEventListener("timeupdate", () => {
     v._lastTime = v.currentTime;
     const t = v.currentTime;
     for (const c of cues) {
       if (t >= c.s && t <= c.e) {
-        // show subtitle text and return early
         subs.textContent = c.t;
         return;
       }
@@ -207,125 +203,70 @@
   });
 
   dl.addEventListener("click", () => {
-    // direct download link
     const a = document.createElement("a");
     a.href = "assets/ENG.srt";
     a.download = "ENG.srt";
     a.click();
   });
 
-  // handle video load errors
   v.addEventListener("error", (ev) => {
-    console.error("Video error event:", ev, v.error);
-    showMessage("Error loading video. Check the console and verify assets/prototype.mp4 exists.", 8000);
-    // expose controls so the user can attempt to interact (optionally)
+    console.error("Video error:", ev, v.error);
+    showMessage("Error loading video.", 8000);
     v.controls = true;
   });
 
-  // subtitle loading: more robust parsing
   async function loadSRT(path) {
     try {
-      const res = await fetch(path, {cache: "no-store"});
-      if (!res.ok) throw new Error("HTTP " + res.status);
+      const res = await fetch(path, { cache: "no-store" });
+      if (!res.ok) throw new Error(res.status);
       const txt = await res.text();
 
-      // normalize newlines & trim
-      const normalized = txt.replace(/\r\n/g, "\n").replace(/\r/g, "\n").trim();
-      // split by double newlines (blocks)
-      const blocks = normalized.split(/\n{2,}/);
-
+      const blocks = txt.replace(/\r/g,"").trim().split(/\n{2,}/);
       cues = [];
+
       for (const block of blocks) {
-        const lines = block.trim().split("\n");
-        if (lines.length >= 2) {
-          // second line should be timing
-          const timing = lines[1].trim();
-          const m = timing.match(/^(.+?)\s*-->\s*(.+)$/);
+        const lines = block.split("\n");
+        if (lines.length >= 3) {
+          const m = lines[1].match(/^(.+?)\s*-->\s*(.+)$/);
           if (!m) continue;
-          const s = toSeconds(m[1].trim());
-          const e = toSeconds(m[2].trim());
-          const text = lines.slice(2).join(" ").replace(/\s+/g," ").trim();
-          cues.push({s, e, t: text});
+          cues.push({
+            s: toSeconds(m[1]),
+            e: toSeconds(m[2]),
+            t: lines.slice(2).join(" ").trim()
+          });
         }
       }
-
-      if (cues.length === 0) {
-        console.warn("No subtitles parsed from SRT (empty cues).");
-      }
-    } catch (err) {
-      console.warn("Failed to load or parse subtitles:", err);
-      // silently continue but show a small message
-      showMessage("Subtitles unavailable (ENG.srt).", 4000);
-      cues = [];
+    } catch {
+      showMessage("Subtitles unavailable.", 4000);
     }
   }
 
-  function toSeconds(x) {
-    // "00:01:23,456" or "00:01:23.456"
-    const vals = x.replace(",", ".").split(":").map(v => v.trim());
-    if (vals.length === 3) {
-      const hours = Number(vals[0]) || 0;
-      const mins = Number(vals[1]) || 0;
-      const secs = Number(vals[2]) || 0;
-      return hours*3600 + mins*60 + secs;
-    } else if (vals.length === 2) {
-      const mins = Number(vals[0]) || 0;
-      const secs = Number(vals[1]) || 0;
-      return mins*60 + secs;
-    } else {
-      const n = Number(x) || 0;
-      return n;
-    }
+  function toSeconds(t) {
+    const p = t.replace(",", ".").split(":").map(Number);
+    return p.length === 3
+      ? p[0]*3600 + p[1]*60 + p[2]
+      : p[0]*60 + p[1];
   }
 
-  // kick off subtitle load (non-blocking)
   loadSRT("assets/ENG.srt");
 
-  // Accessibility: if user clicks video itself and not start, treat as gesture to play
   v.addEventListener("click", async () => {
-    // If paused, try to play
     if (v.paused) {
       try {
         await v.play();
         start.style.display = "none";
-      } catch (err) {
-        console.error("Play on video click failed:", err);
-        showMessage("Couldn't start playback — click the start button or check browser settings.", 4000);
-      }
+      } catch {}
     } else {
-      // if playing, pause toggle
       v.pause();
     }
   });
 
-  // Optional: keyboard space toggles play/pause
-  document.addEventListener("keydown", (e) => {
+  document.addEventListener("keydown", e => {
     if (e.code === "Space") {
       e.preventDefault();
-      if (v.paused) v.play();
-      else v.pause();
+      v.paused ? v.play() : v.pause();
     }
   });
-
-  // small heuristic: if the video is already allowed and autoplayed earlier, hide start
-  (function checkAutoplayState(){
-    // If video is already playing or readyState indicates canplay and unlocked flag
-    if (!v.paused && unlocked) start.style.display = "none";
-  })();
-
-  // show helpful hint if the video file seems missing (quick fetch HEAD)
-  (async function quickCheckVideo(){
-    try {
-      const r = await fetch(v.currentSrc || v.src, {method:"HEAD"});
-      if (!r.ok) {
-        console.warn("Video HEAD returned not ok:", r.status);
-        showMessage("Video file not found (assets/prototype.mp4).", 7000);
-      }
-    } catch (e) {
-      // not critical; many servers block HEAD — ignore silently
-    }
-  })();
-
 </script>
 </body>
 </html>
