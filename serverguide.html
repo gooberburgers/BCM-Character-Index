@@ -208,7 +208,7 @@ dl.addEventListener("click", ()=>{
   a.click();
 });
 
-async function loadSRT(path){
+async function loadTS(path){
   try{
     const res=await fetch(path,{cache:"no-store"});
     const txt=await res.text();
@@ -236,7 +236,7 @@ function toSeconds(t){
     : p[0]*60+p[1];
 }
 
-loadSRT("assets/transcript.txt");
+loadTS("assets/transcript.txt");
 
 v.addEventListener("click",async()=>{
   if(v.paused){
