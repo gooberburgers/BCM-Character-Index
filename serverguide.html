@@ -4,269 +4,248 @@
 <meta charset="UTF-8">
 <title>Server Guide</title>
 <style>
-  html,body{
-    margin:0;
-    padding:0;
-    width:100%;
-    height:100%;
-    background:#000;
-    overflow:hidden;
-    font-family:Arial,Helvetica,sans-serif;
-  }
+html,body{
+  margin:0;
+  padding:0;
+  background:#000;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,sans-serif;
+  color:#fff;
+  overflow-x:hidden;
+}
 
-  #wrap{
-    position:relative;
-    width:100%;
-    height:100%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:#000;
-  }
+#wrap{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:40px 20px 80px;
+  box-sizing:border-box;
+  position:relative;
+}
 
-  video{
-    position:relative;
-    z-index:1;
-    width:100%;
-    height:100%;
-    object-fit:contain;
-    background:#000;
-  }
+video{
+  width:min(1000px,85vw);
+  max-height:70vh;
+  border-radius:14px;
+  background:#000;
+  box-shadow:0 0 60px rgba(0,0,0,0.9);
+}
 
-  #grain{
-    position:fixed;
-    inset:0;
-    pointer-events:none;
-    background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwAgMAAADYYG7QAAAADFBMVEUAAAD///8AAAB/f3+fn5+oY2pNAAAABHRSTlMA/wD/AP83WBt9AAAAPUlEQVR4AWMYBaNgFIyCUTAKRsEoGAWjYBSMglEwCkbBKBgFo2AUjIJRMApGwSgYBaMAALw+DN2Ky9csAAAAAElFTkSuQmCC");
-    opacity:.28;
-    mix-blend-mode:screen;
-    animation:grain .15s steps(2) infinite;
-    z-index:4;
-  }
+#subs{
+  position:absolute;
+  bottom:120px;
+  left:50%;
+  transform:translateX(-50%);
+  width:min(1000px,85vw);
+  text-align:center;
+  color:#ffd800;
+  font-size:22px;
+  text-shadow:0 2px 6px rgba(0,0,0,0.9);
+  pointer-events:none;
+  padding:0 20px;
+  line-height:1.3;
+}
 
-  @keyframes grain{
-    0%{transform:translate(0,0)}
-    25%{transform:translate(-4%,-4%)}
-    50%{transform:translate(4%,4%)}
-    75%{transform:translate(-4%,4%)}
-    100%{transform:translate(4%,-4%)}
-  }
+#start{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:rgba(0,0,0,0.75);
+  color:#ffd800;
+  padding:16px 26px;
+  border-radius:10px;
+  border:1px solid rgba(255,216,0,0.2);
+  cursor:pointer;
+  font-size:20px;
+  letter-spacing:.5px;
+  user-select:none;
+}
 
-  #subs{
-    position:absolute;
-    bottom:6%;
-    left:0;
-    right:0;
-    width:100%;
-    text-align:center;
-    color:#ffd800;
-    font-size:22px;
-    text-shadow:0 0 10px rgba(255,216,0,.8);
-    pointer-events:none;
-    padding:0 30px;
-    z-index:3;
-    line-height:1.2;
-    max-width:min(1200px,95%);
-    margin:0 auto;
-    word-wrap:break-word;
-  }
+#transcriptionSection{
+  margin-top:50px;
+  width:min(1000px,85vw);
+  display:none;
+}
 
-  #download{
-    position:absolute;
-    bottom:2%;
-    left:0;
-    right:0;
-    width:100%;
-    text-align:center;
-    color:#ffd800;
-    font-size:20px;
-    text-shadow:0 0 10px rgba(255,216,0,.8);
-    cursor:pointer;
-    display:none;
-    z-index:3;
-  }
+#transcriptionSection h2{
+  font-weight:500;
+  margin-bottom:12px;
+  color:#ffd800;
+  letter-spacing:.5px;
+}
 
-  #start{
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    color:#ffd800;
-    font-size:22px;
-    text-shadow:0 0 12px rgba(255,216,0,.8);
-    cursor:pointer;
-    z-index:5;
-    background:rgba(0,0,0,0.6);
-    padding:14px 24px;
-    border-radius:10px;
-    border:1px solid rgba(255,216,0,0.12);
-    pointer-events:auto;
-    user-select:none;
-  }
+#download{
+  display:inline-block;
+  padding:10px 18px;
+  border-radius:8px;
+  background:#111;
+  border:1px solid rgba(255,216,0,0.25);
+  color:#ffd800;
+  cursor:pointer;
+  transition:.2s ease;
+}
 
-  #message {
-    position: absolute;
-    top: 2%;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #ff8a8a;
-    font-size: 14px;
-    text-shadow: 0 0 6px rgba(255,0,0,0.6);
-    z-index: 6;
-    padding: 6px 10px;
-    border-radius: 6px;
-    background: rgba(0,0,0,0.5);
-    display:none;
-  }
+#download:hover{
+  background:#1b1b1b;
+  transform:translateY(-2px);
+}
 
-  @media (max-width:600px){
-    #subs{font-size:16px; bottom:8%;}
-    #start{font-size:18px; padding:12px 18px;}
-  }
+#grain{
+  pointer-events:none;
+  position:fixed;
+  inset:0;
+  opacity:.45;
+  z-index:10;
+  background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABAAQMAAABmvDolAAAABlBMVEUAAAD///+l2Z/dAAAAMElEQVR4AWMYBaNgFIyCUTAKRsEoGAWjYBSMglEwCkbBKBgFo2AUjIJRMAoGAAAZ6gX2gMUR3QAAAABJRU5ErkJggg==");
+  mix-blend-mode:screen;
+  animation:grain .08s steps(3) infinite;
+}
+
+@keyframes grain{
+  0%{transform:translate(0,0)}
+  25%{transform:translate(-5%,-5%)}
+  50%{transform:translate(5%,5%)}
+  75%{transform:translate(-5%,5%)}
+  100%{transform:translate(5%,-5%)}
+}
+
+@media(max-width:700px){
+  #subs{font-size:16px;bottom:140px}
+  #start{font-size:18px;padding:14px 20px}
+}
 </style>
 </head>
 <body>
-  <div id="wrap">
-    <video
-      id="vid"
-      src="https://files.catbox.moe/6qvtat.mp4"
-      preload="auto"
-      playsinline
-      tabindex="-1">
-    </video>
 
-    <div id="subs" aria-live="polite"></div>
-    <div id="download">Download Transcription?</div>
-    <div id="start" role="button" aria-pressed="false">Click to begin</div>
-    <div id="message" role="status"></div>
+<div id="wrap">
+
+  <video
+    id="vid"
+    src="https://files.catbox.moe/6qvtat.mp4"
+    preload="auto"
+    playsinline
+    tabindex="-1">
+  </video>
+
+  <div id="subs"></div>
+
+  <div id="start">Click to begin</div>
+
+  <div id="transcriptionSection">
+    <h2>Transcription</h2>
+    <div id="download">Download ENG.srt</div>
   </div>
 
-  <div id="grain"></div>
+</div>
+
+<div id="grain"></div>
 
 <script>
-  const v = document.getElementById("vid");
-  const subs = document.getElementById("subs");
-  const dl = document.getElementById("download");
-  const start = document.getElementById("start");
-  const msg = document.getElementById("message");
+const v = document.getElementById("vid");
+const subs = document.getElementById("subs");
+const dl = document.getElementById("download");
+const start = document.getElementById("start");
+const transcriptionSection = document.getElementById("transcriptionSection");
 
-  let cues = [];
-  let unlocked = localStorage.getItem("bunnyzDone") === "1";
+let cues = [];
+let unlocked = localStorage.getItem("bunnyzDone") === "1";
 
-  v.controls = !!unlocked;
+v.controls = unlocked;
+if(unlocked){
+  transcriptionSection.style.display="block";
+}
 
-  function showMessage(text, timeout = 4500) {
-    msg.textContent = text;
-    msg.style.display = "block";
-    if (timeout > 0) {
-      clearTimeout(msg._t);
-      msg._t = setTimeout(() => msg.style.display = "none", timeout);
+start.addEventListener("click", async ()=>{
+  try{
+    await v.play();
+    start.style.display="none";
+  }catch{}
+});
+
+if(!unlocked){
+  v.addEventListener("seeking", ()=>{
+    const last = typeof v._lastTime==="number"?v._lastTime:0;
+    if(v.currentTime > last + 0.25){
+      v.currentTime = last || 0;
+    }
+  });
+}
+
+v.addEventListener("timeupdate", ()=>{
+  v._lastTime = v.currentTime;
+  const t = v.currentTime;
+  for(const c of cues){
+    if(t>=c.s && t<=c.e){
+      subs.textContent=c.t;
+      return;
     }
   }
+  subs.textContent="";
+});
 
-  start.addEventListener("click", async () => {
-    try {
+v.addEventListener("ended", ()=>{
+  localStorage.setItem("bunnyzDone","1");
+  v.controls=true;
+  transcriptionSection.style.display="block";
+});
+
+dl.addEventListener("click", ()=>{
+  const a=document.createElement("a");
+  a.href="assets/ENG.srt";
+  a.download="ENG.srt";
+  a.click();
+});
+
+async function loadSRT(path){
+  try{
+    const res=await fetch(path,{cache:"no-store"});
+    const txt=await res.text();
+    const blocks=txt.replace(/\r/g,"").trim().split(/\n{2,}/);
+    cues=[];
+    for(const block of blocks){
+      const lines=block.split("\n");
+      if(lines.length>=3){
+        const m=lines[1].match(/^(.+?)\s*-->\s*(.+)$/);
+        if(!m)continue;
+        cues.push({
+          s:toSeconds(m[1]),
+          e:toSeconds(m[2]),
+          t:lines.slice(2).join(" ").trim()
+        });
+      }
+    }
+  }catch{}
+}
+
+function toSeconds(t){
+  const p=t.replace(",",".").split(":").map(Number);
+  return p.length===3
+    ? p[0]*3600+p[1]*60+p[2]
+    : p[0]*60+p[1];
+}
+
+loadSRT("assets/ENG.srt");
+
+v.addEventListener("click",async()=>{
+  if(v.paused){
+    try{
       await v.play();
-      start.style.display = "none";
-    } catch (err) {
-      console.error("Play failed:", err);
-      showMessage("Playback blocked — click again or check browser settings.");
-    }
-  });
-
-  if (!unlocked) {
-    v.addEventListener("seeking", () => {
-      const last = typeof v._lastTime === "number" ? v._lastTime : 0;
-      if (v.currentTime > last + 0.25) {
-        v.currentTime = last || 0;
-      }
-    });
+      start.style.display="none";
+    }catch{}
+  }else{
+    v.pause();
   }
+});
 
-  v.addEventListener("timeupdate", () => {
-    v._lastTime = v.currentTime;
-    const t = v.currentTime;
-    for (const c of cues) {
-      if (t >= c.s && t <= c.e) {
-        subs.textContent = c.t;
-        return;
-      }
-    }
-    subs.textContent = "";
-  });
-
-  v.addEventListener("ended", () => {
-    localStorage.setItem("bunnyzDone", "1");
-    v.controls = true;
-    dl.style.display = "block";
-    showMessage("Playback finished. Controls enabled.", 3000);
-  });
-
-  dl.addEventListener("click", () => {
-    const a = document.createElement("a");
-    a.href = "assets/ENG.srt";
-    a.download = "ENG.srt";
-    a.click();
-  });
-
-  v.addEventListener("error", (ev) => {
-    console.error("Video error:", ev, v.error);
-    showMessage("Error loading video.", 8000);
-    v.controls = true;
-  });
-
-  async function loadSRT(path) {
-    try {
-      const res = await fetch(path, { cache: "no-store" });
-      if (!res.ok) throw new Error(res.status);
-      const txt = await res.text();
-
-      const blocks = txt.replace(/\r/g,"").trim().split(/\n{2,}/);
-      cues = [];
-
-      for (const block of blocks) {
-        const lines = block.split("\n");
-        if (lines.length >= 3) {
-          const m = lines[1].match(/^(.+?)\s*-->\s*(.+)$/);
-          if (!m) continue;
-          cues.push({
-            s: toSeconds(m[1]),
-            e: toSeconds(m[2]),
-            t: lines.slice(2).join(" ").trim()
-          });
-        }
-      }
-    } catch {
-      showMessage("Subtitles unavailable.", 4000);
-    }
+document.addEventListener("keydown",e=>{
+  if(e.code==="Space"){
+    e.preventDefault();
+    v.paused?v.play():v.pause();
   }
-
-  function toSeconds(t) {
-    const p = t.replace(",", ".").split(":").map(Number);
-    return p.length === 3
-      ? p[0]*3600 + p[1]*60 + p[2]
-      : p[0]*60 + p[1];
-  }
-
-  loadSRT("assets/ENG.srt");
-
-  v.addEventListener("click", async () => {
-    if (v.paused) {
-      try {
-        await v.play();
-        start.style.display = "none";
-      } catch {}
-    } else {
-      v.pause();
-    }
-  });
-
-  document.addEventListener("keydown", e => {
-    if (e.code === "Space") {
-      e.preventDefault();
-      v.paused ? v.play() : v.pause();
-    }
-  });
+});
 </script>
+
 </body>
 </html>
