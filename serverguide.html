@@ -2,66 +2,57 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Prototype Playback</title>
+<title>Server Guide</title>
 <style>
 html,body{
 margin:0;
 padding:0;
+width:100%;
+height:100%;
 background:#000;
 overflow:hidden;
-height:100%;
 font-family:Arial,Helvetica,sans-serif;
 }
-#container{
+#wrap{
 position:relative;
-width:100vw;
-height:100vh;
+width:100%;
+height:100%;
 display:flex;
 align-items:center;
 justify-content:center;
-background:#000;
 }
 video{
-max-width:100%;
-max-height:100%;
+width:100%;
+height:100%;
+object-fit:contain;
 background:#000;
 }
 #grain{
 position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
+inset:0;
 pointer-events:none;
-opacity:.25;
-background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAQCAYAAABAfUpMAAAAHUlEQVR42u3BAQEAAACCIP+vbkhAAQAAAAAAAAAAwJcEwAAB1vZ1AAAAAElFTkSuQmCC");
-background-repeat:repeat;
-animation:noise .2s infinite;
+background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwAgMAAADYYG7QAAAADFBMVEUAAAD///8AAAB/f3+fn5+oY2pNAAAABHRSTlMA/wD/AP83WBt9AAAAPUlEQVR4AWMYBaNgFIyCUTAKRsEoGAWjYBSMglEwCkbBKBgFo2AUjIJRMApGwSgYBaMAALw+DN2Ky9csAAAAAElFTkSuQmCC");
+opacity:.28;
 mix-blend-mode:screen;
+animation:grain .15s steps(2) infinite;
 }
-@keyframes noise{
+@keyframes grain{
 0%{transform:translate(0,0)}
-10%{transform:translate(-5%,-5%)}
-20%{transform:translate(-10%,5%)}
-30%{transform:translate(5%,-10%)}
-40%{transform:translate(-5%,15%)}
-50%{transform:translate(-10%,5%)}
-60%{transform:translate(15%,0)}
-70%{transform:translate(0,10%)}
-80%{transform:translate(-15%,0)}
-90%{transform:translate(10%,5%)}
-100%{transform:translate(5%,0)}
+25%{transform:translate(-4%,-4%)}
+50%{transform:translate(4%,4%)}
+75%{transform:translate(-4%,4%)}
+100%{transform:translate(4%,-4%)}
 }
-#subtitle{
+#subs{
 position:absolute;
-bottom:5%;
+bottom:6%;
 width:100%;
 text-align:center;
 color:#ffd800;
 font-size:22px;
-text-shadow:0 0 8px rgba(255,216,0,.7);
+text-shadow:0 0 10px rgba(255,216,0,.8);
 pointer-events:none;
-padding:0 20px;
+padding:0 30px;
 }
 #download{
 position:absolute;
@@ -70,75 +61,87 @@ width:100%;
 text-align:center;
 color:#ffd800;
 font-size:20px;
+text-shadow:0 0 10px rgba(255,216,0,.8);
 cursor:pointer;
 display:none;
-text-shadow:0 0 8px rgba(255,216,0,.7);
+}
+#start{
+position:absolute;
+color:#ffd800;
+font-size:22px;
+text-shadow:0 0 12px rgba(255,216,0,.8);
+cursor:pointer;
 }
 </style>
 </head>
 <body>
-<div id="container">
-<video id="video" src="assets/prototype.mp4"></video>
-<div id="subtitle"></div>
+<div id="wrap">
+<video id="vid" src="assets/prototype.mp4" preload="auto"></video>
+<div id="subs"></div>
 <div id="download">Download Transcription?</div>
+<div id="start">Click to begin</div>
 </div>
 <div id="grain"></div>
 <script>
-const video=document.getElementById("video");
-const subtitle=document.getElementById("subtitle");
-const download=document.getElementById("download");
+const v=document.getElementById("vid");
+const subs=document.getElementById("subs");
+const dl=document.getElementById("download");
+const start=document.getElementById("start");
 let cues=[];
-let allowed=localStorage.getItem("watchedPrototype")==="true";
-if(!allowed){
-video.controls=false;
-video.addEventListener("seeking",e=>{
-if(video.currentTime<video.duration-0.3)return;
-video.currentTime=0;
+let unlocked=localStorage.getItem("bunnyzDone")==="1";
+
+v.controls=unlocked;
+
+start.onclick=()=>{
+start.style.display="none";
+v.play();
+};
+
+if(!unlocked){
+v.addEventListener("seeking",()=>{
+if(v.currentTime>v._lastTime+0.25)v.currentTime=v._lastTime||0;
 });
-}else{
-video.controls=true;
 }
-video.addEventListener("ended",()=>{
-localStorage.setItem("watchedPrototype","true");
-video.controls=true;
-download.style.display="block";
-});
-download.addEventListener("click",()=>{
-const a=document.createElement("a");
-a.href="assets/ENG.srt";
-a.download="ENG.srt";
-document.body.appendChild(a);
-a.click();
-document.body.removeChild(a);
-});
-fetch("assets/ENG.srt").then(r=>r.text()).then(data=>{
-const blocks=data.split(/\n\n+/);
-blocks.forEach(b=>{
-const lines=b.split("\n");
-if(lines.length>=3){
-const time=lines[1].split(" --> ");
-const start=parseTime(time[0]);
-const end=parseTime(time[1]);
-const text=lines.slice(2).join(" ");
-cues.push({start,end,text});
-}
-});
-});
-function parseTime(t){
-const parts=t.replace(",",".").split(":");
-return parseFloat(parts[0])*3600+parseFloat(parts[1])*60+parseFloat(parts[2]);
-}
-video.addEventListener("timeupdate",()=>{
-const current=video.currentTime;
-for(let i=0;i<cues.length;i++){
-if(current>=cues[i].start&&current<=cues[i].end){
-subtitle.textContent=cues[i].text;
+
+v.addEventListener("timeupdate",()=>{
+v._lastTime=v.currentTime;
+const t=v.currentTime;
+for(const c of cues){
+if(t>=c.s&&t<=c.e){
+subs.textContent=c.t;
 return;
 }
 }
-subtitle.textContent="";
+subs.textContent="";
 });
-video.play();
+
+v.addEventListener("ended",()=>{
+localStorage.setItem("bunnyzDone","1");
+v.controls=true;
+dl.style.display="block";
+});
+
+dl.onclick=()=>{
+const a=document.createElement("a");
+a.href="assets/ENG.srt";
+a.download="ENG.srt";
+a.click();
+};
+
+fetch("assets/ENG.srt").then(r=>r.text()).then(t=>{
+t.split(/\n\n+/).forEach(b=>{
+const l=b.split("\n");
+if(l.length>=3){
+const [s,e]=l[1].split(" --> ");
+cues.push({s:pt(s),e:pt(e),t:l.slice(2).join(" ")});
+}
+});
+});
+
+function pt(x){
+const p=x.replace(",",".").split(":");
+return +p[0]*3600+ +p[1]*60+ +p[2];
+}
 </script>
 </body>
 </html>
