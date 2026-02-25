@@ -4,144 +4,328 @@
 <meta charset="UTF-8">
 <title>Server Guide</title>
 <style>
-html,body{
-margin:0;
-padding:0;
-width:100%;
-height:100%;
-background:#000;
-overflow:hidden;
-font-family:Arial,Helvetica,sans-serif;
-}
-#wrap{
-position:relative;
-width:100%;
-height:100%;
-display:flex;
-align-items:center;
-justify-content:center;
-}
-video{
-width:100%;
-height:100%;
-object-fit:contain;
-background:#000;
-}
-#grain{
-position:fixed;
-inset:0;
-pointer-events:none;
-background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwAgMAAADYYG7QAAAADFBMVEUAAAD///8AAAB/f3+fn5+oY2pNAAAABHRSTlMA/wD/AP83WBt9AAAAPUlEQVR4AWMYBaNgFIyCUTAKRsEoGAWjYBSMglEwCkbBKBgFo2AUjIJRMApGwSgYBaMAALw+DN2Ky9csAAAAAElFTkSuQmCC");
-opacity:.28;
-mix-blend-mode:screen;
-animation:grain .15s steps(2) infinite;
-}
-@keyframes grain{
-0%{transform:translate(0,0)}
-25%{transform:translate(-4%,-4%)}
-50%{transform:translate(4%,4%)}
-75%{transform:translate(-4%,4%)}
-100%{transform:translate(4%,-4%)}
-}
-#subs{
-position:absolute;
-bottom:6%;
-width:100%;
-text-align:center;
-color:#ffd800;
-font-size:22px;
-text-shadow:0 0 10px rgba(255,216,0,.8);
-pointer-events:none;
-padding:0 30px;
-}
-#download{
-position:absolute;
-bottom:2%;
-width:100%;
-text-align:center;
-color:#ffd800;
-font-size:20px;
-text-shadow:0 0 10px rgba(255,216,0,.8);
-cursor:pointer;
-display:none;
-}
-#start{
-position:absolute;
-color:#ffd800;
-font-size:22px;
-text-shadow:0 0 12px rgba(255,216,0,.8);
-cursor:pointer;
-}
+  html,body{
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    background:#000;
+    overflow:hidden;
+    font-family:Arial,Helvetica,sans-serif;
+  }
+
+  #wrap{
+    position:relative;
+    width:100%;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#000;
+  }
+
+  video{
+    position:relative;
+    z-index:1;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    background:#000;
+  }
+
+  #grain{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwAgMAAADYYG7QAAAADFBMVEUAAAD///8AAAB/f3+fn5+oY2pNAAAABHRSTlMA/wD/AP83WBt9AAAAPUlEQVR4AWMYBaNgFIyCUTAKRsEoGAWjYBSMglEwCkbBKBgFo2AUjIJRMApGwSgYBaMAALw+DN2Ky9csAAAAAElFTkSuQmCC");
+    opacity:.28;
+    mix-blend-mode:screen;
+    animation:grain .15s steps(2) infinite;
+    z-index:4;
+  }
+
+  @keyframes grain{
+    0%{transform:translate(0,0)}
+    25%{transform:translate(-4%,-4%)}
+    50%{transform:translate(4%,4%)}
+    75%{transform:translate(-4%,4%)}
+    100%{transform:translate(4%,-4%)}
+  }
+
+  #subs{
+    position:absolute;
+    bottom:6%;
+    left:0;
+    right:0;
+    width:100%;
+    text-align:center;
+    color:#ffd800;
+    font-size:22px;
+    text-shadow:0 0 10px rgba(255,216,0,.8);
+    pointer-events:none;
+    padding:0 30px;
+    z-index:3;
+    line-height:1.2;
+    max-width:min(1200px,95%);
+    margin:0 auto;
+    word-wrap:break-word;
+  }
+
+  #download{
+    position:absolute;
+    bottom:2%;
+    left:0;
+    right:0;
+    width:100%;
+    text-align:center;
+    color:#ffd800;
+    font-size:20px;
+    text-shadow:0 0 10px rgba(255,216,0,.8);
+    cursor:pointer;
+    display:none;
+    z-index:3;
+  }
+
+  #start{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    color:#ffd800;
+    font-size:22px;
+    text-shadow:0 0 12px rgba(255,216,0,.8);
+    cursor:pointer;
+    z-index:5;
+    background:rgba(0,0,0,0.6);
+    padding:14px 24px;
+    border-radius:10px;
+    border:1px solid rgba(255,216,0,0.12);
+    pointer-events:auto;
+    user-select:none;
+  }
+
+  #message {
+    position: absolute;
+    top: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ff8a8a;
+    font-size: 14px;
+    text-shadow: 0 0 6px rgba(255,0,0,0.6);
+    z-index: 6;
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: rgba(0,0,0,0.5);
+    display:none;
+  }
+
+  /* small screens */
+  @media (max-width:600px){
+    #subs{font-size:16px; bottom:8%;}
+    #start{font-size:18px; padding:12px 18px;}
+  }
 </style>
 </head>
 <body>
-<div id="wrap">
-<video id="vid" src="assets/prototype.mp4" preload="auto"></video>
-<div id="subs"></div>
-<div id="download">Download Transcription?</div>
-<div id="start">Click to begin</div>
-</div>
-<div id="grain"></div>
+  <div id="wrap">
+    <!-- added playsinline and tabindex so mobile/keyboard users get polite behavior -->
+    <video id="vid" src="assets/prototype.mp4" preload="auto" playsinline tabindex="-1"></video>
+
+    <div id="subs" aria-live="polite"></div>
+    <div id="download">Download Transcription?</div>
+    <div id="start" role="button" aria-pressed="false">Click to begin</div>
+    <div id="message" role="status"></div>
+  </div>
+
+  <div id="grain"></div>
+
 <script>
-const v=document.getElementById("vid");
-const subs=document.getElementById("subs");
-const dl=document.getElementById("download");
-const start=document.getElementById("start");
-let cues=[];
-let unlocked=localStorage.getItem("bunnyzDone")==="1";
+  const v = document.getElementById("vid");
+  const subs = document.getElementById("subs");
+  const dl = document.getElementById("download");
+  const start = document.getElementById("start");
+  const msg = document.getElementById("message");
 
-v.controls=unlocked;
+  let cues = [];
+  let unlocked = localStorage.getItem("bunnyzDone") === "1";
 
-start.onclick=()=>{
-start.style.display="none";
-v.play();
-};
+  // Show native controls only if previously unlocked
+  v.controls = !!unlocked;
 
-if(!unlocked){
-v.addEventListener("seeking",()=>{
-if(v.currentTime>v._lastTime+0.25)v.currentTime=v._lastTime||0;
-});
-}
+  // Helpful debug / user message
+  function showMessage(text, timeout = 4500) {
+    msg.textContent = text;
+    msg.style.display = "block";
+    if (timeout > 0) clearTimeout(msg._t), msg._t = setTimeout(()=> msg.style.display = "none", timeout);
+  }
 
-v.addEventListener("timeupdate",()=>{
-v._lastTime=v.currentTime;
-const t=v.currentTime;
-for(const c of cues){
-if(t>=c.s&&t<=c.e){
-subs.textContent=c.t;
-return;
-}
-}
-subs.textContent="";
-});
+  // Center start button is above video and triggers play (user gesture)
+  start.addEventListener("click", async () => {
+    try {
+      // Attempt to play; this is a user gesture so audio allowed on most browsers
+      await v.play();
+      // Hide start button after successful start
+      start.style.display = "none";
+    } catch (err) {
+      // If play failed (rare), show message and try to provide feedback
+      console.error("Play failed:", err);
+      showMessage("Playback blocked — try clicking the video or unmuting in your browser.");
+    }
+  });
 
-v.addEventListener("ended",()=>{
-localStorage.setItem("bunnyzDone","1");
-v.controls=true;
-dl.style.display="block";
-});
+  // If unlocked previously allow interacting with video (show controls)
+  if (!unlocked) {
+    // Prevent large seeks — only if _lastTime is defined
+    v.addEventListener("seeking", () => {
+      const last = typeof v._lastTime === "number" ? v._lastTime : 0;
+      // If the user jumps forward bigger than 0.25s, revert them
+      if (v.currentTime > last + 0.25) {
+        v.currentTime = last || 0;
+      }
+    });
+  }
 
-dl.onclick=()=>{
-const a=document.createElement("a");
-a.href="assets/ENG.srt";
-a.download="ENG.srt";
-a.click();
-};
+  // update subtitle on timeupdate
+  v.addEventListener("timeupdate", () => {
+    v._lastTime = v.currentTime;
+    const t = v.currentTime;
+    for (const c of cues) {
+      if (t >= c.s && t <= c.e) {
+        // show subtitle text and return early
+        subs.textContent = c.t;
+        return;
+      }
+    }
+    subs.textContent = "";
+  });
 
-fetch("assets/ENG.srt").then(r=>r.text()).then(t=>{
-t.split(/\n\n+/).forEach(b=>{
-const l=b.split("\n");
-if(l.length>=3){
-const [s,e]=l[1].split(" --> ");
-cues.push({s:pt(s),e:pt(e),t:l.slice(2).join(" ")});
-}
-});
-});
+  v.addEventListener("ended", () => {
+    localStorage.setItem("bunnyzDone", "1");
+    v.controls = true;
+    dl.style.display = "block";
+    showMessage("Playback finished. Controls enabled.", 3000);
+  });
 
-function pt(x){
-const p=x.replace(",",".").split(":");
-return +p[0]*3600+ +p[1]*60+ +p[2];
-}
+  dl.addEventListener("click", () => {
+    // direct download link
+    const a = document.createElement("a");
+    a.href = "assets/ENG.srt";
+    a.download = "ENG.srt";
+    a.click();
+  });
+
+  // handle video load errors
+  v.addEventListener("error", (ev) => {
+    console.error("Video error event:", ev, v.error);
+    showMessage("Error loading video. Check the console and verify assets/prototype.mp4 exists.", 8000);
+    // expose controls so the user can attempt to interact (optionally)
+    v.controls = true;
+  });
+
+  // subtitle loading: more robust parsing
+  async function loadSRT(path) {
+    try {
+      const res = await fetch(path, {cache: "no-store"});
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const txt = await res.text();
+
+      // normalize newlines & trim
+      const normalized = txt.replace(/\r\n/g, "\n").replace(/\r/g, "\n").trim();
+      // split by double newlines (blocks)
+      const blocks = normalized.split(/\n{2,}/);
+
+      cues = [];
+      for (const block of blocks) {
+        const lines = block.trim().split("\n");
+        if (lines.length >= 2) {
+          // second line should be timing
+          const timing = lines[1].trim();
+          const m = timing.match(/^(.+?)\s*-->\s*(.+)$/);
+          if (!m) continue;
+          const s = toSeconds(m[1].trim());
+          const e = toSeconds(m[2].trim());
+          const text = lines.slice(2).join(" ").replace(/\s+/g," ").trim();
+          cues.push({s, e, t: text});
+        }
+      }
+
+      if (cues.length === 0) {
+        console.warn("No subtitles parsed from SRT (empty cues).");
+      }
+    } catch (err) {
+      console.warn("Failed to load or parse subtitles:", err);
+      // silently continue but show a small message
+      showMessage("Subtitles unavailable (ENG.srt).", 4000);
+      cues = [];
+    }
+  }
+
+  function toSeconds(x) {
+    // "00:01:23,456" or "00:01:23.456"
+    const vals = x.replace(",", ".").split(":").map(v => v.trim());
+    if (vals.length === 3) {
+      const hours = Number(vals[0]) || 0;
+      const mins = Number(vals[1]) || 0;
+      const secs = Number(vals[2]) || 0;
+      return hours*3600 + mins*60 + secs;
+    } else if (vals.length === 2) {
+      const mins = Number(vals[0]) || 0;
+      const secs = Number(vals[1]) || 0;
+      return mins*60 + secs;
+    } else {
+      const n = Number(x) || 0;
+      return n;
+    }
+  }
+
+  // kick off subtitle load (non-blocking)
+  loadSRT("assets/ENG.srt");
+
+  // Accessibility: if user clicks video itself and not start, treat as gesture to play
+  v.addEventListener("click", async () => {
+    // If paused, try to play
+    if (v.paused) {
+      try {
+        await v.play();
+        start.style.display = "none";
+      } catch (err) {
+        console.error("Play on video click failed:", err);
+        showMessage("Couldn't start playback — click the start button or check browser settings.", 4000);
+      }
+    } else {
+      // if playing, pause toggle
+      v.pause();
+    }
+  });
+
+  // Optional: keyboard space toggles play/pause
+  document.addEventListener("keydown", (e) => {
+    if (e.code === "Space") {
+      e.preventDefault();
+      if (v.paused) v.play();
+      else v.pause();
+    }
+  });
+
+  // small heuristic: if the video is already allowed and autoplayed earlier, hide start
+  (function checkAutoplayState(){
+    // If video is already playing or readyState indicates canplay and unlocked flag
+    if (!v.paused && unlocked) start.style.display = "none";
+  })();
+
+  // show helpful hint if the video file seems missing (quick fetch HEAD)
+  (async function quickCheckVideo(){
+    try {
+      const r = await fetch(v.currentSrc || v.src, {method:"HEAD"});
+      if (!r.ok) {
+        console.warn("Video HEAD returned not ok:", r.status);
+        showMessage("Video file not found (assets/prototype.mp4).", 7000);
+      }
+    } catch (e) {
+      // not critical; many servers block HEAD — ignore silently
+    }
+  })();
+
 </script>
 </body>
 </html>
