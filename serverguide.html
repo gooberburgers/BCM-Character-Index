@@ -144,8 +144,8 @@ video{
   <div id="start">watch</div>
 
   <div id="transcriptionSection">
-    <h2>Transcription</h2>
-    <div id="download">Download ENG.srt</div>
+    <h2>transcript/subtitles (for translation)</h2>
+    <div id="download">Download transcript.txt</div>
   </div>
 
 </div>
@@ -203,8 +203,8 @@ v.addEventListener("ended", ()=>{
 
 dl.addEventListener("click", ()=>{
   const a=document.createElement("a");
-  a.href="assets/ENG.srt";
-  a.download="ENG.srt";
+  a.href="assets/transcript.txt";
+  a.download="transcript.txt";
   a.click();
 });
 
@@ -236,7 +236,7 @@ function toSeconds(t){
     : p[0]*60+p[1];
 }
 
-loadSRT("assets/ENG.srt");
+loadSRT("assets/transcript.txt");
 
 v.addEventListener("click",async()=>{
   if(v.paused){
