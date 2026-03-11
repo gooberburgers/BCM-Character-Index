@@ -15,7 +15,6 @@ html,body{
   overflow-x:hidden;
 }
 
-/* global text shadow */
 *{
   text-shadow:0 2px 6px rgba(0,0,0,1);
 }
@@ -101,6 +100,19 @@ video{
   transform:translateY(-2px);
 }
 
+#verifyMsg{
+  display:none;
+  width:100%;
+  text-align:center;
+  margin-top:36px;
+  font-size:18px;
+  font-weight:200;
+  color:rgba(255,255,255,0.85);
+  letter-spacing:.3px;
+  padding:18px 0;
+  border-top:1px solid rgba(255,255,255,0.1);
+}
+
 #grain{
   pointer-events:none;
   position:fixed;
@@ -133,7 +145,6 @@ video{
 
   <video
     id="vid"
-    <!-- old source: https://files.catbox.moe/6qvtat.mp4 -->
     src="https://files.catbox.moe/fhoetu.mp4"
     preload="auto"
     playsinline
@@ -147,6 +158,7 @@ video{
   <div id="transcriptionSection">
     <h2>transcript/subtitles (for translation)</h2>
     <div id="download">Download transcript.txt</div>
+    <div id="verifyMsg">DM any of the higher-ups or dogesterious for verification :0)</div>
   </div>
 
 </div>
@@ -159,6 +171,7 @@ const subs = document.getElementById("subs");
 const dl = document.getElementById("download");
 const start = document.getElementById("start");
 const transcriptionSection = document.getElementById("transcriptionSection");
+const verifyMsg = document.getElementById("verifyMsg");
 
 let cues = [];
 let unlocked = localStorage.getItem("bunnyzDone") === "1";
@@ -166,6 +179,7 @@ let unlocked = localStorage.getItem("bunnyzDone") === "1";
 v.controls = unlocked;
 if(unlocked){
   transcriptionSection.style.display="block";
+  verifyMsg.style.display="block";
 }
 
 start.addEventListener("click", async ()=>{
@@ -200,6 +214,7 @@ v.addEventListener("ended", ()=>{
   localStorage.setItem("bunnyzDone","1");
   v.controls=true;
   transcriptionSection.style.display="block";
+  verifyMsg.style.display="block";
 });
 
 dl.addEventListener("click", ()=>{
